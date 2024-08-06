@@ -1,0 +1,14 @@
+.icon {
+  @apply inline-flex justify-center items-center;
+  width: calc(var(--icon-size) * 1px);
+  min-width: calc(var(--icon-size) * 1px);
+  svg {
+    @apply w-full h-auto;
+  }
+}
+
+#sprites {
+  path {
+    @apply fill-current;
+  }
+}

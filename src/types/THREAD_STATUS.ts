@@ -1,0 +1,7 @@
+enum THREAD_STATUS {
+  PROCESSING = "PROCESSING",
+  READY = "READY",
+  FAILED = "FAILED",
+}
+
+export default THREAD_STATUS

@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:14.5-alpine3.16
+    command: postgres -c stats_temp_directory=/tmp
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432

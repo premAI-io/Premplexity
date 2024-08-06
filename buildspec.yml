@@ -1,0 +1,33 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_ENDPOINT}
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - VERSION=$(node -pe "require('./package.json')['version']")
+      - IMAGE_TAG=${VERSION}_${COMMIT_HASH}
+      - IMAGE_URI="${REPOSITORY_URI}:${IMAGE_TAG}"
+      - LATEST_IMAGE_URI="${REPOSITORY_URI}:latest"
+      - docker pull $LATEST_IMAGE_URI || true
+      - export COMPOSE_DOCKER_CLI_BUILD=1
+      - export DOCKER_BUILDKIT=1
+      - export SENTRY_VERSION=`git describe --tags --always $(git rev-list --tags --max-count=1) | awk -F '-' '{printf "%s-", $1; system("git rev-parse " $1)}'`
+  build:
+    commands:
+      - |
+        docker build \
+          --build-arg BUILDKIT_INLINE_CACHE=1 \
+          --cache-from $LATEST_IMAGE_URI \
+          --build-arg ENVIRONMENT=${ENVIRONMENT} \
+          --build-arg SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN} \
+          --build-arg SENTRY_VERSION=${SENTRY_VERSION} \
+          -t "$IMAGE_URI" \
+          -t "$LATEST_IMAGE_URI" .
+  post_build:
+    commands:
+      - docker push "$IMAGE_URI"
+      - docker push "$LATEST_IMAGE_URI"
+      - printf '[{"name":"%s","imageUri":"%s"}]' "$APP_NAME" "$IMAGE_URI" > images.json
+artifacts:
+  files: images.json

@@ -1,0 +1,11 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "ts,json,tsx,jsx,js,css",
+  "ignore": [
+    "src/meta.json"
+  ],
+  "exec": "npm run build && npm run start",
+  "delay": "2000"
+}

@@ -1,0 +1,18 @@
+session_name: premplexity_workspace
+windows:
+  - window_name: premplexity webapp
+    layout: tiled
+    panes:
+      # Docker Compose
+      - shell_command: |
+          docker compose up
+
+      # Drizzle kit studio
+      - shell_command: |
+          nvm use
+          ./node_modules/drizzle-kit/bin.cjs studio
+
+      # Monolith
+      - shell_command: |
+          nvm use
+          npm run server:dev

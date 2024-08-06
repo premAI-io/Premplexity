@@ -1,0 +1,5 @@
+enum USER_ROLE {
+  AUTHENTICATED = "AUTHENTICATED"
+}
+
+export default USER_ROLE
