@@ -1,0 +1,20 @@
+.filter-drop {
+  @apply relative;
+}
+
+.filter-drop__check {
+  @apply opacity-0 absolute pointer-events-none;
+  &:checked {
+    ~ .filter-drop__dropdown {
+      @apply opacity-100 translate-y-0 -translate-x-1/2 pointer-events-auto;
+    }
+  }
+}
+
+.filter-drop__toggle {
+  @apply cursor-pointer;
+}
+
+.filter-drop__dropdown {
+  @apply top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2 pt-3 px-3 min-w-80;
+}

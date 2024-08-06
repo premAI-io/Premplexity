@@ -1,0 +1,7 @@
+.input-prompt__container {
+  @apply w-[75%] max-w-[797px] mx-auto border border-gray-500 bg-gray-700 rounded-lg min-h-20 max-h-40 pr-1 relative;
+}
+
+.input-prompt__inner-container {
+  @apply py-8 pl-12 pr-20 overflow-y-auto;
+}

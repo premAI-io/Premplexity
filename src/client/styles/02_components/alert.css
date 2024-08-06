@@ -1,0 +1,53 @@
+.alert {
+  @apply relative p-4 rounded-sm flex flex-col gap-y-1.5;
+}
+
+.alert__head {
+  @apply relative w-full;
+}
+
+.alert__heading {
+  @apply flex items-center;
+}
+
+.alert__icon {
+  @apply flex mr-2;
+}
+
+.alert__title {
+  @apply text-base font-semibold;
+}
+
+.alert__close {
+  @apply absolute top-1/2 -translate-y-1/2 left-full;
+  svg {
+    @apply w-3 h-auto;
+  }
+}
+
+.alert__body {
+  @apply text-sm;
+  a {
+    @apply underline;
+  }
+}
+
+.alert--info {
+  @apply bg-primary-50 text-primary-800;
+}
+
+.alert--success {
+  @apply bg-green-50 text-green-800;
+}
+
+.alert--warning {
+  @apply bg-orange-50 text-orange-800;
+}
+
+.alert--danger {
+  @apply bg-red-50 text-red-800;
+}
+
+.alert--closable {
+  @apply pr-7;
+}

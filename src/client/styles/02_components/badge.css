@@ -1,0 +1,37 @@
+.badge {
+  @apply inline-flex items-center rounded-md gap-x-1 font-medium truncate w-fit max-w-full;
+}
+
+/* Themes */
+.badge--base {
+  @apply bg-gray-100 text-gray-300;
+}
+
+.badge--primary {
+  @apply bg-primary-100 text-primary-800;
+}
+
+.badge--warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge--danger {
+  @apply bg-red-100 text-red-800;
+}
+
+.badge--indigo {
+  @apply bg-purple-100 text-indigo-800;
+}
+
+.badge--active {
+  @apply bg-green-100 text-green-800;
+}
+
+/* Sizes */
+.badge--lg {
+  @apply h-[25px] px-3 text-sm;
+}
+
+.badge--sm {
+  @apply h-[22px] px-2 text-xs;
+}

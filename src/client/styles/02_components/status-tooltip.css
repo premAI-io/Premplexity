@@ -1,0 +1,23 @@
+.status-tooltip {
+  @apply !min-w-fit;
+}
+
+.status-tooltip__dot {
+  @apply w-[10px] h-[10px] rounded-[50%];
+}
+
+.status-tooltip__dot.status-tooltip__dot--success {
+  @apply bg-green-500;
+}
+
+.status-tooltip__dot.status-tooltip__dot--danger {
+  @apply bg-red-500;
+}
+
+.status-tooltip__dot.status-tooltip__dot--yellow {
+  @apply bg-yellow-300;
+}
+
+.status-tooltip__dot.status-tooltip__dot--gray {
+  @apply bg-gray-400;
+}

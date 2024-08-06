@@ -1,0 +1,31 @@
+.status {
+  @apply inline-flex items-center;
+}
+
+.status__icon {
+  @apply w-[10px] h-[10px] rounded-[50%] mr-[10px];
+}
+
+.status__content {
+  @apply text-sm font-medium leading-[1];
+}
+
+.status--success .status__icon {
+  @apply bg-green-500;
+}
+
+.status--danger .status__icon {
+  @apply bg-red-500;
+}
+
+.status--warning .status__icon {
+  @apply bg-yellow-300;
+}
+
+.status--info .status__icon {
+  @apply bg-primary-600;
+}
+
+.status--gray .status__icon {
+  @apply bg-gray-400;
+}

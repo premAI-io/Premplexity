@@ -1,0 +1,9 @@
+.thread__header {
+  @apply w-full flex items-center justify-between py-4 px-8;
+}
+
+.suggestion-item {
+  @apply bg-gray-900 border border-gray-700 rounded-lg p-2
+  text-gray-300 text-base font-bold text-left
+  cursor-pointer
+}

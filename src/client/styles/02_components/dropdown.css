@@ -1,0 +1,44 @@
+.dropdown {
+  @apply fixed bg-gray-900 rounded-lg shadow-md opacity-0 pointer-events-none z-50 border border-gray-700 p-2;
+  /* transition: all 0.3s ease-in-out; */
+}
+
+.dropdown--relative {
+  @apply absolute;
+}
+
+.dropdown--open {
+  @apply block opacity-100 translate-x-0 translate-y-0 pointer-events-auto;
+}
+
+.dropdown__items {
+  @apply flex flex-col gap-1;
+}
+
+.dropdown__item {
+  @apply truncate cursor-pointer rounded-lg;
+}
+
+.dropdown__link {
+  @apply flex items-center text-sm py-2 px-4 w-full text-gray-300 hover:bg-gray-600 truncate;
+}
+
+.dropdown__link-icon {
+  @apply flex mr-3 text-gray-300;
+  svg {
+    @apply w-[14px] h-[14px];
+  }
+}
+
+.dropdown__item--danger {
+  .dropdown__link,
+  .dropdown__link-icon {
+    @apply text-red-500;
+  }
+}
+
+.dropdown__item--selected {
+  .dropdown__link {
+    @apply bg-gray-600 text-gray-300;
+  }
+}

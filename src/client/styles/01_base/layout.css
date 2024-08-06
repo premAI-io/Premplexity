@@ -1,0 +1,51 @@
+html,
+body,
+#page {
+  @apply h-full;
+}
+
+body {
+  @apply bg-gray-800 text-gray-300;
+  font-family: "Space Grotesk";
+  --gradient--primary: linear-gradient(97deg, #7F96FF -3.51%, #F58E8E 109.45%);
+}
+
+.container {
+  @apply mx-auto;
+}
+
+.desktop-container {
+  @apply h-full w-full hidden md:flex items-start;
+}
+
+.mobile-container {
+  @apply h-full w-full block md:hidden;
+}
+
+.flex-container {
+  @apply flex items-center gap-x-4;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+*[data-tooltip-text]:after {
+  content: attr(data-tooltip-text);
+  position: fixed;
+  @apply bg-gray-800 text-white text-xs px-2 py-1 rounded-lg max-w-[300px] pointer-events-none;
+  --translate-y: calc(-100% - 8px);
+  transform: translate(-50%, var(--translate-y));
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0s;
+  transition-delay: 0s;
+}
+
+*[data-tooltip-text]:hover:after {
+  opacity: 1;
+  transition: opacity 0.3s;
+  transition-delay: 0.5s;
+  cursor: default;
+  pointer-events: none;
+}

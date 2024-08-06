@@ -1,0 +1,30 @@
+.accordion {
+  @apply relative;
+  &:not(:first-child) {
+    .accordion__content > div {
+      @apply border-b border-b-gray-100;
+    }
+  }
+}
+
+.accordion--open {
+  > .accordion__head .accordion__icon {
+    @apply -scale-y-100;
+  }
+  > .accordion__content {
+    @apply max-h-[600px];
+  }
+}
+
+.accordion__head {
+  @apply cursor-pointer w-full flex items-center justify-between py-3 border-b border-b-gray-100 text-gray-500;
+}
+
+.accordion__icon {
+  transition: transform 0.3s;
+}
+
+.accordion__content {
+  @apply relative overflow-hidden max-h-0;
+  transition: max-height 0.3s;
+}

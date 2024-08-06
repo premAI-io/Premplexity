@@ -1,0 +1,2 @@
+SKIP_TYPECHECK=false npm run build
+npm run xss:scan

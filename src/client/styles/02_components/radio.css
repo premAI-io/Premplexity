@@ -1,0 +1,53 @@
+.radio__container {
+  @apply w-full relative flex items-center;
+}
+
+.radio {
+  @apply absolute invisible;
+
+  &:checked {
+    +.radio__box {
+      @apply border-transparent;
+
+      &::before {
+        @apply scale-100;
+      }
+    }
+  }
+}
+
+.radio__box {
+  @apply w-4 h-4 relative border border-gray-300 rounded-[50%] before:content-[""];
+  transition: border-color 0.4s ease-in-out;
+
+  &::before {
+    @apply absolute w-full h-full top-0 left-0 border-4 border-primary-800 rounded-[50%] scale-0 box-border;
+    transition: transform 0.3s ease-in-out;
+  }
+}
+
+.radio__label {
+  @apply text-sm font-medium text-gray-300 leading-[1] ml-2;
+
+  a {
+    @apply text-primary-800;
+  }
+}
+
+.radio__caption {
+  @apply text-xs text-gray-500 ml-6;
+}
+
+.radio__wrap--error {
+  .radio__box {
+    @apply border-red-600;
+  }
+
+  .radio__caption {
+    @apply text-red-600;
+  }
+}
+
+.radio__wrap--disabled {
+  @apply opacity-40 pointer-events-none;
+}

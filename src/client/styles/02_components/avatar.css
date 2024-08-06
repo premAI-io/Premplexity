@@ -1,0 +1,40 @@
+.avatar {
+  @apply inline-flex items-center;
+}
+
+.avatar__icon {
+  @apply w-8 min-w-8 h-8 rounded-[50%] flex items-center justify-center bg-gray-100 text-gray-700 text-xs leading-[1] font-medium mr-3;
+}
+
+.avatar__content {
+  @apply text-base font-medium whitespace-nowrap;
+}
+
+/* Variants */
+.avatar--info {
+  .avatar__icon {
+    @apply bg-primary-100 text-primary-800;
+  }
+}
+
+.avatar--indigo {
+  .avatar__icon {
+    @apply bg-indigo-100 text-indigo-800;
+  }
+}
+
+/* Sizes */
+.avatar--sm {
+  .avatar__icon {
+    @apply w-6 h-6 text-[10px];
+  }
+  .avatar__content {
+    @apply text-xs;
+  }
+}
+
+.avatar--lg {
+  .avatar__icon {
+    @apply w-12 h-12 text-base;
+  }
+}

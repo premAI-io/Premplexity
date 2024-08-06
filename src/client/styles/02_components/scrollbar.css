@@ -1,0 +1,67 @@
+.scrollbar-none,
+.scrollbar-none::-webkit-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar::-webkit-scrollbar,
+.playground-model-card__prompt-content::-webkit-scrollbar,
+.pl-sidebar__list::-webkit-scrollbar,
+.model-card-zoom-content::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+.models-dropdown__menu::-webkit-scrollbar,
+.documentation-modal::-webkit-scrollbar,
+.custom-scroll::-webkit-scrollbar {
+  @apply w-[3px] h-[3px];
+}
+
+.scrollbar::-webkit-scrollbar-corner,
+.playground-model-card__prompt-content::-webkit-scrollbar-corner,
+.pl-sidebar__list::-webkit-scrollbar-corner,
+.model-card-zoom-content::-webkit-scrollbar-corner,
+textarea::-webkit-scrollbar-corner,
+.models-dropdown__menu::-webkit-scrollbar-corner,
+.documentation-modal::-webkit-scrollbar-corner,
+.custom-scroll::-webkit-scrollbar-corner {
+  @apply hidden;
+}
+
+.scrollbar::-webkit-scrollbar-track,
+.playground-model-card__prompt-content::-webkit-scrollbar-track,
+.pl-sidebar__list::-webkit-scrollbar-track,
+.model-card-zoom-content::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-track,
+.models-dropdown__menu::-webkit-scrollbar-track,
+.documentation-modal::-webkit-scrollbar-track,
+.custom-scroll::-webkit-scrollbar-track {
+  @apply rounded-md;
+  background-color: rgba(237, 237, 237, 0.1);
+  max-width: 60% !important;
+}
+
+.scrollbar::-webkit-scrollbar-thumb,
+.playground-model-card__prompt-content::-webkit-scrollbar-thumb,
+.pl-sidebar__list::-webkit-scrollbar-thumb,
+.model-card-zoom-content::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb,
+.models-dropdown__menu::-webkit-scrollbar-thumb,
+.documentation-modal::-webkit-scrollbar-thumb,
+.custom-scroll::-webkit-scrollbar-thumb {
+  @apply rounded-md;
+  background: var(--gradient--primary);
+}
+
+.scrollbar::-webkit-scrollbar-corner
+  .playground-model-card__prompt-content::-webkit-scrollbar-corner
+  .pl-sidebar__list::-webkit-scrollbar-corner,
+.model-card-zoom-content::-webkit-scrollbar-corner,
+textarea::-webkit-scrollbar-corner,
+.models-dropdown__menu::-webkit-scrollbar-corner,
+.documentation-modal::-webkit-scrollbar-corner,
+.custom-scroll::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}

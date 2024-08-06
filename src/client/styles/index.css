@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "./01_base/layout.css";
+@import "./01_base/error-page.css";
+
+@import "./02_components/icon.css";
+@import "./02_components/button.css";
+@import "./02_components/input.css";
+@import "./02_components/checkbox.css";
+@import "./02_components/radio.css";
+@import "./02_components/select.css";
+@import "./02_components/textarea.css";
+@import "./02_components/file-input.css";
+@import "./02_components/alert.css";
+@import "./02_components/accordion.css";
+@import "./02_components/dropdown.css";
+@import "./02_components/search-input.css";
+@import "./02_components/filter-drop.css";
+@import "./02_components/badge.css";
+@import "./02_components/breadcrumbs.css";
+@import "./02_components/avatar.css";
+@import "./02_components/status.css";
+@import "./02_components/recaptcha.css";
+@import "./02_components/pagination.css";
+@import "./02_components/tabs.css";
+@import "./02_components/scrollbar.css";
+@import "./02_components/sidebar.css";
+@import "./02_components/table.css";
+@import "./02_components/toggle.css";
+@import "./02_components/tooltip.css";
+@import "./02_components/modal.css";
+@import "./02_components/loader.css";
+@import "./02_components/toast.css";
+@import "./02_components/status-tooltip.css";
+@import "./02_components/files-badge.css";
+@import "./02_components/mobile-navbar.css";
+@import "./02_components/thread-page.css";
+@import "./02_components/input-prompt.css";

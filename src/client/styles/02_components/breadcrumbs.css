@@ -1,0 +1,29 @@
+.breadcrumbs {
+  @apply flex items-center text-gray-700;
+}
+
+.breadcrumbs__icon {
+  @apply mr-[10px];
+  svg {
+    @apply w-3 h-3;
+  }
+}
+
+.breadcrumbs__items {
+  @apply flex items-center gap-x-2;
+}
+
+.breadcrumbs__item {
+  @apply flex items-center gap-x-2;
+}
+
+.breadcrumbs__link {
+  @apply text-sm font-medium;
+}
+
+.breadcrumbs__separator {
+  @apply flex text-gray-400;
+  svg {
+    @apply w-3 h-3;
+  }
+}
