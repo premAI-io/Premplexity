@@ -11,6 +11,10 @@ runs:
         cache: "npm"
         cache-dependency-path: "package-lock.json"
 
+    - name: Copy .env file
+      shell: bash
+      run: cp .env-sample .env
+
     - name: Install npm dependencies
       run: npm install
       shell: bash
