@@ -64,11 +64,16 @@ export default class PremAI {
     }
   }
 
-  getAvailableModels = async () => {
-    return (await this.client.models.list()).filter(({ deprecated, name }) => !deprecated && name !== "Autopilot").map(({ name }) => ({
+  getAvailableModels = async (selected?: string) => {
+    return (
+      await this.client.models.list()
+    ).filter(({ deprecated, name, model_type }) => (
+      !deprecated && name !== "Autopilot" &&
+      model_type === "text2text"
+    )).map(({ name }) => ({
       label: name,
       value: name,
-      selected: name === this.defaultChatModel
+      selected: selected ? name === selected : name === this.defaultChatModel
     }))
   }
 

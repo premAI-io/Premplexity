@@ -57,6 +57,9 @@ export type IconName =
   | "brain"
   | "globe"
   | "initial-chat-icon"
+  | "arrow-up"
+  | "history"
+  | "edit"
 export type IconProps = Omit<JSX.HtmlTag, "children"> & {
   class?: string
   name: IconName

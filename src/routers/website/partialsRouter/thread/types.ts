@@ -1,3 +1,3 @@
 export enum ROUTE {
-  DELETE_MODAL = "/delete-modal/:id",
+  DELETE_MODAL = "/:targetThreadId/delete-modal",
 }

@@ -9,6 +9,8 @@ import { BUTTON_DEBOUNCE } from "./modules/form"
 import { initTooltips } from "src/client/scripts/modules/tooltip"
 import { ToastType, createToast } from "src/client/scripts/modules/toast"
 import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
+import { onInputPromptInput, onInputPromptKeydown, onPromptSubmit } from "src/client/scripts/modules/input-prompt"
+import { handleThreadSSEMessage } from "src/client/scripts/modules/threadCompletion"
 
 type OnSelectSearchItemClickOptions = {
   id: string
@@ -63,6 +65,12 @@ declare global {
     validateJSON: (event: HashChangeEvent, form: HTMLFormElement) => void
     // toast
     showToast: (message: string, type: ToastType) => void
+    // input prompt
+    onInputPromptInput: (event: InputEvent) => void
+    onInputPromptKeydown: (event: KeyboardEvent) => void
+    onPromptSubmit: () => void
+    // sidebar
+    onSidebarScroll: (event: Event) => void
   }
   interface HTMLInputElement {
     hasFormListener?: boolean
@@ -97,6 +105,26 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("htmx:afterSwap", () => {
     initTextEllipsis()
     initTooltips()
+
+    const sidebar = document.getElementById("sidebar")?.querySelector(".sidebar__body")
+    if (sidebar) {
+      const scrollPosition = localStorage.getItem("sidebarScrollPosition")
+      if (scrollPosition) {
+        sidebar.scrollTop = parseInt(scrollPosition)
+
+        const activeThread = document.querySelector(".sidebar__body__item.active")
+        // check if active thread is visible
+        if (activeThread) {
+          const sidebarRect = sidebar.getBoundingClientRect()
+          const activeThreadRect = activeThread.getBoundingClientRect()
+          if (activeThreadRect.top < sidebarRect.top || activeThreadRect.bottom > sidebarRect.bottom) {
+            activeThread.scrollIntoView()
+          }
+        } else {
+          sidebar.scrollTo(0, 0)
+        }
+      }
+    }
   })
 
   document.body.addEventListener("showSuccessToast", (event) => {
@@ -152,7 +180,20 @@ window.addEventListener("DOMContentLoaded", () => {
   })
 
   window.initForms()
+  openUserSSERequest()
 })
+
+const openUserSSERequest = () => {
+  const endpoint = "/actions/user/openSSE"
+  const eventSource = new EventSource(endpoint)
+  eventSource.onmessage = (event) => {
+    const data = JSON.parse(event.data)
+    if (data.threadId) {
+      handleThreadSSEMessage(data)
+    }
+  }
+}
+
 
 window.addEventListener("popstate", () => {
   setTimeout(() => {
@@ -432,3 +473,16 @@ window.recaptcha = recaptcha
 
 // toast
 window.showToast = createToast
+
+// input prompt
+window.onInputPromptInput = onInputPromptInput
+window.onInputPromptKeydown = onInputPromptKeydown
+window.onPromptSubmit = onPromptSubmit
+
+// sidebar
+window.onSidebarScroll = (event) => {
+  // save scroll position in local storage
+  const sidebar = event.target as HTMLElement
+  const scrollPosition = sidebar.scrollTop
+  localStorage.setItem("sidebarScrollPosition", scrollPosition.toString())
+}

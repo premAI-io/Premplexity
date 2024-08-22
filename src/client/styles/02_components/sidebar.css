@@ -1,5 +1,6 @@
 .sidebar {
-  @apply min-w-64 max-w-64 w-64 h-full flex flex-col justify-between bg-gray-900 border-r border-r-gray-700 p-4 z-50;
+  @apply min-w-64 max-w-64 w-64 h-full flex flex-col justify-between bg-gray-900 border-r border-r-gray-700;
+  padding: 16px 16px 8px 8px;
 }
 
 .sidebar__head {
@@ -7,7 +8,7 @@
 }
 
 .sidebar__body {
-  @apply flex-1 mt-2 flex flex-col gap-y-2
+  @apply flex-1 mt-2 flex flex-col gap-y-2 overflow-y-auto scrollbar pr-1
 }
 
 .sidebar__body__item {

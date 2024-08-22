@@ -22,7 +22,8 @@ export type Image = {
   title: string,
   link: string,
   thumbnail: string,
-  image: string
+  image: string,
+  order: number
 }
 
 export type RelatedSearch = {
@@ -38,8 +39,6 @@ export default class SerpAPI {
     configs: Configs
   ) {
     this.#apiKey = configs.env.SERPAPI_KEY
-
-    // this.search({ query: "come si chiama il presidente degli stati uniti", engine: WEB_SEARCH_ENGINE.GOOGLE_NEWS })
   }
 
   private _parseGoogle(data: BaseResponse, max_results?: number): SearchResults {
@@ -50,7 +49,7 @@ export default class SerpAPI {
         }
 
         acc.push({
-          order: i,
+          order: r.position as unknown as number,
           title: r.title,
           link: r.link,
           snippet: r.snippet,
@@ -67,7 +66,8 @@ export default class SerpAPI {
           title: r.title,
           link: r.link,
           thumbnail: r.thumbnail,
-          image: r.original
+          image: r.original,
+          order: r.position as unknown as number
         })
         return acc
       }, []) || [],
@@ -108,7 +108,8 @@ export default class SerpAPI {
           title: r.title,
           link: r.link,
           thumbnail: r.thumbnail,
-          image: r.image
+          image: r.image,
+          order: r.position as unknown as number
         })
         return acc
       }, []) || [],
@@ -125,8 +126,6 @@ export default class SerpAPI {
   }
 
   private _parseGoogleNews(data: BaseResponse, max_results?: number): SearchResults {
-    console.dir(data, { depth: null })
-
     const out: SearchResults = {
       pages: data.organic_results?.reduce((acc: Page[], r: Record<string, string>, i: number) => {
         if (max_results && i >= max_results) {
@@ -151,7 +150,8 @@ export default class SerpAPI {
           title: r.title,
           link: r.link,
           thumbnail: r.thumbnail,
-          image: r.image
+          image: r.image,
+          order: r.order as unknown as number
         })
         return acc
       }, []) || [],
@@ -167,6 +167,7 @@ export default class SerpAPI {
     return out
 
   }
+
   async search({ query, engine, max_results }: { query: string, engine: WEB_SEARCH_ENGINE, max_results?: number }): Promise<SearchResults> {
     let serpAPIEngine
 
@@ -212,7 +213,7 @@ export default class SerpAPI {
     const data = await getJson({
       api_key: this.#apiKey,
       engine: serpAPIEngine,
-      q: query,
+      q: query
     })
 
     switch (engine) {

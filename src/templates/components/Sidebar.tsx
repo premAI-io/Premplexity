@@ -8,14 +8,20 @@ import { ThreadListItem } from "$templates/views/NewThreadView"
 type Props = {
   threadsList: ThreadListItem[]
   activeThreadId?: number
+  swapOOB?: string
 }
 
 const Sidebar = ({
   threadsList,
-  activeThreadId
+  activeThreadId,
+  swapOOB
 }: Props) => {
   return (
-    <div id="sidebar" class="sidebar">
+    <div
+      id="sidebar"
+      class="sidebar"
+      {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
+    >
       <div class={"sidebar__head"}>
         <a class={"flex items-center gap-2 text-white"} href="/" hx-boost="true">
           <Logo />
@@ -24,11 +30,11 @@ const Sidebar = ({
           </div>
         </a>
         <div class={"flex items-center gap-2"}>
-          <Icon name="book" viewBox={"0 0 16 14"} />
+          <Icon name="history" viewBox={"0 0 16 14"} />
           <div>History</div>
         </div>
       </div>
-      <div class={"sidebar__body"}>
+      <div class={"sidebar__body"} onscroll="onSidebarScroll(event)">
         {threadsList.length ? (
           threadsList.map(({ time, threads }) => (
             <>
@@ -52,7 +58,7 @@ const Sidebar = ({
                       title: "Delete",
                       icon: "trash",
                       type: "danger",
-                      href: getPartialPath("thread", "DELETE_MODAL", { id: chat.id }),
+                      href: getPartialPath("thread", "DELETE_MODAL", { targetThreadId: chat.id }),
                       "hx-target": "#modal",
                       "hx-swap": "innerHTML",
                       "hx-boost": "true",

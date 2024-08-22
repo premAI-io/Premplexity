@@ -7,10 +7,11 @@ export const schemas = {
       type: "object",
       properties: {
         model: { type: "string" },
-        source: { type: "string" },
-        message: { type: "string" }
+        searchEngine: { type: "string" },
+        message: { type: "string" },
+        inputPrompt: { type: "string" }
       },
-      required: ["model", "source", "message"],
+      required: ["model", "searchEngine", "inputPrompt"],
       additionalProperties: true
     }
   } as const satisfies FastifySchema,
@@ -18,10 +19,31 @@ export const schemas = {
     params: {
       type: "object",
       properties: {
-        id: { type: "number" }
+        targetThreadId: { type: "number" }
       },
-      required: ["id"],
+      required: ["targetThreadId"],
       additionalProperties: false
     }
-  } as const satisfies FastifySchema
+  } as const satisfies FastifySchema,
+  [ROUTE.SEND_MESSAGE]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" }
+      },
+      required: ["targetThreadId"],
+      additionalProperties: false
+    },
+    body: {
+      type: "object",
+      properties: {
+        model: { type: "string" },
+        searchEngine: { type: "string" },
+        message: { type: "string" },
+        inputPrompt: { type: "string" }
+      },
+      required: ["model", "searchEngine", "inputPrompt"],
+      additionalProperties: true
+    }
+  } as const satisfies FastifySchema,
 }

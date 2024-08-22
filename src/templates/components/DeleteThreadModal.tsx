@@ -22,7 +22,7 @@ const DeleteThreadModal = ({
       footer={<div class="flex justify-end gap-4 mt-4">
         <form
           method="post"
-          action={getActionPath("thread", "DELETE", { id: threadId })}
+          action={getActionPath("thread", "DELETE", { targetThreadId: threadId })}
           {...{
             ["hx-on::after-request"]: "closeModal('user-block-modal')"
           }}

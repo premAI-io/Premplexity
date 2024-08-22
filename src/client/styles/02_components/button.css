@@ -9,6 +9,7 @@
 
 /* Themes */
 .btn--primary {
+  @apply border-none text-white;
   background: var(--gradient--primary);
 }
 

@@ -25,28 +25,25 @@ export type EndCallbackData = {
   followUpQuestions?: string[]
 }
 
+export type SearchCallbackParams = {
+  type: "searchSources"
+  data: SearchResults
+} | {
+  type: "improvedQuery"
+  data: string
+} | {
+  type: "completionChunk"
+  data: string
+} | {
+  type: "followUpQuestions"
+  data: string[]
+} | {
+  type: "end"
+  data: EndCallbackData
+}
+
 export type SearchCallback = (
-  params:
-    | {
-      type: "searchSources"
-      data: SearchResults
-    }
-    | {
-      type: "improvedQuery"
-      data: string
-    }
-    | {
-      type: "completionChunk"
-      data: string
-    }
-    | {
-      type: "followUpQuestions"
-      data: string[]
-    }
-    | {
-      type: "end"
-      data: EndCallbackData
-    }
+  params: SearchCallbackParams
 ) => void
 
 export type AssistantHistoryMessage = {
@@ -119,6 +116,7 @@ You MUST:
 - Provide answers based on the most recent information available.
 - Summarize content accurately without altering its meaning.
 - Use clear and straightforward language.
+- Use the same language as the user.
 - Do not mention the search engine or the source links
 - At the end of each sentence, only if a source is used, provide a reference to the source. Use the following format: <a href={sourceLink} target="_blank" class="source">{number in 'order' prop of source}</a>
 
@@ -327,17 +325,34 @@ ${params.context}
       })
 
       // Save search pages as message sources
-      await this.threadMessageSourcesService.insert(
-        searchSources.pages.map((page) => ({
-          threadMessageId: message.id,
-          type: SOURCE_TYPE.WEB_PAGE,
-          order: page.order,
-          title: page.title,
-          link: page.link,
-          snippet: page.snippet,
-          favicon: page.favicon,
-        }))
-      )
+      if (searchSources.pages.length) {
+        await this.threadMessageSourcesService.insert(
+          searchSources.pages.map((page) => ({
+            threadMessageId: message.id,
+            type: SOURCE_TYPE.WEB_PAGE,
+            order: page.order,
+            title: page.title,
+            link: page.link,
+            snippet: page.snippet,
+            favicon: page.favicon,
+          }))
+        )
+      }
+
+      // Save search images as message sources
+      if (searchSources.images.length) {
+        await this.threadMessageSourcesService.insert(
+          searchSources.images.map((page) => ({
+            threadMessageId: message.id,
+            type: SOURCE_TYPE.IMAGE,
+            order: page.order,
+            title: page.title,
+            link: page.link,
+            image: page.image,
+            thumbnail: page.thumbnail
+          }))
+        )
+      }
 
       if (params.cb) {
         params?.cb({
@@ -384,7 +399,7 @@ ${params.context}
     }
 
     if (error) {
-      out.error = error
+      out.error = error.toString()
     } else {
       let completion = ""
 
@@ -396,7 +411,7 @@ ${params.context}
           if (params.cb) {
             params.cb({
               type: "completionChunk",
-              data,
+              data
             })
           }
         }
@@ -445,7 +460,7 @@ ${params.context}
 
     await this.threadMessagesService.update(message.id, {
       assistantResponse: out.content,
-      assistantError: out.error,
+      assistantError: out.error?.toString(),
       assistantTimestamp: new Date().toISOString(),
     })
 

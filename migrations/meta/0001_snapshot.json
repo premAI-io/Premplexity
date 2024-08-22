@@ -1,0 +1,451 @@
+{
+  "id": "bde8de75-7292-4a89-83e0-939298a52031",
+  "prevId": "9f1fc8fb-2d1d-4a48-ab07-3697a746e496",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Sessions": {
+      "name": "Sessions",
+      "schema": "",
+      "columns": {
+        "sid": {
+          "name": "sid",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cookie": {
+          "name": "cookie",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "callerUserId": {
+          "name": "callerUserId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Sessions_callerUserId_Users_id_fk": {
+          "name": "Sessions_callerUserId_Users_id_fk",
+          "tableFrom": "Sessions",
+          "tableTo": "Users",
+          "columnsFrom": [
+            "callerUserId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.ThreadMessageSources": {
+      "name": "ThreadMessageSources",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "threadMessageId": {
+          "name": "threadMessageId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "threadMessageSourceTypeEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "link": {
+          "name": "link",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "snippet": {
+          "name": "snippet",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "favicon": {
+          "name": "favicon",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail": {
+          "name": "thumbnail",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ThreadMessageSources_threadMessageId_ThreadMessages_id_fk": {
+          "name": "ThreadMessageSources_threadMessageId_ThreadMessages_id_fk",
+          "tableFrom": "ThreadMessageSources",
+          "tableTo": "ThreadMessages",
+          "columnsFrom": [
+            "threadMessageId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.ThreadMessages": {
+      "name": "ThreadMessages",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "threadId": {
+          "name": "threadId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sourceType": {
+          "name": "sourceType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "webSearchEngineType": {
+          "name": "webSearchEngineType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order": {
+          "name": "order",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userQuery": {
+          "name": "userQuery",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userImprovedQuery": {
+          "name": "userImprovedQuery",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userTimestamp": {
+          "name": "userTimestamp",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "assistantResponse": {
+          "name": "assistantResponse",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assistantError": {
+          "name": "assistantError",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assistantTimestamp": {
+          "name": "assistantTimestamp",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assistantModel": {
+          "name": "assistantModel",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "followUpQuestions": {
+          "name": "followUpQuestions",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ThreadMessages_threadId_Threads_id_fk": {
+          "name": "ThreadMessages_threadId_Threads_id_fk",
+          "tableFrom": "ThreadMessages",
+          "tableTo": "Threads",
+          "columnsFrom": [
+            "threadId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.ThreadShareLinkMessages": {
+      "name": "ThreadShareLinkMessages",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "threadMessageId": {
+          "name": "threadMessageId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "threadShareLinkId": {
+          "name": "threadShareLinkId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ThreadShareLinkMessages_threadMessageId_ThreadMessages_id_fk": {
+          "name": "ThreadShareLinkMessages_threadMessageId_ThreadMessages_id_fk",
+          "tableFrom": "ThreadShareLinkMessages",
+          "tableTo": "ThreadMessages",
+          "columnsFrom": [
+            "threadMessageId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "ThreadShareLinkMessages_threadShareLinkId_ThreadShareLinks_id_fk": {
+          "name": "ThreadShareLinkMessages_threadShareLinkId_ThreadShareLinks_id_fk",
+          "tableFrom": "ThreadShareLinkMessages",
+          "tableTo": "ThreadShareLinks",
+          "columnsFrom": [
+            "threadShareLinkId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.ThreadShareLinks": {
+      "name": "ThreadShareLinks",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "creationTimestamp": {
+          "name": "creationTimestamp",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "threadId": {
+          "name": "threadId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ThreadShareLinks_threadId_Threads_id_fk": {
+          "name": "ThreadShareLinks_threadId_Threads_id_fk",
+          "tableFrom": "ThreadShareLinks",
+          "tableTo": "Threads",
+          "columnsFrom": [
+            "threadId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Threads": {
+      "name": "Threads",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "creationTimestamp": {
+          "name": "creationTimestamp",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "deleted": {
+          "name": "deleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Threads_userId_Users_id_fk": {
+          "name": "Threads_userId_Users_id_fk",
+          "tableFrom": "Threads",
+          "tableTo": "Users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Users": {
+      "name": "Users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "creationTimestamp": {
+          "name": "creationTimestamp",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {
+    "public.threadMessageSourceTypeEnum": {
+      "name": "threadMessageSourceTypeEnum",
+      "schema": "public",
+      "values": [
+        "WEB_PAGE",
+        "IMAGE"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

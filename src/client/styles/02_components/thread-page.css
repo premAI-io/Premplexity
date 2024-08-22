@@ -7,3 +7,23 @@
   text-gray-300 text-base font-bold text-left
   cursor-pointer
 }
+
+#thread-text {
+  @apply w-[calc(100%-0.5rem)] ml-2 pl-4 border-l border-gray-600 text-left;
+}
+
+.thread_sources_grid {
+  @apply w-full grid grid-cols-5 gap-2
+}
+
+.thread_images_grid {
+  @apply w-full grid grid-cols-6 gap-4
+}
+
+.image-card-container {
+  @apply w-full h-[75px] border border-gray-600 rounded-[4px];
+}
+
+#thread-text .source {
+  @apply source-card__id !inline-flex mx-0.5;
+}

@@ -16,7 +16,7 @@ textarea::-webkit-scrollbar,
 .models-dropdown__menu::-webkit-scrollbar,
 .documentation-modal::-webkit-scrollbar,
 .custom-scroll::-webkit-scrollbar {
-  @apply w-[3px] h-[3px];
+  @apply w-[2px] h-[3px];
 }
 
 .scrollbar::-webkit-scrollbar-corner,

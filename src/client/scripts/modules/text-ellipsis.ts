@@ -48,6 +48,40 @@ const addTooltip = (element: HTMLElement): void => {
   }
 }
 
+const addTooltipToSourcesInText = (element: HTMLLinkElement): void => {
+  element.setAttribute("data-tooltip-text", element.href)
+
+    element.addEventListener("mouseover", () => {
+      const oldStyle = document.getElementById("tooltip-style")
+      if (oldStyle) {
+        oldStyle.remove()
+      }
+
+      const style = document.createElement("style")
+      style.id = "tooltip-style"
+
+      const elementRect = element.getBoundingClientRect()
+      const elementWidth = elementRect.width
+      const elementTop = elementRect.top
+      const elementLeft = elementRect.left
+
+      style.innerHTML = `
+        *[data-tooltip-text]:after {
+          top: ${elementTop}px;
+          left: ${elementLeft + elementWidth / 2}px;
+        }
+      `
+      document.head.appendChild(style)
+    })
+
+    element.addEventListener("mouseout", () => {
+      const oldStyle = document.getElementById("tooltip-style")
+      if (oldStyle) {
+        oldStyle.remove()
+      }
+    })
+}
+
 export const initTextEllipsis = (): void => {
   const parser = new DOMParser()
 
@@ -70,5 +104,10 @@ export const initTextEllipsis = (): void => {
 
   elements.forEach((element) => {
     addTooltip(element as HTMLElement)
+  })
+
+  const sourcesInText = Array.from(document.querySelectorAll("#thread-text .source"))
+  sourcesInText.forEach((element) => {
+    addTooltipToSourcesInText(element as HTMLLinkElement)
   })
 }

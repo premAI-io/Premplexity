@@ -11,10 +11,10 @@ export const router = createRouter((server) => {
   }, async (req, res) => {
     const { id } = req.params
 
-    const component = DeleteThreadModal({
-      threadId: id
-    })
-
-    return res.view(component)
+    return res.view(
+      <DeleteThreadModal
+        threadId={id}
+      />
+    )
   })
 })
