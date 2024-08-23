@@ -12,14 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: echo "$PREMPLEXITY_ENV" > .env
+      - name: Setup and Install
+        uses: ./.github/actions/setup-and-install
+
+      - name: Add PREMPLEXITY_ENV to .env
+        run: echo "$PREMPLEXITY_ENV" >> .env
         shell: bash
         env:
           PREMPLEXITY_ENV: ${{ secrets.PREMPLEXITY_ENV }}
-
-      - name: Setup and Install
-        uses: ./.github/actions/setup-and-install
 
       - name: Build the app
         run: SKIP_TYPECHECK=false npm run build
@@ -30,16 +30,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: echo "$PREMPLEXITY_ENV" > .env
+      - name: Setup and Install
+        uses: ./.github/actions/setup-and-install
+
+      - name: Add PREMPLEXITY_ENV to .env
+        run: echo "$PREMPLEXITY_ENV" >> .env
         shell: bash
         env:
           PREMPLEXITY_ENV: ${{ secrets.PREMPLEXITY_ENV }}
 
-      - name: Setup and Install
-        uses: ./.github/actions/setup-and-install
-
-      - name: Setup and Install
+      - name: Setup Database
         uses: ./.github/actions/db-setup
 
       - name: Run migrations
@@ -55,14 +55,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: echo "$PREMPLEXITY_ENV" > .env
+      - name: Setup and Install
+        uses: ./.github/actions/setup-and-install
+
+      - name: Add PREMPLEXITY_ENV to .env
+        run: echo "$PREMPLEXITY_ENV" >> .env
         shell: bash
         env:
           PREMPLEXITY_ENV: ${{ secrets.PREMPLEXITY_ENV }}
-
-      - name: Setup and Install
-        uses: ./.github/actions/setup-and-install
 
       - name: Setup database
         uses: ./.github/actions/db-setup
@@ -86,14 +86,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: echo "$PREMPLEXITY_ENV" > .env
+      - name: Setup and Install
+        uses: ./.github/actions/setup-and-install
+
+      - name: Add PREMPLEXITY_ENV to .env
+        run: echo "$PREMPLEXITY_ENV" >> .env
         shell: bash
         env:
           PREMPLEXITY_ENV: ${{ secrets.PREMPLEXITY_ENV }}
-
-      - name: Setup and Install
-        uses: ./.github/actions/setup-and-install
 
       - name: Run XSS scan
         run: npm run xss:scan
