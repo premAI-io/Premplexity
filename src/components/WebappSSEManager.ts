@@ -1,21 +1,17 @@
-import { container, inject, singleton } from "tsyringe"
+import { container, singleton } from "tsyringe"
 import {
   createSSEManager,
   SSEManager,
   FastifyHttpAdapter,
-  PostgresEventsAdapter
+  EmitterEventsAdapter
 } from "@soluzioni-futura/sse-manager"
-import PostgresDB from "./PostgresDB"
 
 @singleton()
 export default class WebappSSEManager {
   _init: Promise<void>
   _SSEManager?: SSEManager
 
-  constructor(
-    @inject(PostgresDB.token)
-    postgresDB: PostgresDB
-  ) {
+  constructor() {
     this._init = new Promise((resolve, reject) => {
       if (this._SSEManager) {
         resolve()
@@ -23,7 +19,7 @@ export default class WebappSSEManager {
       }
 
       createSSEManager({
-        eventsAdapter: new PostgresEventsAdapter(postgresDB.sql),
+        eventsAdapter: new EmitterEventsAdapter(),
         httpAdapter: new FastifyHttpAdapter()
       })
         .then(data => {
@@ -45,6 +41,9 @@ export default class WebappSSEManager {
   init = () => {
     return this._init
   }
+
+  static getUserRoomId = (userId: number | string): string => `U-${userId}`
+  static getGlobalRoomId = (): string => "ALL"
 
   static token = Symbol("WebappSSEManager")
 }
