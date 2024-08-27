@@ -404,6 +404,12 @@ ${params.context}
       let completion = ""
 
       for await (const chunk of data!) {
+        if (!chunk.choices.length) {
+          out.error = "Error: empty completion chunk"
+          out.content = null
+          break
+        }
+
         const data = chunk.choices[0].delta.content
         if (data) {
           completion += data

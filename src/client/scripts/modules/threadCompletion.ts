@@ -2,6 +2,7 @@ import { SearchCallbackParams } from "$components/ThreadCore"
 import { parseAssistantResponse } from "$utils/format"
 import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
 import { createImageCard, createSourceCard, createViewMoreCard } from "src/client/scripts/modules/threadTemplates"
+import initSourcesPopup from "src/client/scripts/modules/source-popup"
 
 export type ThreadSSEMessage = {
   threadId: number,
@@ -62,6 +63,7 @@ export const handleThreadSSEMessage = (
           sourcesContainer.insertAdjacentHTML("beforeend", sourceCard)
         })
       }
+      initSourcesPopup()
 
       // ----------------- IMAGES -----------------
       const mainImagesContainer = threadContainer.querySelector("#thread-images-container[data-current-message]")
@@ -80,6 +82,7 @@ export const handleThreadSSEMessage = (
         }
         imagesContainer.classList.remove("!hidden")
       } else {
+        imagesContainer.classList.add("!hidden")
         break
       }
 

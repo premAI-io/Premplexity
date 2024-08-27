@@ -27,7 +27,7 @@ export const onInputPromptKeydown = (event: KeyboardEvent) => {
     return
   }
   if (event.key === "Enter") {
-    if (event.shiftKey) {
+    if (!event.shiftKey) {
       if (inputPrompt.value.trim().length) {
         htmx.trigger(form, "submit", {})
         inputPrompt.blur()
