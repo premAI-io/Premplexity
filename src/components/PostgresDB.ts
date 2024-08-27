@@ -16,6 +16,11 @@ export default class PostgresDB {
       database: configs.env.POSTGRES_DB,
       username: configs.env.POSTGRES_USER,
       password: configs.env.POSTGRES_PASSWORD,
+      ...configs.env.ENVIRONMENT !== "local" ? {
+        ssl: {
+          rejectUnauthorized: false
+        },
+      } : {},
       transform: {
         value: (value) => {
           if (value instanceof Date) {
