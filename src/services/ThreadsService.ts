@@ -81,9 +81,10 @@ export default class ThreadsService extends BaseService<typeof threadsTable, Thr
 
       const mapping = {
         [THREAD_MESSAGE_STATUS.COMPLETED]: THREAD_STATUS.READY,
-        [THREAD_MESSAGE_STATUS.FAILED]: THREAD_STATUS.FAILED,
+        [THREAD_MESSAGE_STATUS.FAILED]: THREAD_STATUS.READY,
         [THREAD_MESSAGE_STATUS.PENDING]: THREAD_STATUS.PROCESSING
       }
+
 
       return {
         ...thread,

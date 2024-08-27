@@ -29,3 +29,35 @@
 .source-card__id {
   @apply w-[15px] h-[15px] rounded-full bg-gray-600 text-gray-200 flex items-center justify-center text-[10px];
 }
+
+.source-popup__container {
+  @apply w-[237px] h-[167px] fixed hidden z-[50]
+  bg-gray-800 border border-gray-600 rounded-[4px]
+  p-2 flex-col gap-[7px];
+}
+
+.source-popup__container.show {
+  @apply !flex
+}
+
+.source-popup__title {
+  @apply text-gray-200 text-xs text-left font-semibold;
+  line-height: 150%;
+  letter-spacing: -0.12px;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.source-popup__snippet {
+  @apply text-gray-300 text-xs text-left;
+  line-height: 150%;
+  letter-spacing: -0.12px;
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

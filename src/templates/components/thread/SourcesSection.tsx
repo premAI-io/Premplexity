@@ -41,21 +41,23 @@ const SourcesSection = ({
         })}>
           {
             sources.length > 5 ?
-            sources.slice(0, 4).map(({ snippet, link, favicon, order }) => (
+            sources.slice(0, 4).map(({ snippet, link, favicon, order, title }) => (
               <SourceCard
                 content={snippet ?? ""}
                 source={link ?? ""}
                 id={order}
                 image={favicon ?? undefined}
+                title={title}
               />
             ))
             :
-            sources.map(({ snippet, link, favicon, order }) => (
+            sources.map(({ snippet, link, favicon, order, title }) => (
               <SourceCard
                 content={snippet ?? ""}
                 source={link ?? ""}
                 id={order}
                 image={favicon ?? undefined}
+                title={title}
               />
             ))
           }

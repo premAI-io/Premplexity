@@ -12,7 +12,6 @@ import WebappSSEManager from "$components/WebappSSEManager"
 import SOURCE_ENGINE_TYPE from "$types/SOURCE_ENGINE_TYPE"
 import UserMessage from "$templates/components/thread/UserMessage"
 import SourcesSection from "$templates/components/thread/SourcesSection"
-import ImagesSection from "$templates/components/thread/ImagesSection"
 import TextSection from "$templates/components/thread/TextSection"
 
 export const routerPrefix = "/thread"
@@ -139,11 +138,6 @@ export const router = createRouter((server) => {
         <SourcesSection
           webSearchEngineType={searchEngine}
           sources={[]}
-          loading={true}
-          isCurrentMessage={true}
-        />
-        <ImagesSection
-          images={[]}
           loading={true}
           isCurrentMessage={true}
         />

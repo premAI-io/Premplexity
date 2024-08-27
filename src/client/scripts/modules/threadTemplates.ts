@@ -4,7 +4,7 @@ import { Page, Image } from "$components/SerpAPI"
 
 export const createSourceCard = (source: Page) => {
   const template = `
-    <div class="source-card__container">
+    <div class="source-card__container cursor-pointer" text-ellipsis-exclude onclick="window.open('${source.link}', '_blank')">
       <div class="source-card__content" safe>
         ${source.snippet}
       </div>
@@ -12,17 +12,42 @@ export const createSourceCard = (source: Page) => {
         <div class="source-card__image">
           <img src="${source.favicon ?? "https://via.placeholder.com/150"}" class="h-full w-full object-center object-cover" />
         </div>
-        <a class="source-card__source" href="${source.link}" data-tooltip-break-word safe target="_blank">
+        <div class="source-card__source" safe>
           ${source.link}
-        </a>
+        </div>
         <div class="source-card__id">
           ${source.order}
         </div>
       </div>
+      ${createSourcePopup(source)}
     </div>
   `
 
   return template
+}
+
+export const createSourcePopup = (source: Page) => {
+  return `
+    <div class="source-popup__container" data-source-popup text-ellipsis-exclude>
+      <div class="flex gap-2 items-center">
+        <div class="source-card__image shrink-0">
+          <img src="${source.favicon ?? "https://via.placeholder.com/150"}" alt="${source.title}" class="h-full w-full object-center object-cover">
+        </div>
+        <div class="flex flex-1 gap-1 items-center">
+          <div class="text-xs text-gray-200 font-semibold truncate max-w-[170px]">
+            ${source.link}
+          </div>
+          <div class="source-card__id shrink-0">1</div>
+        </div>
+      </div>
+      <div class="source-popup__title">
+        ${source.title}
+      </div>
+      <div class="source-popup__snippet">
+        ${source.snippet}
+      </div>
+    </div>
+  `
 }
 
 export const createViewMoreCard = () => {
