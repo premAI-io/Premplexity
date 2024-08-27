@@ -12,8 +12,15 @@ enum WEB_SEARCH_ENGINE {
 
 export default WEB_SEARCH_ENGINE
 
-export const WEB_SEARCH_ENGINE_OPTIONS = (selected?: string) => Object.values(WEB_SEARCH_ENGINE).map((source, index) => ({
-  label: source.split("_").map((word) => word.charAt(0) + word.slice(1).toLowerCase()).join(" "),
-  value: source,
-  selected: selected ? selected === source : index === 0
-}))
+const ENABLED_WEB_SEARCH_ENGINES = [
+  WEB_SEARCH_ENGINE.DUCK_DUCK_GO,
+  WEB_SEARCH_ENGINE.GOOGLE_SEARCH,
+]
+
+export const WEB_SEARCH_ENGINE_OPTIONS = (selected?: string) => Object.values(WEB_SEARCH_ENGINE)
+  .filter((source) => ENABLED_WEB_SEARCH_ENGINES.includes(source))
+  .map((source, index) => ({
+    label: source.split("_").map((word) => word.charAt(0) + word.slice(1).toLowerCase()).join(" "),
+    value: source,
+    selected: selected ? selected === source : index === 0
+  }))

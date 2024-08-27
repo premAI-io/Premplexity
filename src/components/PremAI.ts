@@ -56,10 +56,15 @@ export default class PremAI {
           data: null
         }
       } else {
+        // TODO: Parse error to show a more user-friendly message
         return {
-          error: (err as Error).toString(),
+          error: "Generic error occurred",
           data: null
         }
+        // return {
+        //   error: (err as Error).toString(),
+        //   data: null
+        // }
       }
     }
   }

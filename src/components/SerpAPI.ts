@@ -49,7 +49,7 @@ export default class SerpAPI {
         }
 
         acc.push({
-          order: r.position as unknown as number,
+          order: i + 1,
           title: r.title,
           link: r.link,
           snippet: r.snippet,
@@ -67,7 +67,7 @@ export default class SerpAPI {
           link: r.link,
           thumbnail: r.thumbnail,
           image: r.original,
-          order: r.position as unknown as number
+          order: i + 1
         })
         return acc
       }, []) || [],
@@ -91,7 +91,7 @@ export default class SerpAPI {
         }
 
         acc.push({
-          order: i,
+          order: i + 1,
           title: r.title,
           link: r.link,
           snippet: r.snippet,
@@ -109,7 +109,7 @@ export default class SerpAPI {
           link: r.link,
           thumbnail: r.thumbnail,
           image: r.image,
-          order: r.position as unknown as number
+          order: i + 1
         })
         return acc
       }, []) || [],
