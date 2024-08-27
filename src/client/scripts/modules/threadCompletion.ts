@@ -63,7 +63,7 @@ export const handleThreadSSEMessage = (
           sourcesContainer.insertAdjacentHTML("beforeend", sourceCard)
         })
       }
-      initSourcesPopup()
+      // initSourcesPopup()
 
       // ----------------- IMAGES -----------------
       const mainImagesContainer = threadContainer.querySelector("#thread-images-container[data-current-message]")

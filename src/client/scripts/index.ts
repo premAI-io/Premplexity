@@ -11,7 +11,7 @@ import { ToastType, createToast } from "src/client/scripts/modules/toast"
 import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
 import { onInputPromptInput, onInputPromptKeydown, onPromptSubmit } from "src/client/scripts/modules/input-prompt"
 import { handleThreadSSEMessage } from "src/client/scripts/modules/threadCompletion"
-import initSourcesPopup from "src/client/scripts/modules/source-popup"
+// import initSourcesPopup from "src/client/scripts/modules/source-popup"
 
 type OnSelectSearchItemClickOptions = {
   id: string
@@ -94,7 +94,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let buttonLoadingTimeout: number
   initTooltips()
   initTextEllipsis()
-  initSourcesPopup()
+  // initSourcesPopup()
 
   window.addEventListener("resize", () => {
     initTextEllipsis()
@@ -107,7 +107,7 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("htmx:afterSwap", () => {
     initTextEllipsis()
     initTooltips()
-    initSourcesPopup()
+    // initSourcesPopup()
 
     const sidebar = document.getElementById("sidebar")?.querySelector(".sidebar__body")
     if (sidebar) {
