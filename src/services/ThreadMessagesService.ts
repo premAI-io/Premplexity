@@ -7,9 +7,10 @@ import DrizzleDB from "$components/DrizzleDB"
 import Configs from "$components/Configs"
 import { inject, container, injectable } from "tsyringe"
 import THREAD_MESSAGE_STATUS from "$types/THREAD_MESSAGE_STATUS"
-import ThreadMessageSourcesService, { ThreadMessageSourcesServiceComplete } from "$services/ThreadMessageSourcesService"
+import ThreadMessageSourcesService, { ImageThreadMessageSourcesServiceComplete, WebPageThreadMessageSourcesServiceComplete } from "$services/ThreadMessageSourcesService"
 import ThreadShareLinkMessagesService from "$services/ThreadShareLinkMessagesService"
 import { inArray } from "drizzle-orm"
+import SOURCE_TYPE from "$types/SOURCE_TYPE"
 
 export type WithStatus<T> = T & ({
   status: THREAD_MESSAGE_STATUS.COMPLETED,
@@ -29,7 +30,10 @@ export type WithStatus<T> = T & ({
 })
 
 export type WithSources<T> = T & {
-  sources: ThreadMessageSourcesServiceComplete[]
+  sources: {
+    images: ImageThreadMessageSourcesServiceComplete[],
+    pages: WebPageThreadMessageSourcesServiceComplete[]
+  }
 }
 
 export type ThreadMessageComplete = WithSources<WithStatus<ThreadMessage>>
@@ -74,7 +78,7 @@ export default class ThreadMessagesService extends BaseService<
         assistantTimestamp = message.assistantTimestamp
       } else if (message.assistantError) {
         status = THREAD_MESSAGE_STATUS.FAILED
-        assistantError = message.assistantError
+        assistantError = message.assistantError.toString()
         assistantTimestamp = message.assistantTimestamp
       } else if (Date.now() - messageTime > this.configs.env.CHAT_MESSAGE_TIMEOUT) {
         status = THREAD_MESSAGE_STATUS.FAILED
@@ -102,7 +106,10 @@ export default class ThreadMessagesService extends BaseService<
 
     return messages.map((message) => ({
       ...message,
-      sources: sources.filter((s) => s.threadMessageId === message.id)
+      sources: {
+        images: sources.filter((s) => s.threadMessageId === message.id && s.type === SOURCE_TYPE.IMAGE) as ImageThreadMessageSourcesServiceComplete[],
+        pages: sources.filter((s) => s.threadMessageId === message.id && s.type === SOURCE_TYPE.WEB_PAGE) as WebPageThreadMessageSourcesServiceComplete[]
+      }
     }))
   }
 

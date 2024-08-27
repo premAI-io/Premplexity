@@ -1,0 +1,31 @@
+.source-card__container {
+  @apply w-full h-[79px] border border-gray-600 rounded-[4px] p-2 flex flex-col justify-center gap-1
+}
+
+.source-card__content {
+  @apply text-gray-300 flex-1 text-[14px];
+  line-height: 150%;
+  letter-spacing: -0.14px;
+  /* clamp 2 lines */
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.source-card__footer {
+  @apply w-full flex justify-center items-center gap-2;
+}
+
+.source-card__image {
+  @apply w-[15px] h-[15px] rounded-full overflow-hidden;
+}
+
+.source-card__source {
+  @apply text-[10px] text-gray-100 truncate flex-1;
+}
+
+.source-card__id {
+  @apply w-[15px] h-[15px] rounded-full bg-gray-600 text-gray-200 flex items-center justify-center text-[10px];
+}

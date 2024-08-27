@@ -1,0 +1,28 @@
+/**************************** SOURCES ****************************/
+
+.loading__sources__container {
+  @apply w-full h-[79px] border border-gray-600 rounded-[4px] p-2 flex flex-col justify-center gap-2
+}
+
+.loading__sources__line {
+  @apply w-full h-[10px] rounded-md animate-pulse;
+  background: linear-gradient(90deg, #525151 0%, #313131 100%);
+}
+
+.loading__sources__footer {
+  @apply w-full flex justify-center items-center gap-2;
+}
+
+.loading__sources__dot {
+  @apply w-[15px] h-[15px] rounded-full bg-gray-600 animate-pulse;
+}
+
+.loading__images__container {
+  @apply image-card-container animate-pulse;
+  background: linear-gradient(69deg, #7A7A7A -14.41%, rgba(94, 94, 94, 0.00) 104.98%);
+}
+
+.loading__text__line {
+  @apply w-full h-[10px] rounded-md animate-pulse;
+  background: linear-gradient(90deg, #525151 0%, #313131 100%);
+}

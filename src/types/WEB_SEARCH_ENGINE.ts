@@ -12,10 +12,8 @@ enum WEB_SEARCH_ENGINE {
 
 export default WEB_SEARCH_ENGINE
 
-export const WEB_SEARCH_ENGINE_OPTIONS = [
-  { label: "All", value: "ALL", selected: true },
-  ...Object.values(WEB_SEARCH_ENGINE).map((source) => ({
-    label: source.split("_").map((word) => word.charAt(0) + word.slice(1).toLowerCase()).join(" "),
-    value: source
-  }))
-]
+export const WEB_SEARCH_ENGINE_OPTIONS = (selected?: string) => Object.values(WEB_SEARCH_ENGINE).map((source, index) => ({
+  label: source.split("_").map((word) => word.charAt(0) + word.slice(1).toLowerCase()).join(" "),
+  value: source,
+  selected: selected ? selected === source : index === 0
+}))

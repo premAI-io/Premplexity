@@ -1,4 +1,5 @@
 export enum ROUTE {
   CREATE = "/create",
-  DELETE = "/delete/:id",
+  DELETE = "/:targetThreadId/delete",
+  SEND_MESSAGE = "/:targetThreadId/sendMessage",
 }

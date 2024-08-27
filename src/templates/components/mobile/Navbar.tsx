@@ -8,7 +8,7 @@ const Navbar = () => {
         <div>Chat</div>
       </div>
       <div class={"mobile-navbar__item"}>
-        <Icon name="book" viewBox={"0 0 16 14"} />
+        <Icon name="history" viewBox={"0 0 16 14"} />
         <div>History</div>
       </div>
     </div>

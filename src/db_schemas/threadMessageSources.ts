@@ -16,13 +16,19 @@ export const threadMessageSources = pgTable(
     id: serial("id").primaryKey(),
     threadMessageId: integer("threadMessageId").references(() => threadMessages.id).notNull(),
     type: threadMessageSourceTypeEnum("type").notNull(),
+
+    // for WEB_PAGE and IMAGE
     order: integer("order").notNull(),
+    link: varchar("link"),
+    title: varchar("title"),
 
     // For WEB_PAGE
-    title: varchar("title"),
-    link: varchar("link"),
     snippet: varchar("snippet"),
-    favicon: varchar("favicon")
+    favicon: varchar("favicon"),
+
+    // TODO for IMAGE
+    thumbnail: varchar("thumbnail"),
+    image: varchar("image")
   }
 )
 

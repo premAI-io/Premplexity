@@ -63,7 +63,8 @@ const actionRoutersConfig: {
 
 type ActionRoutersParams = {
   thread: {
-    DELETE: { id: number }
+    SEND_MESSAGE: { targetThreadId: number }
+    DELETE: { targetThreadId: number }
   }
 }
 
@@ -105,7 +106,7 @@ const partialRoutersConfig: {
 
 type PartialsRoutersParams = {
   thread: {
-    DELETE_MODAL: { id: number }
+    DELETE_MODAL: { targetThreadId: number }
   }
 }
 

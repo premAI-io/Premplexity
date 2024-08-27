@@ -1,13 +1,13 @@
-import { Thread } from "$db_schemas/threads"
 import { SelectOption } from "$templates/components/Select"
 import Sidebar from "$templates/components/Sidebar"
-import ThreadBody from "$templates/components/ThreadBody"
+import ThreadPage from "$templates/components/thread/ThreadPage"
 import MobileNavbar from "$templates/components/mobile/Navbar"
 import { ThreadListItem } from "$templates/views/NewThreadView"
+import { ThreadComplete } from "$services/ThreadsService"
 
 type Props = {
   threadsList: ThreadListItem[]
-  chat: Thread
+  chat: ThreadComplete
   availableModels: SelectOption[]
   availableSources: SelectOption[]
 }
@@ -22,7 +22,7 @@ const ThreadView = ({
     <div id="thread-container" class={"w-full h-full"}>
       <div class="desktop-container">
         <Sidebar threadsList={threadsList} activeThreadId={chat.id} />
-        <ThreadBody availableModels={availableModels} availableSources={availableSources} />
+        <ThreadPage availableModels={availableModels} availableSources={availableSources} thread={chat} />
       </div>
       <div class="mobile-container">
         <MobileNavbar />

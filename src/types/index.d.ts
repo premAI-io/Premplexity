@@ -9,7 +9,6 @@ import {
 import {
   JsonSchemaToTsProvider,
 } from "@fastify/type-provider-json-schema-to-ts"
-import { BaseUser } from "$services/UsersService"
 
 export type GlobalResources = {
   FAVICON_PATH: string,

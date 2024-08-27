@@ -94,8 +94,6 @@ export default class ThreadsService extends BaseService<typeof threadsTable, Thr
 
   createThread = async (options: {
     userId: number,
-    model: string,
-    source: string,
     message: string
   }): Promise<ThreadComplete> => {
     const thread = await this.insert({

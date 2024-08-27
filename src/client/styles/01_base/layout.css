@@ -33,13 +33,18 @@ body {
 *[data-tooltip-text]:after {
   content: attr(data-tooltip-text);
   position: fixed;
-  @apply bg-gray-800 text-white text-xs px-2 py-1 rounded-lg max-w-[300px] pointer-events-none;
+  @apply bg-gray-900 border border-gray-700 text-white text-xs px-2 py-1 rounded-lg max-w-[300px] text-wrap pointer-events-none;
   --translate-y: calc(-100% - 8px);
   transform: translate(-50%, var(--translate-y));
   z-index: 99;
   opacity: 0;
   transition: opacity 0s;
   transition-delay: 0s;
+}
+
+*[data-tooltip-text][data-tooltip-break-word]:after,
+#thread-text .source:after {
+  @apply break-all;
 }
 
 *[data-tooltip-text]:hover:after {

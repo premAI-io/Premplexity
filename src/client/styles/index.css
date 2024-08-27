@@ -40,3 +40,5 @@
 @import "./02_components/mobile-navbar.css";
 @import "./02_components/thread-page.css";
 @import "./02_components/input-prompt.css";
+@import "./02_components/loaders.css";
+@import "./02_components/source-card.css";

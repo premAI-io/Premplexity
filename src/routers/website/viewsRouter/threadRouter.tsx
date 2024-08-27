@@ -20,7 +20,7 @@ export const router: FastifyPluginCallback = (server, _, done) => {
       <NewThreadView
         threadsList={threadsList}
         availableModels={availableModels}
-        availableSources={WEB_SEARCH_ENGINE_OPTIONS}
+        availableSources={WEB_SEARCH_ENGINE_OPTIONS()}
       />, BaseLayout)
   })
 
@@ -29,21 +29,24 @@ export const router: FastifyPluginCallback = (server, _, done) => {
     const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
     const threadsList = await threadsService.getThreadsGroupedByDate(userId)
 
-    const premAI = container.resolve<PremAI>(PremAI.token)
-    const availableModels = await premAI.getAvailableModels()
-
     const currentThread = threadsList.flatMap(({ threads }) => threads).find(({ id }) => id === parseInt(req.params.targetThreadId))
 
     if (!currentThread) {
       return res.redirect("/")
     }
 
+    const currentModel = currentThread.messages[currentThread.messages.length - 1].currentMessage.assistantModel
+    const currentSearchEngine = currentThread.messages[currentThread.messages.length - 1].currentMessage.webSearchEngineType
+
+    const premAI = container.resolve<PremAI>(PremAI.token)
+    const availableModels = await premAI.getAvailableModels(currentModel)
+
     return res.view(
       <ThreadView
         threadsList={threadsList}
         chat={currentThread}
         availableModels={availableModels}
-        availableSources={WEB_SEARCH_ENGINE_OPTIONS}
+        availableSources={WEB_SEARCH_ENGINE_OPTIONS(currentSearchEngine ?? undefined)}
       />, BaseLayout)
   })
 
