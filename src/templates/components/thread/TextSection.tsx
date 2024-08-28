@@ -2,7 +2,7 @@ import { ThreadMessageComplete } from "$services/ThreadMessagesService"
 import CopyButton from "$templates/components/CopyButton"
 import TextLoading from "$templates/components/loaders/TextLoading"
 import PremLogo from "$templates/components/PremLogo"
-import { parseAssistantResponse } from "$utils/format"
+import { parseAssistantResponse } from "$utils/thread"
 import classNames from "classnames"
 
 type Props = {

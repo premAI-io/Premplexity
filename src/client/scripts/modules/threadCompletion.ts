@@ -1,8 +1,7 @@
 import { SearchCallbackParams } from "$components/ThreadCore"
-import { parseAssistantResponse } from "$utils/format"
-import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
-import { createImageCard, createSourceCard, createViewMoreCard } from "src/client/scripts/modules/threadTemplates"
+import { parseAssistantResponse, createImageCard, createSourceCard, createViewMoreCard, insertSourcePopup } from "$utils/thread"
 import initSourcesPopup from "src/client/scripts/modules/source-popup"
+import { SearchResults } from "$components/SerpAPI"
 
 export type ThreadSSEMessage = {
   threadId: number,
@@ -63,34 +62,31 @@ export const handleThreadSSEMessage = (
           sourcesContainer.insertAdjacentHTML("beforeend", sourceCard)
         })
       }
-      // initSourcesPopup()
+      initSourcesPopup()
 
       // ----------------- IMAGES -----------------
-      const mainImagesContainer = threadContainer.querySelector("#thread-images-container[data-current-message]")
-      if (!mainImagesContainer) {
-        return
-      }
-      const imagesContainer = mainImagesContainer.querySelector("#thread-images")
-      if (!imagesContainer) {
-        return
-      }
-
       if (content.data.images.length > 0) {
-        const imagesTitle = threadContainer.querySelector("#thread-images-title[data-current-message]")
-        if (imagesTitle) {
-          imagesTitle.classList.remove("!hidden")
-        }
-        imagesContainer.classList.remove("!hidden")
-      } else {
-        imagesContainer.classList.add("!hidden")
-        break
-      }
+        const titleContainer = document.createElement("div")
+        titleContainer.id = "thread-images-title"
+        titleContainer.classList.add("font-semibold", "mt-4", "text-sm", "text-left")
+        titleContainer.innerText = "Related images"
+        sourcesContainer.insertAdjacentElement("afterend", titleContainer)
 
-      const images = content.data.images
-      images.slice(0, 6).forEach(image => {
-        const imageCard = createImageCard(image)
-        imagesContainer.insertAdjacentHTML("beforeend", imageCard)
-      })
+        const imagesMainContainer = document.createElement("div")
+        imagesMainContainer.id = "thread-images-container"
+        imagesMainContainer.classList.add("pt-2")
+        const imagesContainer = document.createElement("div")
+        imagesContainer.id = "thread-images"
+        imagesContainer.classList.add("thread_images_grid")
+        imagesMainContainer.appendChild(imagesContainer)
+        titleContainer.insertAdjacentElement("afterend", imagesMainContainer)
+
+        const images = content.data.images
+        images.slice(0, 6).forEach(image => {
+          const imageCard = createImageCard(image)
+          imagesContainer.insertAdjacentHTML("beforeend", imageCard)
+        })
+      }
 
       break
     }
@@ -150,7 +146,11 @@ export const handleThreadSSEMessage = (
 
       const text = content.data.content
       if (text) {
-        textContainer.innerHTML = text
+        if (Object.keys(content.data.sources).includes("searchSources")) {
+          textContainer.innerHTML = insertSourcePopup(textContainer.innerHTML, (content.data.sources as { searchSources: SearchResults }).searchSources.pages)
+        } else {
+          textContainer.innerHTML = text
+        }
         textContainer.removeAttribute("data-text")
         const copyButton = container.querySelector("#copy-response-button")
         if (copyButton) {
@@ -166,7 +166,7 @@ export const handleThreadSSEMessage = (
         textContainer.innerHTML = content.data.error
       }
 
-      initTextEllipsis()
+      initSourcesPopup()
       const currentMessages = threadContainer.querySelectorAll("[data-current-message]")
       currentMessages.forEach(message => {
         message.removeAttribute("data-current-message")

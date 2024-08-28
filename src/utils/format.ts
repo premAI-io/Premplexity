@@ -9,8 +9,3 @@ export const formatDateTime = (date: Date, locale: string) => {
 export const toTitleCase = (s: string): string => {
   return s[0].toUpperCase() + s.substring(1).toLocaleLowerCase()
 }
-
-export const parseAssistantResponse = (response: string) => {
-  const regex = /<[^>]*>.*?<\/[^>]>/g
-  return response.replace(regex, "")
-}
