@@ -53,3 +53,17 @@ body {
   cursor: default;
   pointer-events: none;
 }
+
+pre {
+  @apply overflow-x-auto p-1 scrollbar my-1 relative;
+  background-color: #282C34;
+}
+
+pre button[data-value] {
+  @apply absolute top-1 right-1 hidden opacity-0;
+  transition: opacity 0.3s;
+}
+
+pre:hover button[data-value] {
+  @apply block opacity-100;
+}

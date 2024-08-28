@@ -1,7 +1,8 @@
 import { SearchCallbackParams } from "$components/ThreadCore"
-import { parseAssistantResponse, createImageCard, createSourceCard, createViewMoreCard, insertSourcePopup } from "$utils/thread"
+import { createImageCard, createSourceCard, createViewMoreCard, insertSourcePopup } from "$utils/thread"
 import initSourcesPopup from "src/client/scripts/modules/source-popup"
 import { SearchResults } from "$components/SerpAPI"
+import { addPreCopyButtons, markdownToHTML } from "src/client/scripts/modules/markdown"
 
 export type ThreadSSEMessage = {
   threadId: number,
@@ -122,8 +123,14 @@ export const handleThreadSSEMessage = (
         }
       }
 
-      textContainer.innerHTML = (textContainer.getAttribute("data-text") ?? "").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+      textContainer.innerHTML = markdownToHTML((textContainer.getAttribute("data-text") ?? "").replace(/&lt;/g, "<").replace(/&gt;/g, ">"))
 
+      const copyButton = container.querySelector("#copy-response-button")
+      if (copyButton) {
+        const el = copyButton.querySelector("button")
+        el?.setAttribute("data-value", completeText)
+      }
+      addPreCopyButtons()
       break
     }
     case "followUpQuestions": {
@@ -144,10 +151,11 @@ export const handleThreadSSEMessage = (
       textLoadersContainer.classList.add("!hidden")
       textContainer.classList.remove("!hidden")
 
-      const text = content.data.content
+      let text = content.data.content
       if (text) {
+        text = markdownToHTML(text)
         if (Object.keys(content.data.sources).includes("searchSources")) {
-          textContainer.innerHTML = insertSourcePopup(textContainer.innerHTML, (content.data.sources as { searchSources: SearchResults }).searchSources.pages)
+          textContainer.innerHTML = insertSourcePopup(text, (content.data.sources as { searchSources: SearchResults }).searchSources.pages)
         } else {
           textContainer.innerHTML = text
         }
@@ -155,11 +163,7 @@ export const handleThreadSSEMessage = (
         const copyButton = container.querySelector("#copy-response-button")
         if (copyButton) {
           const el = copyButton.querySelector("button")
-          if (el) {
-            el.setAttribute("data-value", parseAssistantResponse(text))
-            el.removeAttribute("disabled")
-            el.classList.remove("opacity-50")
-          }
+          el?.setAttribute("data-value", text)
         }
       } else if (content.data.error) {
         textContainer.classList.add("text-red-500")
@@ -167,6 +171,7 @@ export const handleThreadSSEMessage = (
       }
 
       initSourcesPopup()
+      addPreCopyButtons()
       const currentMessages = threadContainer.querySelectorAll("[data-current-message]")
       currentMessages.forEach(message => {
         message.removeAttribute("data-current-message")
@@ -176,5 +181,26 @@ export const handleThreadSSEMessage = (
     default: {
       break
     }
+  }
+}
+
+export const formatMarkdown = () => {
+  const containers = document.querySelectorAll("#thread-text-container")
+  containers.forEach(container => {
+    const textContainer = container.querySelector("#thread-text")
+    if (textContainer) {
+      if (textContainer.getAttribute("markdown-formatted") === "true") {
+        return
+      }
+      textContainer.innerHTML = markdownToHTML(textContainer.innerHTML.replace(/&lt;/g, "<").replace(/&gt;/g, ">"))
+      textContainer.setAttribute("markdown-formatted", "true")
+    }
+  })
+}
+
+export const scrollToBottom = () => {
+  const threadContainer = document.getElementById("thread-body")?.parentNode as HTMLElement
+  if (threadContainer) {
+    threadContainer.scrollTop = threadContainer.scrollHeight
   }
 }

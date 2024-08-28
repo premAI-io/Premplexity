@@ -10,9 +10,10 @@ import { initTooltips } from "src/client/scripts/modules/tooltip"
 import { ToastType, createToast } from "src/client/scripts/modules/toast"
 import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
 import { onInputPromptInput, onInputPromptKeydown, onPromptSubmit } from "src/client/scripts/modules/input-prompt"
-import { handleThreadSSEMessage } from "src/client/scripts/modules/threadCompletion"
+import { formatMarkdown, handleThreadSSEMessage, scrollToBottom } from "src/client/scripts/modules/threadCompletion"
 import initSourcesPopup from "src/client/scripts/modules/source-popup"
 import { SelectOption } from "$templates/components/SelectSearchable"
+import { addPreCopyButtons } from "src/client/scripts/modules/markdown"
 
 type OnSelectSearchItemClickOptions = {
   id: string
@@ -29,7 +30,7 @@ declare global {
     closeModal: (eventOrId: MouseEvent | string, remove?: boolean) => void
     closeModalIfSuccess: (event: CustomEvent, id: string) => void
     closeAlert: (eventOrId: MouseEvent | string) => void
-    copyToClipboard: (eventOrValue: MouseEvent | string) => Promise<void>
+    copyToClipboard: (eventOrValue: MouseEvent | string, onSuccess?: (copiedValue: string) => void) => void
     toggleCopyIcon: (element: HTMLElement, timeout?: number) => void
     // select search
     onSelectSearchBeforeRequest: (event: InputEvent) => void
@@ -97,6 +98,9 @@ window.addEventListener("DOMContentLoaded", () => {
   initTooltips()
   initTextEllipsis()
   initSourcesPopup()
+  formatMarkdown()
+  addPreCopyButtons()
+  scrollToBottom()
 
   window.addEventListener("resize", () => {
     initTextEllipsis()
@@ -110,6 +114,8 @@ window.addEventListener("DOMContentLoaded", () => {
     initTextEllipsis()
     initTooltips()
     initSourcesPopup()
+    formatMarkdown()
+    addPreCopyButtons()
 
     const sidebar = document.getElementById("sidebar")?.querySelector(".sidebar__body")
     if (sidebar) {
@@ -130,6 +136,10 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
+  })
+
+  window.addEventListener("htmx:afterSettle", () => {
+    scrollToBottom()
   })
 
   document.body.addEventListener("showSuccessToast", (event) => {

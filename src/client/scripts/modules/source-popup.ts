@@ -1,12 +1,10 @@
-const init = () => {
-  const popups = document.querySelectorAll("[data-source-popup]")
+import { createSourcePopupElement } from "$utils/thread"
 
-  popups.forEach((popup) => {
-    const parent = popup.parentElement
-    if (!parent) {
-      return
-    }
-    new SourcePopup(popup as HTMLElement, parent)
+const init = () => {
+  const triggers = document.querySelectorAll("[data-source-popup]")
+
+  triggers.forEach((trigger) => {
+    new SourcePopup(trigger as HTMLElement)
   })
 }
 
@@ -15,15 +13,21 @@ class SourcePopup {
   private parent: HTMLElement
   private timeoutId: number | null = null
 
-  constructor(popup: HTMLElement, parent: HTMLElement) {
-    this.popup = popup
+  constructor(parent: HTMLElement) {
+    const popupData = JSON.parse((parent.getAttribute("data-source-popup") as string).replace(/&quot;/g, "\""))
+    this.popup = createSourcePopupElement(popupData)
     this.parent = parent
     this.addListeners()
   }
 
+  private removeListeners = () => {
+    this.parent.removeEventListener("mouseenter", this.showPopup)
+    this.parent.removeEventListener("mouseleave", this.hidePopup)
+  }
+
   private addListeners = () => {
     if (this.parent.getAttribute("data-source-popup-listener") === "true") {
-      return
+      this.removeListeners()
     }
     this.parent.addEventListener("mouseenter", this.showPopup)
     this.parent.addEventListener("mouseleave", this.hidePopup)
@@ -32,14 +36,13 @@ class SourcePopup {
 
   private showPopup = () => {
     this.timeoutId = setTimeout(() => {
-      this.popup.classList.add("show")
+      this.parent.insertAdjacentElement("afterend", this.popup)
       const parentRect = this.parent.getBoundingClientRect()
-      const popupRect = this.popup.getBoundingClientRect()
-      const top = parentRect.top - popupRect.height - 10
-      const left = parentRect.left - popupRect.width / 2 + parentRect.width / 2
+      const top = parentRect.top - 167 - 10
+      const left = parentRect.left - 237 / 2 + parentRect.width / 2
       if (top < 0) {
         this.popup.style.top = "10px"
-        this.popup.style.left = `${parentRect.left - popupRect.width - 10}px`
+        this.popup.style.left = `${parentRect.left - 237 - 10}px`
       } else {
         this.popup.style.top = `${top}px`
         this.popup.style.left = `${left}px`
@@ -51,7 +54,7 @@ class SourcePopup {
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
     }
-    this.popup.classList.remove("show")
+    this.popup.remove()
   }
 }
 
