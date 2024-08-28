@@ -1,6 +1,6 @@
-// --------------- SOURCE CARD TEMPLATES ---------------
-
 import { Page, Image } from "$components/SerpAPI"
+
+// --------------- SOURCE CARD TEMPLATES ---------------
 
 export const createSourceCard = (source: Page) => {
   const template = `
@@ -37,7 +37,7 @@ export const createSourcePopup = (source: Page) => {
           <div class="text-xs text-gray-200 font-semibold truncate max-w-[170px]">
             ${source.link}
           </div>
-          <div class="source-card__id shrink-0">1</div>
+          <div class="source-card__id shrink-0">${source.order}</div>
         </div>
       </div>
       <div class="source-popup__title">
@@ -73,4 +73,43 @@ export const createImageCard = (image: Image) => {
   `
 
   return template
+}
+
+// --------------- ASSISTANT RESPONSE ---------------
+
+export const parseAssistantResponse = (response: string) => {
+  const regex = /<[^>]*>.*?<\/[^>]>/g
+  return response.replace(regex, "")
+}
+
+export const insertSourcePopup = (text: string, sources: Page[]) => {
+  const regex = /<a[^>]*class="source"[^>]*>.*?<\/a>/g
+  const matches = text.match(regex)
+  if (!matches) {
+    return text
+  }
+
+  matches.forEach(match => {
+    const regex = />(.*?)</
+    const innerText = match.match(regex)
+    if (!innerText) {
+      return
+    }
+
+    const source = sources.find(source => source.order === parseInt(innerText[1]))
+    if (!source) {
+      return
+    }
+
+    const sourcePopup = createSourcePopup(source)
+    const spanElement = `
+      <span>
+        ${match}
+        ${sourcePopup}
+      </span>
+    `
+    text = text.replace(match, spanElement)
+  })
+
+  return text
 }

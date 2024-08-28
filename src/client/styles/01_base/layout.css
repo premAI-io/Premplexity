@@ -42,8 +42,7 @@ body {
   transition-delay: 0s;
 }
 
-*[data-tooltip-text][data-tooltip-break-word]:after,
-#thread-text .source:after {
+*[data-tooltip-text][data-tooltip-break-word]:after {
   @apply break-all;
 }
 

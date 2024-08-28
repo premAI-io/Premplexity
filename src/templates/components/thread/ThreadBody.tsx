@@ -4,6 +4,7 @@ import SourcesSection from "$templates/components/thread/SourcesSection"
 import TextSection from "$templates/components/thread/TextSection"
 import UserMessage from "$templates/components/thread/UserMessage"
 import THREAD_MESSAGE_STATUS from "$types/THREAD_MESSAGE_STATUS"
+import { insertSourcePopup } from "$utils/thread"
 
 type Props = {
   swapOOB?: string,
@@ -68,7 +69,7 @@ const ThreadBody = ({
                   <TextSection
                     assistantModel={message.assistantModel}
                     assistantError={message.assistantError}
-                    assistantResponse={message.assistantResponse}
+                    assistantResponse={insertSourcePopup(message.assistantResponse ?? "", message.sources.pages)}
                   />
                 </div>
               ))
@@ -91,7 +92,7 @@ const ThreadBody = ({
                 isCurrentMessage={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
                 assistantModel={currentMessage.assistantModel}
                 assistantError={currentMessage.assistantError}
-                assistantResponse={currentMessage.assistantResponse}
+                assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
               />
             </div>
           </>
