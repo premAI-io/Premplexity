@@ -20,6 +20,9 @@ const DeleteThreadModal = ({
         ["hx-on::load"]: "htmx.process(event.detail.elt)"
       }}
       footer={<div class="flex justify-end gap-4 mt-4">
+        <Button type="button" theme="secondary" onclick="closeModal(event)">
+          Cancel
+        </Button>
         <form
           method="post"
           action={getActionPath("thread", "DELETE", { targetThreadId: threadId })}
@@ -27,9 +30,6 @@ const DeleteThreadModal = ({
             ["hx-on::after-request"]: "closeModal('user-block-modal')"
           }}
         >
-          <Button type="button" theme="secondary" onclick="closeModal(event)">
-            Cancel
-          </Button>
           <Button type="submit" theme="danger">
             Delete
           </Button>
