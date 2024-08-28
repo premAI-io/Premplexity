@@ -6,9 +6,9 @@ export const schemas = {
     params: {
       type: "object",
       properties: {
-        id: { type: "number" },
+        targetThreadId: { type: "number" },
       },
-      required: ["id"],
+      required: ["targetThreadId"],
       additionalProperties: false,
     },
   } as const satisfies FastifySchema,
