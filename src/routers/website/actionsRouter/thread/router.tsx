@@ -63,17 +63,17 @@ export const router = createRouter((server) => {
       message
     })
 
-    const threadsList = await threadsService.getThreadsGroupedByDate(userId)
-
-    const premAI = container.resolve<PremAI>(PremAI.token)
-    const availableModels = await premAI.getAvailableModels(model)
-
     searchHandler({
       query: message,
       model,
       thread,
       searchEngine: searchEngine as WEB_SEARCH_ENGINE
     })
+
+    const threadsList = await threadsService.getThreadsGroupedByDate(userId)
+
+    const premAI = container.resolve<PremAI>(PremAI.token)
+    const availableModels = await premAI.getAvailableModels(model)
 
     thread = await threadsService.getOrFail(thread.id)
 
@@ -95,6 +95,14 @@ export const router = createRouter((server) => {
             availableModels={availableModels}
             availableSources={WEB_SEARCH_ENGINE_OPTIONS(searchEngine)}
             loading={true}
+            // message insertion could take time, so we show a skeleton message
+            {...thread.messages.length === 0 ? {
+              skeletonMessages: {
+                content: message,
+                assistantModel: model,
+                webSearchEngineType: searchEngine
+              }} : {}
+            }
           />
         </>
       )

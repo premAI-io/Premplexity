@@ -9,7 +9,7 @@ type Props = {
   loading?: boolean,
   assistantModel: ThreadMessageComplete["assistantModel"],
   assistantError?: ThreadMessageComplete["assistantError"],
-  assistantResponse: ThreadMessageComplete["assistantResponse"],
+  assistantResponse?: ThreadMessageComplete["assistantResponse"],
   isCurrentMessage?: boolean
 }
 

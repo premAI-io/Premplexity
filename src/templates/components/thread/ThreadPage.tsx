@@ -14,6 +14,11 @@ type Props = {
   swapOOB?: string
   thread: ThreadComplete
   loading?: boolean
+  skeletonMessages?: {
+    content: string,
+    assistantModel: string,
+    webSearchEngineType: string
+  }
 }
 
 const ThreadPage = ({
@@ -21,7 +26,8 @@ const ThreadPage = ({
   availableSources,
   swapOOB,
   thread,
-  loading
+  loading,
+  skeletonMessages
 }: Props) => {
   return (
     <form
@@ -73,7 +79,7 @@ const ThreadPage = ({
         </div>
         <NewThreadButton />
       </div>
-      <ThreadBody thread={thread} loading={loading} />
+      <ThreadBody thread={thread} loading={loading} skeletonMessages={skeletonMessages} />
       <InputPrompt />
     </form>
   )

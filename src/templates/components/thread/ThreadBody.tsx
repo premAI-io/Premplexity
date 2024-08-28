@@ -9,13 +9,20 @@ type Props = {
   swapOOB?: string,
   loading?: boolean,
   thread: ThreadComplete
+  skeletonMessages?: {
+    content: string,
+    assistantModel: string,
+    webSearchEngineType: string
+  }
 }
 
 const ThreadBody = ({
   swapOOB,
   loading = false,
-  thread
+  thread,
+  skeletonMessages
 }: Props) => {
+
   return (
     <div
       id="thread-body"
@@ -24,6 +31,27 @@ const ThreadBody = ({
       data-thread-id={thread.id}
     >
       {
+        loading && skeletonMessages && thread.messages.length === 0 ?
+        <div>
+          <UserMessage content={skeletonMessages.content} />
+          <SourcesSection
+            loading
+            isCurrentMessage
+            webSearchEngineType={skeletonMessages.webSearchEngineType}
+            sources={[]}
+          />
+          <ImagesSection
+            loading
+            isCurrentMessage
+            images={[]}
+          />
+          <TextSection
+            loading
+            isCurrentMessage
+            assistantModel={skeletonMessages.assistantModel}
+          />
+        </div>
+        :
         thread.messages.map(({ history, currentMessage }) => (
           <>
             {
