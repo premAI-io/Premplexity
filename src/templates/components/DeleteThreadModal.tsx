@@ -27,13 +27,13 @@ const DeleteThreadModal = ({
             ["hx-on::after-request"]: "closeModal('user-block-modal')"
           }}
         >
+          <Button type="button" theme="secondary" onclick="closeModal(event)">
+            Cancel
+          </Button>
           <Button type="submit" theme="danger">
             Delete
           </Button>
         </form>
-        <Button type="button" theme="secondary" onclick="closeModal(event)">
-          Cancel
-        </Button>
       </div>}
     >
       <div>
