@@ -43,12 +43,9 @@ const TextSection = ({
         </div>
         <div
           id="copy-response-button"
-          class={classNames({
-              "!hidden": loading || !assistantResponse
-            }, "ml-auto w-fit my-4")
-          }
+          class={"ml-auto w-fit my-4"}
         >
-          <CopyButton value={parseAssistantResponse(assistantResponse ?? "")} />
+          <CopyButton disabled={!assistantResponse || loading} value={parseAssistantResponse(assistantResponse ?? "")} />
         </div>
       </div>
     </>

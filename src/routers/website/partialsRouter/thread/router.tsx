@@ -9,11 +9,11 @@ export const router = createRouter((server) => {
   server.get(ROUTE.DELETE_MODAL, {
     schema: schemas[ROUTE.DELETE_MODAL]
   }, async (req, res) => {
-    const { id } = req.params
+    const { targetThreadId } = req.params
 
     return res.view(
       <DeleteThreadModal
-        threadId={id}
+        threadId={targetThreadId}
       />
     )
   })

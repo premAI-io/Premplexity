@@ -154,10 +154,11 @@ export const handleThreadSSEMessage = (
         textContainer.removeAttribute("data-text")
         const copyButton = container.querySelector("#copy-response-button")
         if (copyButton) {
-          copyButton.classList.remove("!hidden")
           const el = copyButton.querySelector("button")
           if (el) {
             el.setAttribute("data-value", parseAssistantResponse(text))
+            el.removeAttribute("disabled")
+            el.classList.remove("opacity-50")
           }
         }
       } else if (content.data.error) {
