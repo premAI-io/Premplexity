@@ -39,7 +39,7 @@ export default class Configs {
       ENHANCE_USER_QUERY,
       QUERY_ENHANCER_MODEL,
       CHAT_MESSAGE_TIMEOUT = "5000",
-      DEFAULT_CHAT_MODEL = "gpt-3.5-turbo",
+      DEFAULT_CHAT_MODEL = "gpt-4o-mini",
       FOLLOW_UP_MODEL
     } = process.env
 

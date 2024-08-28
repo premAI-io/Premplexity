@@ -77,6 +77,7 @@ const SelectSearchable = ({
         className
       ]}
       id={id}
+      data-value={value}
       {...swapOOB ? { "hx-swap-oob": "true" } : {}}
     >
       {label
@@ -107,7 +108,8 @@ const SelectSearchable = ({
             hx-swap="none"
             onclick="event.stopPropagation()"
             onfocus={`closeDropdowns(); openDropdown('${dropdownId}'); document.getElementById('${inputId}-input-width').value = this.clientWidth + 2; handleSelectSearchSwap('${dropdownId}', '${inputId}-dropdown-position')`}
-            oninput={`onSelectSearchBeforeRequest(event);onSelectSearchItemClick(event, { id: "${id}", label: event.target.value, value: "0" });`}
+            oninput={`onSelectSearchBeforeRequest(event);onSelectSearchItemClick({ id: "${id}", label: event.target.value, value: "0" });`}
+            onblur={`onSelectSearchBlur(this.value, '${JSON.stringify(options)}', "${id}");`}
             autocomplete="off"
             required={required}
             readonly={readonly}
@@ -137,7 +139,7 @@ const SelectSearchable = ({
                 <li
                   class={["dropdown__item", option.selected && "dropdown__item--selected"]}
                   onclick={`
-                    onSelectSearchItemClick(event, { id: "${id}", label: "${option.label}", value: "${option.value}" });
+                    onSelectSearchItemClick({ id: "${id}", label: "${option.label}", value: "${option.value}" });
                     clearInputError('#${inputId}');
                     ${onSelect ?
                       onSelect
@@ -149,6 +151,12 @@ const SelectSearchable = ({
                       onOptionSelected
                       : ""
                     }
+                    closeDropdown("${id}-dropdown")
+                    const container = document.getElementById("${id}-dropdown")
+                    const dropdownOptions = Array.from(container?.querySelector(".dropdown__items")?.querySelectorAll(".dropdown__item") ?? [])
+                    dropdownOptions.forEach((option) => option.style.display = "block")
+                    const noResults = container?.querySelectorAll("[data-no-results]")
+                    noResults?.forEach((el) => el.remove())
                   `}
                   data-value={option.value}
                 >
