@@ -1,57 +1,58 @@
-let timeoutId: number | null = null
-
 const init = () => {
   const popups = document.querySelectorAll("[data-source-popup]")
 
   popups.forEach((popup) => {
-    const parent = popup.parentElement ?? popup
-    removeListeners(popup as HTMLElement, parent as HTMLElement)
-    addListeners(popup as HTMLElement, parent as HTMLElement)
-  })
-}
-
-const addListeners = (popup: HTMLElement, parent: HTMLElement) => {
-  parent.addEventListener("mouseenter", () => {
-    showPopup(popup as HTMLElement)
-  })
-  parent.addEventListener("mouseleave", () => {
-    hidePopup(popup as HTMLElement)
-  })
-}
-
-const removeListeners = (popup: HTMLElement, parent: HTMLElement) => {
-  parent.removeEventListener("mouseenter", () => {
-    showPopup(popup as HTMLElement)
-  })
-  parent.removeEventListener("mouseleave", () => {
-    hidePopup(popup as HTMLElement)
-  })
-}
-
-const showPopup = (popup: HTMLElement) => {
-  timeoutId = setTimeout(() => {
-    const parent = popup.parentElement ?? popup
-    popup.classList.add("show")
-    const parentRect = parent.getBoundingClientRect()
-    const popupRect = popup.getBoundingClientRect()
-    const top = parentRect.top - popupRect.height - 10
-    const left = parentRect.left - popupRect.width / 2 + parentRect.width / 2
-    if (top < 0) {
-      popup.style.top = "10px"
-      popup.style.left = `${parentRect.left - popupRect.width - 10}px`
-    } else {
-      popup.style.top = `${top}px`
-      popup.style.left = `${left}px`
+    const parent = popup.parentElement
+    if (!parent) {
+      return
     }
-
-  }, 300) as unknown as number
+    new SourcePopup(popup as HTMLElement, parent)
+  })
 }
 
-const hidePopup = (popup: HTMLElement) => {
-  if (timeoutId) {
-    clearTimeout(timeoutId)
+class SourcePopup {
+  private popup: HTMLElement
+  private parent: HTMLElement
+  private timeoutId: number | null = null
+
+  constructor(popup: HTMLElement, parent: HTMLElement) {
+    this.popup = popup
+    this.parent = parent
+    this.addListeners()
   }
-  popup.classList.remove("show")
+
+  private addListeners = () => {
+    if (this.parent.getAttribute("data-source-popup-listener") === "true") {
+      return
+    }
+    this.parent.addEventListener("mouseenter", this.showPopup)
+    this.parent.addEventListener("mouseleave", this.hidePopup)
+    this.parent.setAttribute("data-source-popup-listener", "true")
+  }
+
+  private showPopup = () => {
+    this.timeoutId = setTimeout(() => {
+      this.popup.classList.add("show")
+      const parentRect = this.parent.getBoundingClientRect()
+      const popupRect = this.popup.getBoundingClientRect()
+      const top = parentRect.top - popupRect.height - 10
+      const left = parentRect.left - popupRect.width / 2 + parentRect.width / 2
+      if (top < 0) {
+        this.popup.style.top = "10px"
+        this.popup.style.left = `${parentRect.left - popupRect.width - 10}px`
+      } else {
+        this.popup.style.top = `${top}px`
+        this.popup.style.left = `${left}px`
+      }
+    }, 300) as unknown as number
+  }
+
+  private hidePopup = () => {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId)
+    }
+    this.popup.classList.remove("show")
+  }
 }
 
 export default init
