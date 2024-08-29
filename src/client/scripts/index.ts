@@ -10,8 +10,10 @@ import { initTooltips } from "src/client/scripts/modules/tooltip"
 import { ToastType, createToast } from "src/client/scripts/modules/toast"
 import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
 import { onInputPromptInput, onInputPromptKeydown, onPromptSubmit } from "src/client/scripts/modules/input-prompt"
-import { handleThreadSSEMessage } from "src/client/scripts/modules/threadCompletion"
+import { formatMarkdown, handleThreadSSEMessage, scrollToBottom } from "src/client/scripts/modules/threadCompletion"
 import initSourcesPopup from "src/client/scripts/modules/source-popup"
+import { SelectOption } from "$templates/components/SelectSearchable"
+import { addPreCopyButtons } from "src/client/scripts/modules/markdown"
 
 type OnSelectSearchItemClickOptions = {
   id: string
@@ -28,19 +30,20 @@ declare global {
     closeModal: (eventOrId: MouseEvent | string, remove?: boolean) => void
     closeModalIfSuccess: (event: CustomEvent, id: string) => void
     closeAlert: (eventOrId: MouseEvent | string) => void
-    copyToClipboard: (eventOrValue: MouseEvent | string) => Promise<void>
+    copyToClipboard: (eventOrValue: MouseEvent | string, onSuccess?: (copiedValue: string) => void) => void
     toggleCopyIcon: (element: HTMLElement, timeout?: number) => void
     // select search
     onSelectSearchBeforeRequest: (event: InputEvent) => void
     onSelectSearchAfterRequest: (event: CustomEvent) => void
-    onSelectSearchItemClick: (event: MouseEvent, options: OnSelectSearchItemClickOptions) => void
+    onSelectSearchItemClick: (options: OnSelectSearchItemClickOptions) => void
+    onSelectSearchBlur: (value: string, options: string, id: string) => void
     handleSelectSearchSwap: (dropdownId: string, inputTargetId: string) => void
     // dropdown
     closeDropdown: (dropdownId: string) => void
     closeDropdowns: (container?: HTMLElement, exclude?: string) => void
     onDropdownResize: () => void
     openDropdown: (dropdownId: string, toggleElement?: HTMLElement) => void
-    toggleDropdown: (event: MouseEvent, dropdownId: string) => void
+    toggleDropdown: (dropdownId: string) => void
     // loader
     hideLoader: () => void
     downloadFile: (event: CustomEvent, button: HTMLButtonElement) => void
@@ -95,6 +98,9 @@ window.addEventListener("DOMContentLoaded", () => {
   initTooltips()
   initTextEllipsis()
   initSourcesPopup()
+  formatMarkdown()
+  addPreCopyButtons()
+  scrollToBottom()
 
   window.addEventListener("resize", () => {
     initTextEllipsis()
@@ -108,6 +114,8 @@ window.addEventListener("DOMContentLoaded", () => {
     initTextEllipsis()
     initTooltips()
     initSourcesPopup()
+    formatMarkdown()
+    addPreCopyButtons()
 
     const sidebar = document.getElementById("sidebar")?.querySelector(".sidebar__body")
     if (sidebar) {
@@ -128,6 +136,10 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
+  })
+
+  window.addEventListener("htmx:afterSettle", () => {
+    scrollToBottom()
   })
 
   document.body.addEventListener("showSuccessToast", (event) => {
@@ -387,17 +399,21 @@ window.onSelectSearchAfterRequest = (event: CustomEvent) => {
   }
 }
 
-window.onSelectSearchItemClick = (event: MouseEvent, options: OnSelectSearchItemClickOptions) => {
+window.onSelectSearchItemClick = (options: OnSelectSearchItemClickOptions) => {
   const container = document.getElementById(options.id)
   if (!container) {
     return
   }
 
-  const dropdown = (event.target as HTMLElement).closest(".dropdown")
+  const dropdown = document.getElementById(`${options.id}-dropdown`)
   if (dropdown) {
     const items = dropdown.querySelectorAll(".dropdown__item")
-    items.forEach((item) => item.classList.toggle("dropdown__item--selected", item.getAttribute("data-value") === options.value))
-    window.toggleDropdown(event, dropdown.id)
+    items.forEach((item) => {
+      item.classList.toggle("dropdown__item--selected", item.getAttribute("data-value") === options.value)
+      if (item.getAttribute("data-value") === options.value) {
+        container.setAttribute("data-value", options.value)
+      }
+    })
   }
 
   const inputHidden = container.querySelector("input[type='hidden']") as HTMLInputElement | null
@@ -453,6 +469,26 @@ window.hideSelect = (event: CustomEvent, selectId: string) => {
   if (select) {
     select.innerHTML = ""
   }
+}
+
+window.onSelectSearchBlur = (value: string, options: string, id: string) => {
+  const parsedOptions = JSON.parse(options) as SelectOption[]
+  if (!value || value.length === 0) {
+    selectDefaultOption(id, parsedOptions)
+  } else {
+    const possibleOption = parsedOptions.find((option) => option.label.toString().toLowerCase() === value.toLowerCase())
+    if (possibleOption) {
+      window.onSelectSearchItemClick({ id, label: possibleOption.label.toString(), value: possibleOption.value.toString() })
+    } else {
+      selectDefaultOption(id, parsedOptions)
+    }
+  }
+}
+
+const selectDefaultOption = (id: string, options: SelectOption[]) => {
+  const initialValue = document.getElementById(id)?.getAttribute("data-value") || ""
+  const selectedOption = options.find((option) => option.value === initialValue) ?? options[0]
+  window.onSelectSearchItemClick({ id, label: selectedOption.label.toString(), value: selectedOption.value.toString() })
 }
 
 // loader

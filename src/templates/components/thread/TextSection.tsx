@@ -2,7 +2,6 @@ import { ThreadMessageComplete } from "$services/ThreadMessagesService"
 import CopyButton from "$templates/components/CopyButton"
 import TextLoading from "$templates/components/loaders/TextLoading"
 import PremLogo from "$templates/components/PremLogo"
-import { parseAssistantResponse } from "$utils/thread"
 import classNames from "classnames"
 
 type Props = {
@@ -43,9 +42,11 @@ const TextSection = ({
         </div>
         <div
           id="copy-response-button"
-          class={"ml-auto w-fit my-4"}
+          class={classNames("ml-auto w-fit my-4", {
+            "!hidden": !!assistantError
+          })}
         >
-          <CopyButton disabled={!assistantResponse || loading} value={parseAssistantResponse(assistantResponse ?? "")} />
+          <CopyButton disabled={!!assistantError} value={assistantResponse ?? ""} />
         </div>
       </div>
     </>

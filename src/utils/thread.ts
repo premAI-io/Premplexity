@@ -4,7 +4,7 @@ import { Page, Image } from "$components/SerpAPI"
 
 export const createSourceCard = (source: Page) => {
   const template = `
-    <div class="source-card__container cursor-pointer" text-ellipsis-exclude onclick="window.open('${source.link}', '_blank')">
+    <div class="source-card__container cursor-pointer" text-ellipsis-exclude onclick="window.open('${source.link}', '_blank')" data-source-popup="${JSON.stringify(source).replace(/"/g, "&quot;")}" >
       <div class="source-card__content" safe>
         ${source.snippet}
       </div>
@@ -19,7 +19,6 @@ export const createSourceCard = (source: Page) => {
           ${source.order}
         </div>
       </div>
-      ${createSourcePopup(source)}
     </div>
   `
 
@@ -28,7 +27,7 @@ export const createSourceCard = (source: Page) => {
 
 export const createSourcePopup = (source: Page) => {
   return `
-    <div class="source-popup__container" data-source-popup text-ellipsis-exclude>
+    <div class="source-popup__container" text-ellipsis-exclude>
       <div class="flex gap-2 items-center">
         <div class="source-card__image shrink-0">
           <img src="${source.favicon ?? "https://via.placeholder.com/150"}" alt="${source.title}" class="h-full w-full object-center object-cover">
@@ -49,6 +48,52 @@ export const createSourcePopup = (source: Page) => {
     </div>
   `
 }
+
+export const createSourcePopupElement = (source: Page) => {
+  const container = document.createElement("div")
+  container.classList.add("source-popup__container")
+  container.setAttribute("text-ellipsis-exclude", "")
+
+  const imageContainer = document.createElement("div")
+  imageContainer.classList.add("flex", "gap-2", "items-center")
+  container.appendChild(imageContainer)
+
+  const image = document.createElement("div")
+  image.classList.add("source-card__image", "shrink-0")
+  image.innerHTML = `<img src="${source.favicon ?? "https://via.placeholder.com/150"}" alt="${source.title}" class="h-full w-full object-center object-cover">`
+  imageContainer.appendChild(image)
+
+  const textContainer = document.createElement("div")
+  textContainer.classList.add("flex", "flex-1", "gap-1", "items-center")
+  imageContainer.appendChild(textContainer)
+
+  const link = document.createElement("div")
+  link.id = "source-popup-link"
+  link.classList.add("text-xs", "text-gray-200", "font-semibold", "truncate", "max-w-[170px]")
+  link.setAttribute("safe", "")
+  link.innerText = source.link
+  textContainer.appendChild(link)
+
+  const id = document.createElement("div")
+  id.classList.add("source-card__id", "shrink-0")
+  id.innerText = source.order.toString()
+  textContainer.appendChild(id)
+
+  const title = document.createElement("div")
+  title.classList.add("source-popup__title")
+  title.setAttribute("safe", "")
+  title.innerText = source.title
+  container.appendChild(title)
+
+  const snippet = document.createElement("div")
+  snippet.classList.add("source-popup__snippet")
+  snippet.setAttribute("safe", "")
+  snippet.innerText = source.snippet
+  container.appendChild(snippet)
+
+  return container
+}
+
 
 export const createViewMoreCard = () => {
   return `
@@ -78,8 +123,9 @@ export const createImageCard = (image: Image) => {
 // --------------- ASSISTANT RESPONSE ---------------
 
 export const parseAssistantResponse = (response: string) => {
-  const regex = /<[^>]*>.*?<\/[^>]>/g
-  return response.replace(regex, "")
+  //Replace new lines with <br> tags. Not replacing new lines when they are preceded by a closing tag or followed by an opening tag or surrounded by spaces
+  const regex = /(?<!\/|>)\n(?!<|\s)/g
+  return response.replace(regex, "<br>")
 }
 
 export const insertSourcePopup = (text: string, sources: Page[]) => {
@@ -101,14 +147,19 @@ export const insertSourcePopup = (text: string, sources: Page[]) => {
       return
     }
 
-    const sourcePopup = createSourcePopup(source)
-    const spanElement = `
-      <span>
-        ${match}
-        ${sourcePopup}
-      </span>
-    `
-    text = text.replace(match, spanElement)
+    // set attribute to match
+    const el = match.replace(">", ` data-source-popup="${JSON.stringify(source).replace(/"/g, "&quot;")}" >`)
+
+    text = text.replace(match, el)
+
+    // const sourcePopup = createSourcePopup(source)
+    // const spanElement = `
+    //   <span>
+    //     ${match}
+    //     ${sourcePopup}
+    //   </span>
+    // `
+    // text = text.replace(match, spanElement)
   })
 
   return text

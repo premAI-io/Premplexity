@@ -14,7 +14,7 @@ const DropdownTrigger = ({
     <div
       class="flex items-center justify-center cursor-pointer"
       data-dropdown-toggle={dropdownId}
-      onclick={`window.toggleDropdown(event, "${dropdownId}")`}
+      onclick={`event.stopPropagation(); window.toggleDropdown("${dropdownId}")`}
       {...props}
     >
       {children}

@@ -187,13 +187,14 @@ window.closeDropdown = (dropdownId: string) => {
       }
     }
     dropdown.classList.remove("dropdown--open")
+    const dropdownOptions = Array.from(dropdown?.querySelector(".dropdown__items")?.querySelectorAll(".dropdown__item") ?? []) as HTMLLIElement[]
+    dropdownOptions.forEach((option) => option.style.display = "block")
+    const noResults = dropdown?.querySelectorAll("[data-no-results]")
+    noResults?.forEach((el) => el.remove())
   }
 }
 
-window.toggleDropdown = (e: MouseEvent, dropdownId: string) => {
-  e.stopPropagation()
-  e.preventDefault()
-
+window.toggleDropdown = (dropdownId: string) => {
   window.closeDropdowns(document.body, dropdownId)
 
   const dropdown = document.getElementById(dropdownId)

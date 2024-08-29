@@ -6,6 +6,7 @@
 
 @import "./01_base/layout.css";
 @import "./01_base/error-page.css";
+@import "./01_base/atom-one-dark.css";
 
 @import "./02_components/icon.css";
 @import "./02_components/button.css";

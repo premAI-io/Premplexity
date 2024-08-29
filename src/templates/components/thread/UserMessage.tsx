@@ -15,8 +15,8 @@ const UserMessage = ({
         <Icon name={"edit"} />
         : null
       }
-      <div class={"bg-gray-600 text-gray-100 text-lg font-medium py-1.5 px-3 rounded-3xl"} safe>
-        {content}
+      <div class={"bg-gray-600 text-gray-100 text-left text-lg font-medium py-1.5 px-3 rounded-3xl"}>
+        {content.replace(/\n/g, "<br>") as "safe"}
       </div>
     </div>
   )

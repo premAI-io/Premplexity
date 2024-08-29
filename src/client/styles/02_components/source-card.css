@@ -31,13 +31,9 @@
 }
 
 .source-popup__container {
-  @apply w-[237px] h-[167px] fixed hidden z-[50]
+  @apply w-[237px] h-[167px] fixed flex z-[50]
   bg-gray-800 border border-gray-600 rounded-[4px]
   p-2 flex-col gap-[7px];
-}
-
-.source-popup__container.show {
-  @apply !flex
 }
 
 .source-popup__title {

@@ -1,5 +1,4 @@
 import Icon from "$templates/components/Icon"
-import SourcePopup from "$templates/components/SourcePopup"
 
 type Props = {
   content: string
@@ -26,9 +25,15 @@ const SourceCard = (props: Props) => {
     )
   }
 
-  const { content, source, id, image, title } = props
+  const { content, source, id, image } = props
   return (
-    <div class={"source-card__container cursor-pointer"} text-ellipsis-exclude onclick={`window.open("${source}", "_blank")`}>
+    <div class={"source-card__container cursor-pointer"} data-source-popup={JSON.stringify({
+      title: props.title,
+      favicon: image ?? "https://via.placeholder.com/150",
+      link: source,
+      order: id,
+      snippet: content
+    })} text-ellipsis-exclude onclick={`window.open("${source}", "_blank")`}>
       <div class={"source-card__content"} safe>
         {content}
       </div>
@@ -43,13 +48,6 @@ const SourceCard = (props: Props) => {
           {id}
         </div>
       </div>
-      <SourcePopup
-        title={title}
-        image={image ?? "https://via.placeholder.com/150"}
-        link={source}
-        order={id}
-        snippet={content}
-      />
     </div>
   )
 }
