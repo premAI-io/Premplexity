@@ -95,9 +95,20 @@ export const createSourcePopupElement = (source: Page) => {
 }
 
 
-export const createViewMoreCard = () => {
+export const createViewMoreCard = ({
+  targetThreadId,
+  targetMessageId
+}: {
+  targetThreadId: number,
+  targetMessageId: number
+}) => {
   return `
-    <div class="source-card__container bg-gray-600 !justify-between !p-0">
+    <div
+      class="source-card__container bg-gray-600 cursor-pointer !justify-between !p-0"
+      hx-get="/partials/thread/${targetThreadId}/${targetMessageId}/sources-modal"
+      hx-target="#modal"
+      hx-swap="innerHTML"
+    >
       <div class="text-left pt-[8.5px] pl-[4.75px]">
         <svg width="16" height="16" viewBox="0 0 20 20" role="img"><use href="#book"></use></svg>
       </div>

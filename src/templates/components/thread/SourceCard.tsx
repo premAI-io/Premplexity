@@ -1,3 +1,4 @@
+import { getPartialPath } from "$routers/website/utils"
 import Icon from "$templates/components/Icon"
 
 type Props = {
@@ -8,13 +9,20 @@ type Props = {
   title: string
   isViewMore?: false
 } | {
+  threadId: number
+  messageId: number
   isViewMore: true
 }
 
 const SourceCard = (props: Props) => {
   if (props.isViewMore) {
     return (
-      <div class={"source-card__container bg-gray-600 !justify-between !p-0"}>
+      <div
+        class={"source-card__container bg-gray-600 cursor-pointer !justify-between !p-0"}
+        hx-get={getPartialPath("thread", "SOURCES_MODAL", { targetThreadId: props.threadId, targetMessageId: props.messageId })}
+        hx-target="#modal"
+        hx-swap="innerHTML"
+      >
         <div class={"text-left pt-[8.5px] pl-[4.75px]"}>
           <Icon name="book" />
         </div>

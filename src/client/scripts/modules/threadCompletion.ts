@@ -3,6 +3,7 @@ import { createImageCard, createSourceCard, createViewMoreCard, insertSourcePopu
 import initSourcesPopup from "src/client/scripts/modules/source-popup"
 import { SearchResults } from "$components/SerpAPI"
 import { addPreCopyButtons, markdownToHTML } from "src/client/scripts/modules/markdown"
+import htmx from "htmx.org"
 
 export type ThreadSSEMessage = {
   threadId: number,
@@ -55,15 +56,26 @@ export const handleThreadSSEMessage = (
           const sourceCard = createSourceCard(source)
           sourcesContainer.insertAdjacentHTML("beforeend", sourceCard)
         })
-        const viewMoreCard = createViewMoreCard()
+        const viewMoreCard = createViewMoreCard({
+          targetThreadId: threadId,
+          targetMessageId: content.data.messageId
+        })
         sourcesContainer.insertAdjacentHTML("beforeend", viewMoreCard)
       } else {
+        if (sources.length === 0) {
+          const sourceTitle = threadContainer.querySelector("#thread-sources-title")
+          if (sourceTitle) {
+            sourceTitle.classList.add("!hidden")
+          }
+          mainSourcesContainer.classList.add("!hidden")
+        }
         sources.forEach(source => {
           const sourceCard = createSourceCard(source)
           sourcesContainer.insertAdjacentHTML("beforeend", sourceCard)
         })
       }
       initSourcesPopup()
+      htmx.process(sourcesContainer)
 
       // ----------------- IMAGES -----------------
       if (content.data.images.length > 0) {
@@ -87,6 +99,15 @@ export const handleThreadSSEMessage = (
           const imageCard = createImageCard(image)
           imagesContainer.insertAdjacentHTML("beforeend", imageCard)
         })
+      } else {
+        const titleContainer = document.getElementById("thread-images-title")
+        if (titleContainer) {
+          titleContainer.remove()
+        }
+        const imagesContainer = document.getElementById("thread-images-container")
+        if (imagesContainer) {
+          imagesContainer.remove()
+        }
       }
 
       break

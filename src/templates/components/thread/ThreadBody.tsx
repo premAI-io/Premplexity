@@ -37,6 +37,8 @@ const ThreadBody = ({
           <div>
             <UserMessage content={skeletonMessages.content} />
             <SourcesSection
+              threadId={thread.id}
+              messageId={0}
               loading
               isCurrentMessage
               webSearchEngineType={skeletonMessages.webSearchEngineType}
@@ -63,6 +65,8 @@ const ThreadBody = ({
                     <SourcesSection
                       webSearchEngineType={message.webSearchEngineType}
                       sources={message.sources.pages}
+                      threadId={thread.id}
+                      messageId={message.id}
                     />
                     <ImagesSection
                       images={message.sources.images}
@@ -82,6 +86,8 @@ const ThreadBody = ({
                   isCurrentMessage={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
                   webSearchEngineType={currentMessage.webSearchEngineType}
                   sources={currentMessage.sources.pages}
+                  threadId={thread.id}
+                  messageId={currentMessage.id}
                 />
                 <ImagesSection
                   loading={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}

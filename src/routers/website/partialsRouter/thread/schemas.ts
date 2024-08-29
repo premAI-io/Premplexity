@@ -12,4 +12,15 @@ export const schemas = {
       additionalProperties: false,
     },
   } as const satisfies FastifySchema,
+  [ROUTE.SOURCES_MODAL]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" },
+        targetMessageId: { type: "number" },
+      },
+      required: ["targetThreadId", "targetMessageId"],
+      additionalProperties: false,
+    },
+  } as const satisfies FastifySchema,
 }

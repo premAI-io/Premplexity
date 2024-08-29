@@ -10,17 +10,25 @@ type Props = {
   webSearchEngineType: string | null,
   sources: ThreadMessageComplete["sources"]["pages"]
   isCurrentMessage?: boolean
+  threadId: number
+  messageId: number
 }
 
 const SourcesSection = ({
   loading,
   webSearchEngineType,
   sources,
-  isCurrentMessage
+  isCurrentMessage,
+  threadId,
+  messageId
 }: Props) => {
+  if (!sources.length && !loading) {
+    return null
+  }
+
   return (
     <>
-      <div class={"flex-container !gap-x-3 text-sm"}>
+      <div id={"thread-sources-title"} class={"flex-container !gap-x-3 text-sm"}>
         <div class={"font-semibold"}>Sources</div>
         <div class={"flex-container !gap-x-2 text-gray-400"}>
           <Icon name="globe" viewBox="0 0 16 16" />
@@ -64,6 +72,8 @@ const SourcesSection = ({
           {
             sources.length > 5 ?
               <SourceCard
+                threadId={threadId}
+                messageId={messageId}
                 isViewMore
               />
             : null

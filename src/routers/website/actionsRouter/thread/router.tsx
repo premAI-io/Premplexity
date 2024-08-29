@@ -20,6 +20,7 @@ export const router = createRouter((server) => {
 
   const sseComponent = container.resolve<WebappSSEManager>(WebappSSEManager.token)
   const threadCoreService = container.resolve<ThreadCore>(ThreadCore.token)
+  const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
 
   const searchHandler = ({ query, model, thread, searchEngine }: {
     query: string
@@ -51,7 +52,6 @@ export const router = createRouter((server) => {
   }, async (req, res) => {
     const { model, searchEngine, message: bodyMessage, inputPrompt } = req.body
     const userId = req.callerUser.id
-    const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
     const message = inputPrompt.length ? inputPrompt : bodyMessage
 
     if (!message) {
@@ -113,7 +113,6 @@ export const router = createRouter((server) => {
   }, async (req, res) => {
     const { targetThreadId } = req.params
     const userId = req.callerUser.id
-    const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
     await threadsService.deleteThread(userId, targetThreadId)
 
     return res.redirect("/")
@@ -130,7 +129,6 @@ export const router = createRouter((server) => {
       return res.status(400).send("Message is required")
     }
 
-    const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
     const thread = await threadsService.getOrFail(threadId)
 
     searchHandler({
@@ -148,6 +146,8 @@ export const router = createRouter((server) => {
           sources={[]}
           loading={true}
           isCurrentMessage={true}
+          threadId={thread.id}
+          messageId={0}
         />
         <TextSection
           assistantModel={model}
