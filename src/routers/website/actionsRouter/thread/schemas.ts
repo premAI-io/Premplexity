@@ -9,10 +9,16 @@ export const schemas = {
         model: { type: "string" },
         searchEngine: { type: "string" },
         message: { type: "string" },
-        inputPrompt: { type: "string" }
+        inputPrompt: { type: "string" },
+        search: {
+          anyOf: [
+            { type: "string" },
+            { type: "array", items: { type: "string" } }
+          ]
+        }
       },
       required: ["model", "searchEngine", "inputPrompt"],
-      additionalProperties: true
+      additionalProperties: false
     }
   } as const satisfies FastifySchema,
   [ROUTE.DELETE]: {
@@ -40,10 +46,16 @@ export const schemas = {
         model: { type: "string" },
         searchEngine: { type: "string" },
         message: { type: "string" },
-        inputPrompt: { type: "string" }
+        inputPrompt: { type: "string" },
+        search: {
+          anyOf: [
+            { type: "string" },
+            { type: "array", items: { type: "string" } }
+          ]
+        }
       },
       required: ["model", "searchEngine", "inputPrompt"],
-      additionalProperties: true
+      additionalProperties: false
     }
   } as const satisfies FastifySchema,
 }

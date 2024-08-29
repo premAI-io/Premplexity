@@ -36,7 +36,6 @@ declare global {
     onSelectSearchAfterRequest: (event: CustomEvent) => void
     onSelectSearchItemClick: (options: OnSelectSearchItemClickOptions) => void
     onSelectSearchBlur: (value: string, options: string, id: string) => void
-    handleSelectSearchSwap: (dropdownId: string, inputTargetId: string) => void
     // dropdown
     closeDropdown: (dropdownId: string) => void
     closeDropdowns: (container?: HTMLElement, exclude?: string) => void
@@ -426,39 +425,6 @@ window.onSelectSearchItemClick = (options: OnSelectSearchItemClickOptions) => {
   // dispatch change event
   inputHidden?.dispatchEvent(new Event("change"))
   inputText?.dispatchEvent(new Event("change"))
-}
-
-window.handleSelectSearchSwap = (dropdownId: string, inputTargetId: string) => {
-  const dropdown = document.getElementById(dropdownId)
-  if (dropdown) {
-    const input = document.getElementById(inputTargetId) as HTMLInputElement
-    const obj: {
-      left: string
-      top: string
-      swappedToTop?: boolean
-      currentItems?: number
-      itemHeight?: number
-    } = { left: dropdown.style.left, top: dropdown.style.top }
-
-    const swappedToTop = dropdown.getAttribute("data-position-top") === "true"
-    if (swappedToTop) {
-      const currentItems = dropdown.querySelector(".dropdown__items")?.children.length || 0
-      obj.swappedToTop = true
-      obj.currentItems = currentItems
-      const firstEl = dropdown.querySelector(".dropdown__item") as HTMLElement
-      if (firstEl) {
-        const height = firstEl.clientHeight
-        const margin = parseInt(getComputedStyle(firstEl).marginBottom) + parseInt(getComputedStyle(firstEl).marginTop)
-        obj.itemHeight = height + margin
-      } else {
-        obj.itemHeight = 0
-      }
-    }
-
-    if (input) {
-      input.value = JSON.stringify(obj)
-    }
-  }
 }
 
 window.hideSelect = (event: CustomEvent, selectId: string) => {

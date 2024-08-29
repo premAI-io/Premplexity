@@ -9,12 +9,19 @@ const NewThreadButton = ({
   swapOOB
 }: Props) => {
   return (
-    <a href="/" hx-target="#page" hx-swap="outerHTML" hx-boost="true" hx-push-url="true" {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}>
-      <Button theme="secondary" type="button">
-        <Icon name="plus" />
-        New
-      </Button>
-    </a>
+    <Button
+      hx-get="/"
+      hx-target="#page"
+      hx-swap="outerHTML"
+      theme="secondary"
+      type="submit"
+      hx-include="input[name='model'],input[name='searchEngine']"
+      hx-push-url="/"
+      {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
+    >
+      <Icon name="plus" />
+      New
+    </Button>
   )
 }
 

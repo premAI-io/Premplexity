@@ -107,7 +107,7 @@ const SelectSearchable = ({
             {...htmxProps}
             hx-swap="none"
             onclick="event.stopPropagation()"
-            onfocus={`closeDropdowns(); openDropdown('${dropdownId}'); document.getElementById('${inputId}-input-width').value = this.clientWidth + 2; handleSelectSearchSwap('${dropdownId}', '${inputId}-dropdown-position')`}
+            onfocus={`closeDropdowns(); openDropdown('${dropdownId}');`}
             oninput={`onSelectSearchBeforeRequest(event);onSelectSearchItemClick({ id: "${id}", label: event.target.value, value: "0" });`}
             onblur={`onSelectSearchBlur(this.value, '${JSON.stringify(options)}', "${id}");`}
             autocomplete="off"
@@ -115,8 +115,6 @@ const SelectSearchable = ({
             readonly={readonly}
           />
         </div>
-        <input id={`${inputId}-input-width`} type="hidden" name={`${name}SelectWidth`} value={"0"} />
-        <input id={`${inputId}-dropdown-position`} type="hidden" name={`${name}DropdownPosition`} />
 
         <DropdownTrigger
           class="select__icon"

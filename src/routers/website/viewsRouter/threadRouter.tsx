@@ -13,14 +13,19 @@ export const router: FastifyPluginCallback = (server, _, done) => {
     const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
     const threadsList = await threadsService.getThreadsGroupedByDate(userId)
 
+    const query = req.query as {
+      model?: string,
+      searchEngine?: string
+    }
+
     const premAI = container.resolve<PremAI>(PremAI.token)
-    const availableModels = await premAI.getAvailableModels()
+    const availableModels = await premAI.getAvailableModels(query?.model)
 
     return res.view(
       <NewThreadView
         threadsList={threadsList}
         availableModels={availableModels}
-        availableSources={WEB_SEARCH_ENGINE_OPTIONS()}
+        availableSources={WEB_SEARCH_ENGINE_OPTIONS(query?.searchEngine)}
       />, BaseLayout)
   })
 
