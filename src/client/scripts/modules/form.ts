@@ -222,7 +222,7 @@ window.onFormUpdate = (formOrId: HTMLFormElement | string) => {
     submitButton?.removeAttribute("disabled")
   } else {
     form.removeAttribute("data-form-changed")
-    let canDisableSubmit = true
+    const canDisableSubmit = true
 
     if (canDisableSubmit) {
       submitButton?.setAttribute("disabled", "")

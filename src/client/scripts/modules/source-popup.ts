@@ -2,7 +2,9 @@ import { createSourcePopupElement } from "$utils/thread"
 
 const init = () => {
   const triggers = document.querySelectorAll("[data-source-popup]")
-
+  document.getElementById("thread-body")?.parentNode?.addEventListener("scroll", () => {
+    document.querySelectorAll(".source-popup__container").forEach(popup => popup.remove())
+  })
   triggers.forEach((trigger) => {
     new SourcePopup(trigger as HTMLElement)
   })
@@ -14,7 +16,11 @@ class SourcePopup {
   private timeoutId: number | null = null
 
   constructor(parent: HTMLElement) {
-    const popupData = JSON.parse((parent.getAttribute("data-source-popup") as string).replace(/&quot;/g, "\""))
+    const popupData = JSON.parse(
+      (parent.getAttribute("data-source-popup") as string)
+      .replace(/\n/g, "\\n")
+      .replace(/&quot;/g, "\"")
+    )
     this.popup = createSourcePopupElement(popupData)
     this.parent = parent
     this.addListeners()
