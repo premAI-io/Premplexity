@@ -1,0 +1,52 @@
+name: Release to production
+
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+on:
+  push:
+    tags: ["v*"]
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install AWS CLI
+        env:
+          AWS_DEFAULT_REGION: eu-central-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install awscli -y
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set region $AWS_DEFAULT_REGION
+
+      - name: Build and push Docker image of PremPlexity
+        env:
+          ECR_ENDPOINT_PREMPLEXITY: 283115397952.dkr.ecr.eu-central-1.amazonaws.com/service-premplexity-ecr
+          IMAGE_TAG: ${{ github.ref_name }}
+        run: |
+          aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $ECR_ENDPOINT_PREMPLEXITY
+
+          docker pull $ECR_ENDPOINT_PREMPLEXITY:latest || true
+          docker build --cache-from $ECR_ENDPOINT_PREMPLEXITY:latest -t $ECR_ENDPOINT_PREMPLEXITY:$IMAGE_TAG -t $ECR_ENDPOINT_PREMPLEXITY:latest .
+
+          docker push $ECR_ENDPOINT_PREMPLEXITY:$IMAGE_TAG
+          docker push $ECR_ENDPOINT_PREMPLEXITY:latest
+
+      - name: Update PremPlexity ECS service
+        env:
+          ECS_CLUSTER_NAME: cluster-production
+          ECS_SERVICE_NAME_PREMPLEXITY: service-premplexity
+        run: |
+          aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME_PREMPLEXITY --force-new-deployment
