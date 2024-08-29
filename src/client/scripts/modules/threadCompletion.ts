@@ -130,6 +130,7 @@ export const handleThreadSSEMessage = (
         const el = copyButton.querySelector("button")
         el?.setAttribute("data-value", completeText)
       }
+      initSourcesPopup()
       addPreCopyButtons()
       break
     }
@@ -169,7 +170,6 @@ export const handleThreadSSEMessage = (
         textContainer.classList.add("text-red-500")
         textContainer.innerHTML = content.data.error
       }
-
       initSourcesPopup()
       addPreCopyButtons()
       const currentMessages = threadContainer.querySelectorAll("[data-current-message]")
@@ -193,6 +193,7 @@ export const formatMarkdown = () => {
         return
       }
       textContainer.innerHTML = markdownToHTML(textContainer.innerHTML.replace(/&lt;/g, "<").replace(/&gt;/g, ">"))
+      initSourcesPopup()
       textContainer.setAttribute("markdown-formatted", "true")
     }
   })

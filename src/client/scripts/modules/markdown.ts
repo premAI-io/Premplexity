@@ -1,6 +1,5 @@
 import markdownit from "markdown-it"
 import hljs from "highlight.js"
-import initSourcesPopup from "src/client/scripts/modules/source-popup"
 
 const md = markdownit()
 
@@ -20,7 +19,6 @@ export const markdownToHTML = (markdown: string): string => {
   })
 
   const rendered = md.render(markdown)
-  initSourcesPopup()
   return rendered
 }
 

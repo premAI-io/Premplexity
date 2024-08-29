@@ -11,7 +11,6 @@ import { ToastType, createToast } from "src/client/scripts/modules/toast"
 import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
 import { onInputPromptInput, onInputPromptKeydown, onPromptSubmit } from "src/client/scripts/modules/input-prompt"
 import { formatMarkdown, handleThreadSSEMessage, scrollToBottom } from "src/client/scripts/modules/threadCompletion"
-import initSourcesPopup from "src/client/scripts/modules/source-popup"
 import { SelectOption } from "$templates/components/SelectSearchable"
 import { addPreCopyButtons } from "src/client/scripts/modules/markdown"
 
@@ -97,7 +96,6 @@ window.addEventListener("DOMContentLoaded", () => {
   let buttonLoadingTimeout: number
   initTooltips()
   initTextEllipsis()
-  initSourcesPopup()
   formatMarkdown()
   addPreCopyButtons()
   scrollToBottom()
@@ -113,7 +111,6 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("htmx:afterSwap", () => {
     initTextEllipsis()
     initTooltips()
-    initSourcesPopup()
     formatMarkdown()
     addPreCopyButtons()
 
