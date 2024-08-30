@@ -23,4 +23,28 @@ export const schemas = {
       additionalProperties: false,
     },
   } as const satisfies FastifySchema,
+  [ROUTE.IMAGES_LISTING]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" },
+        targetMessageId: { type: "number" },
+        targetImageOrder: { type: "number" },
+      },
+      required: ["targetThreadId", "targetMessageId", "targetImageOrder"],
+      additionalProperties: false,
+    },
+  } as const satisfies FastifySchema,
+  [ROUTE.IMAGE]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" },
+        targetMessageId: { type: "number" },
+        targetImageOrder: { type: "number" },
+      },
+      required: ["targetThreadId", "targetMessageId", "targetImageOrder"],
+      additionalProperties: false,
+    },
+  } as const satisfies FastifySchema,
 }

@@ -107,7 +107,9 @@ const partialRoutersConfig: {
 type PartialsRoutersParams = {
   thread: {
     DELETE_MODAL: { targetThreadId: number },
-    SOURCES_MODAL: { targetThreadId: number, targetMessageId: number }
+    SOURCES_MODAL: { targetThreadId: number, targetMessageId: number },
+    IMAGES_LISTING: { targetThreadId: number, targetMessageId: number, targetImageOrder: number },
+    IMAGE: { targetThreadId: number, targetMessageId: number, targetImageOrder: number },
   }
 }
 

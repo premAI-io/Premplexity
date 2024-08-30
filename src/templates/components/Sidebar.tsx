@@ -20,6 +20,7 @@ const Sidebar = ({
     <div
       id="sidebar"
       class="sidebar"
+      text-ellipsis-exclude
       {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
     >
       <div class={"sidebar__head"}>

@@ -21,7 +21,7 @@
 }
 
 .image-card-container {
-  @apply w-full h-[75px] border border-gray-600 rounded-[4px];
+  @apply w-full h-[75px] border border-gray-600 rounded-[4px] cursor-pointer;
 }
 
 #thread-text .source {

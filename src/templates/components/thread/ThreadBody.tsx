@@ -48,6 +48,8 @@ const ThreadBody = ({
               loading
               isCurrentMessage
               images={[]}
+              threadId={thread.id}
+              messageId={0}
             />
             <TextSection
               loading
@@ -70,6 +72,8 @@ const ThreadBody = ({
                     />
                     <ImagesSection
                       images={message.sources.images}
+                      threadId={thread.id}
+                      messageId={message.id}
                     />
                     <TextSection
                       assistantModel={message.assistantModel}
@@ -93,6 +97,8 @@ const ThreadBody = ({
                   loading={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
                   isCurrentMessage={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
                   images={currentMessage.sources.images}
+                  threadId={thread.id}
+                  messageId={currentMessage.id}
                 />
                 <TextSection
                   loading={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}

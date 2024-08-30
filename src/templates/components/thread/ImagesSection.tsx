@@ -6,12 +6,16 @@ type Props = {
   loading?: boolean,
   images: ThreadMessageComplete["sources"]["images"]
   isCurrentMessage?: boolean
+  threadId: number
+  messageId: number
 }
 
 const ImagesSection = ({
   loading,
   images,
-  isCurrentMessage
+  isCurrentMessage,
+  threadId,
+  messageId
 }: Props) => {
   if (!loading && images.length === 0) {
     return null
@@ -42,6 +46,9 @@ const ImagesSection = ({
               images.slice(0, 6).map(image => (
                 <ThreadImageCard
                   image={image.thumbnail}
+                  messageId={messageId}
+                  threadId={threadId}
+                  imageOrder={image.order}
                 />
               ))
           }
