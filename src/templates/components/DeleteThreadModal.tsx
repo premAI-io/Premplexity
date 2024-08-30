@@ -11,6 +11,7 @@ const DeleteThreadModal = ({
 }: Props) => {
   return (
     <Modal
+      id="delete-thread-modal"
       ariaLabelledby="delete-thread-modal"
       title={"Delete thread"}
       isOpen={true}
@@ -26,8 +27,10 @@ const DeleteThreadModal = ({
         <form
           method="post"
           action={getActionPath("thread", "DELETE", { targetThreadId: threadId })}
+          hx-boost="true"
+          hx-push-url="false"
           {...{
-            ["hx-on::after-request"]: "closeModal('user-block-modal')"
+            ["hx-on::after-request"]: "closeModal('delete-thread-modal')"
           }}
         >
           <Button type="submit" theme="danger">

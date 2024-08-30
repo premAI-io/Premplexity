@@ -128,21 +128,16 @@ window.addEventListener("DOMContentLoaded", () => {
           if (activeThreadRect.top < sidebarRect.top || activeThreadRect.bottom > sidebarRect.bottom) {
             activeThread.scrollIntoView()
           }
-        } else {
-          sidebar.scrollTo(0, 0)
         }
       }
     }
   })
 
   window.addEventListener("htmx:afterSettle", (event) => {
-    // we don't have to scroll to bottom if the user is opening a modal
     const target = (event as CustomEvent).detail.target as HTMLElement
-    if (target.id === "modal") {
-      return
+    if (target.id === "thread-body" || target.id === "page") {
+      scrollToBottom()
     }
-
-    scrollToBottom()
   })
 
   document.body.addEventListener("afterImageSwap", () => {

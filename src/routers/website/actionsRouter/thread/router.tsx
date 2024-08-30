@@ -1,6 +1,6 @@
 import { schemas } from "$routers/website/actionsRouter/thread/schemas"
 import { ROUTE } from "$routers/website/actionsRouter/thread/types"
-import { createRouter } from "../../utils"
+import { createRouter, getHtmxBrowserUrl } from "../../utils"
 import ThreadsService, { ThreadComplete } from "$services/ThreadsService"
 import { container } from "tsyringe"
 import Sidebar from "$templates/components/Sidebar"
@@ -114,6 +114,30 @@ export const router = createRouter((server) => {
     const { targetThreadId } = req.params
     const userId = req.callerUser.id
     await threadsService.deleteThread(userId, targetThreadId)
+
+    const currentUrl = getHtmxBrowserUrl(req)
+    if (currentUrl) {
+      const { pathname } = currentUrl
+
+      if (pathname.startsWith(routerPrefix)) {
+        if (pathname !== `${routerPrefix}/${targetThreadId}`) {
+          const threadsList = await threadsService.getThreadsGroupedByDate(userId)
+          const activeThreadId = pathname.split("/").pop()
+
+          return res
+            .headers({
+              "HX-Retarget": "#sidebar",
+              "HX-Reswap": "outerHTML"
+            })
+            .view(
+              <Sidebar
+                activeThreadId={activeThreadId ? parseInt(activeThreadId) : undefined}
+                threadsList={threadsList}
+              />
+            )
+        }
+      }
+    }
 
     return res.redirect("/")
   })

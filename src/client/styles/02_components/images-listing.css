@@ -1,5 +1,5 @@
 .images-listing__overlay {
-  @apply fixed top-0 left-0 w-full h-full bg-gray-800 z-10;
+  @apply fixed top-0 left-0 w-full h-full bg-gray-800 z-10 select-none;
 }
 
 .images-listing__header {
@@ -50,7 +50,7 @@
 }
 
 .image-list__item.active {
-  @apply p-[2px] cursor-default;
+  @apply p-[2px] cursor-default pointer-events-none;
   background: var(--gradient--primary);
 
   > img {
