@@ -57,3 +57,17 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.sources-modal__item-container {
+  @apply w-full p-2 border border-gray-600 rounded-[4px] bg-gray-800 cursor-pointer
+}
+
+.sources-modal__item-text {
+  @apply text-gray-300 text-[14px] text-left overflow-hidden;
+  line-height: 150%;
+  letter-spacing: -0.14px;
+  line-clamp: 6;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}

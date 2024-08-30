@@ -3,7 +3,7 @@ import classNames from "classnames"
 
 import Icon from "$templates/components/Icon"
 
-type ModalSize = "sm" | "md"
+type ModalSize = "sm" | "md" | "lg"
 export type ModalProps = Omit<JSX.HtmlTag, "title"> &
   PropsWithChildren<{
     ariaLabelledby?: string

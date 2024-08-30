@@ -8,6 +8,7 @@ export type SearchResults = {
   pages: Page[],
   images: Image[],
   relatedSearches: RelatedSearch[]
+  messageId: number
 }
 
 export type Page = {
@@ -41,7 +42,7 @@ export default class SerpAPI {
     this.#apiKey = configs.env.SERPAPI_KEY
   }
 
-  private _parseGoogle(data: BaseResponse, max_results?: number): SearchResults {
+  private _parseGoogle(data: BaseResponse, messageId: number, max_results?: number): SearchResults {
     const out: SearchResults = {
       pages: data.organic_results?.reduce((acc: Page[], r: Record<string, string>, i: number) => {
         if (max_results && i >= max_results) {
@@ -77,13 +78,14 @@ export default class SerpAPI {
           link: r.link
         })
         return acc
-      }, []) || []
+      }, []) || [],
+      messageId
     }
 
     return out
   }
 
-  private _parseDuckDuckGo(data: BaseResponse, max_results?: number): SearchResults {
+  private _parseDuckDuckGo(data: BaseResponse, messageId: number, max_results?: number): SearchResults {
     const out: SearchResults = {
       pages: data.organic_results?.reduce((acc: Page[], r: Record<string, string>, i: number) => {
         if (max_results && i >= max_results) {
@@ -119,13 +121,14 @@ export default class SerpAPI {
           link: r.link
         })
         return acc
-      }, []) || []
+      }, []) || [],
+      messageId
     }
 
     return out
   }
 
-  private _parseGoogleNews(data: BaseResponse, max_results?: number): SearchResults {
+  private _parseGoogleNews(data: BaseResponse, messageId: number, max_results?: number): SearchResults {
     const out: SearchResults = {
       pages: data.organic_results?.reduce((acc: Page[], r: Record<string, string>, i: number) => {
         if (max_results && i >= max_results) {
@@ -161,14 +164,15 @@ export default class SerpAPI {
           link: r.link
         })
         return acc
-      }, []) || []
+      }, []) || [],
+      messageId
     }
 
     return out
 
   }
 
-  async search({ query, engine, max_results }: { query: string, engine: WEB_SEARCH_ENGINE, max_results?: number }): Promise<SearchResults> {
+  async search({ query, engine, max_results, messageId }: { query: string, engine: WEB_SEARCH_ENGINE, max_results?: number, messageId: number }): Promise<SearchResults> {
     let serpAPIEngine
 
     switch (engine) {
@@ -218,9 +222,9 @@ export default class SerpAPI {
 
     switch (engine) {
       case WEB_SEARCH_ENGINE.GOOGLE_SEARCH:
-        return this._parseGoogle(data, max_results)
+        return this._parseGoogle(data, messageId, max_results)
       case WEB_SEARCH_ENGINE.DUCK_DUCK_GO:
-        return this._parseDuckDuckGo(data, max_results)
+        return this._parseDuckDuckGo(data, messageId, max_results)
       // case WEB_SEARCH_ENGINE.GOOGLE_NEWS:
       //   return this._parseGoogleNews(data, max_results)
     }

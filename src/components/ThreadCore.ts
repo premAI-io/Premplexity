@@ -23,6 +23,7 @@ export type EndCallbackData = {
   error: string | null,
   improvedQuery?: string,
   followUpQuestions?: string[]
+  messageId: number
 }
 
 export type SearchCallbackParams = {
@@ -322,6 +323,7 @@ ${params.context}
         query: improvedQuery || params.query,
         engine: params.searchEngine,
         max_results: params.maxResults,
+        messageId: message.id,
       })
 
       // Save search pages as message sources
@@ -396,6 +398,7 @@ ${params.context}
       content: null,
       error: null,
       improvedQuery,
+      messageId: message.id
     }
 
     if (error) {

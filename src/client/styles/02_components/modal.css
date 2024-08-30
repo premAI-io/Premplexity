@@ -64,3 +64,9 @@
     @apply max-w-[540px];
   }
 }
+
+.modal__wrap--lg {
+  .modal {
+    @apply max-w-[613px];
+  }
+}

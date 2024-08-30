@@ -106,7 +106,8 @@ const partialRoutersConfig: {
 
 type PartialsRoutersParams = {
   thread: {
-    DELETE_MODAL: { targetThreadId: number }
+    DELETE_MODAL: { targetThreadId: number },
+    SOURCES_MODAL: { targetThreadId: number, targetMessageId: number }
   }
 }
 

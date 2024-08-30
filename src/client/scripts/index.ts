@@ -134,7 +134,13 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   })
 
-  window.addEventListener("htmx:afterSettle", () => {
+  window.addEventListener("htmx:afterSettle", (event) => {
+    // we don't have to scroll to bottom if the user is opening a modal
+    const target = (event as CustomEvent).detail.target as HTMLElement
+    if (target.id === "modal" || target.querySelector("#modal")) {
+      return
+    }
+
     scrollToBottom()
   })
 
