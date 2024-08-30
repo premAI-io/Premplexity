@@ -96,9 +96,14 @@ export const handleThreadSSEMessage = (
 
         const images = content.data.images
         images.slice(0, 6).forEach(image => {
-          const imageCard = createImageCard(image)
+          const imageCard = createImageCard({
+            targetThreadId: threadId,
+            targetMessageId: content.data.messageId,
+            image
+          })
           imagesContainer.insertAdjacentHTML("beforeend", imageCard)
         })
+        htmx.process(imagesContainer)
       } else {
         const titleContainer = document.getElementById("thread-images-title")
         if (titleContainer) {

@@ -1,0 +1,71 @@
+.images-listing__overlay {
+  @apply fixed top-0 left-0 w-full h-full bg-gray-800 z-10;
+}
+
+.images-listing__header {
+  @apply flex justify-between items-center p-4 border-b border-gray-600 h-[73px];
+}
+
+.images-listing__content {
+  @apply flex px-4 py-[10px];
+  height: calc(100% - 73px);
+}
+
+.images-listing__main-image {
+  @apply flex-1 h-full flex items-center justify-center pr-4;
+
+  > .animate-spin {
+    @apply hidden;
+  }
+}
+
+.images-listing__main-image.loading {
+  > img {
+    @apply hidden;
+  }
+
+  > .animate-spin {
+    @apply block;
+  }
+}
+
+.images-list__container {
+  @apply grid grid-cols-2 gap-3 overflow-auto;
+}
+
+.image-list__column {
+  @apply flex flex-col gap-3;
+}
+
+.image-list__item {
+  @apply w-[145px] rounded-[4px] overflow-hidden cursor-pointer p-[2px] bg-transparent;
+
+  > img {
+    @apply rounded-[4px] border border-transparent;
+  }
+
+  > .animate-spin {
+    @apply hidden;
+  }
+}
+
+.image-list__item.active {
+  @apply p-[2px] cursor-default;
+  background: var(--gradient--primary);
+
+  > img {
+    @apply rounded-[2px] border border-gray-800;
+  }
+}
+
+.image-list__item.loading {
+  @apply w-[145px] flex items-center justify-center h-[90px];
+
+  > img {
+    @apply hidden;
+  }
+
+  > .animate-spin {
+    @apply block;
+  }
+}

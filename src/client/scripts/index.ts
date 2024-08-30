@@ -13,6 +13,7 @@ import { onInputPromptInput, onInputPromptKeydown, onPromptSubmit } from "src/cl
 import { formatMarkdown, handleThreadSSEMessage, scrollToBottom } from "src/client/scripts/modules/threadCompletion"
 import { SelectOption } from "$templates/components/SelectSearchable"
 import { addPreCopyButtons } from "src/client/scripts/modules/markdown"
+import { afterImageSwap } from "src/client/scripts/modules/images-listing"
 
 type OnSelectSearchItemClickOptions = {
   id: string
@@ -137,11 +138,16 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("htmx:afterSettle", (event) => {
     // we don't have to scroll to bottom if the user is opening a modal
     const target = (event as CustomEvent).detail.target as HTMLElement
-    if (target.id === "modal" || target.querySelector("#modal")) {
+    if (target.id === "modal") {
       return
     }
 
     scrollToBottom()
+  })
+
+  document.body.addEventListener("afterImageSwap", () => {
+    console.log("afterImageSwap")
+    afterImageSwap()
   })
 
   document.body.addEventListener("showSuccessToast", (event) => {

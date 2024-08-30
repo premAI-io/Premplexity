@@ -121,9 +121,22 @@ export const createViewMoreCard = ({
 
 // --------------- IMAGE CARD TEMPLATES ---------------
 
-export const createImageCard = (image: Image) => {
+export const createImageCard = ({
+  targetThreadId,
+  targetMessageId,
+  image
+}: {
+  targetThreadId: number,
+  targetMessageId: number,
+  image: Image
+}) => {
   const template = `
-    <div class="image-card-container">
+    <div
+      class="image-card-container"
+      hx-get="/partials/thread/${targetThreadId}/${targetMessageId}/${image.order}/images-listing"
+      hx-target="#modal"
+      hx-swap="innerHTML"
+    >
       <img src="${image.thumbnail}" class="h-full w-full object-center object-cover" />
     </div>
   `
