@@ -64,4 +64,6 @@ export const onPromptSubmit = ({
     document.getElementById("last-message")?.removeAttribute("id")
     document.getElementById("edit-message-button")?.remove()
   }
+
+  document.getElementById("follow-up-questions")?.remove()
 }
