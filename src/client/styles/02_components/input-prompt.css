@@ -8,3 +8,7 @@
   resize-none min-h-[calc(100%-0.5rem)] max-h-[calc(100%-0.2rem)]
   bg-transparent text-gray-100 text-base outline-none;
 }
+
+.input-prompt__inner-container[data-response-loading] {
+  @apply pointer-events-none;
+}

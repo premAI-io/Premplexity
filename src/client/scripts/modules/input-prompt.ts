@@ -29,6 +29,7 @@ export const onInputPromptKeydown = (event: KeyboardEvent) => {
   if (event.key === "Enter") {
     if (!event.shiftKey) {
       if (inputPrompt.value.trim().length) {
+        inputPrompt.setAttribute("data-response-loading", "true")
         htmx.trigger(form, "submit", {})
         inputPrompt.blur()
       }
@@ -36,13 +37,19 @@ export const onInputPromptKeydown = (event: KeyboardEvent) => {
   }
 }
 
-export const onPromptSubmit = () => {
+export const onPromptSubmit = ({
+  newMessageInserted
+ }: {
+  newMessageInserted: boolean
+}) => {
   const prompt = document.getElementById("input-prompt-inner-container") as HTMLTextAreaElement | null
   if (!prompt) {
     return
   }
 
   prompt.value = ""
+  prompt.setAttribute("data-response-loading", "true")
+
   const inputPromptSubmit = document.getElementById("input-prompt-submit")
   if (!inputPromptSubmit) {
     return
@@ -51,4 +58,10 @@ export const onPromptSubmit = () => {
   inputPromptSubmit.setAttribute("disabled", "true")
   inputPromptSubmit.setAttribute("disabled", "true")
   inputPromptSubmit.classList.add("btn--disabled")
+
+  document.getElementById("redo-button")?.remove()
+  if (newMessageInserted) {
+    document.getElementById("last-message")?.removeAttribute("id")
+    document.getElementById("edit-message-button")?.remove()
+  }
 }

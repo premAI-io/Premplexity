@@ -113,6 +113,10 @@
   @apply pointer-events-none bg-gray-400 border-gray-400;
 }
 
+button:disabled {
+  @apply opacity-50;
+}
+
 .btn__spinner {
   @apply hidden z-[1] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
@@ -127,52 +131,4 @@
   .btn__content {
     @apply invisible;
   }
-
-  /* &.btn--primary {
-    @apply bg-primary-900;
-
-    &.btn--outline {
-      @apply bg-transparent text-primary-900;
-    }
-  }
-
-  &.btn--secondary {
-    @apply bg-gray-200;
-
-    &.btn--outline {
-      @apply bg-transparent text-gray-200;
-    }
-  }
-
-  &.btn--danger {
-    @apply bg-red-800;
-
-    &.btn--outline {
-      @apply bg-transparent text-red-800;
-    }
-  }
-
-  &.btn--success {
-    @apply bg-green-800;
-
-    &.btn--outline {
-      @apply bg-transparent text-green-800;
-    }
-  }
-
-  &.btn--warning {
-    @apply bg-orange-800;
-
-    &.btn--outline {
-      @apply bg-transparent text-orange-800;
-    }
-  }
-
-  &.btn--info {
-    @apply bg-gray-600;
-
-    &.btn--outline {
-      @apply bg-transparent text-gray-600;
-    }
-  } */
 }

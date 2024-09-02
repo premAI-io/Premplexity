@@ -1,7 +1,7 @@
 import SerpAPI, { SearchResults } from "$components/SerpAPI"
 import { container, inject, singleton } from "tsyringe"
 import ThreadsService, { ThreadComplete } from "$services/ThreadsService"
-import ThreadMessagesService from "$services/ThreadMessagesService"
+import ThreadMessagesService, { ThreadMessageComplete } from "$services/ThreadMessagesService"
 import PremAI from "$components/PremAI"
 import Configs from "$components/Configs"
 import WEB_SEARCH_ENGINE from "$types/WEB_SEARCH_ENGINE"
@@ -263,7 +263,8 @@ ${params.context}
       query: string
       maxResults?: number
       model: string
-      cb?: SearchCallback
+      cb?: SearchCallback,
+      currentMessage?: ThreadMessageComplete
     } & (
         {
           sourceEngineType: SOURCE_ENGINE_TYPE.RAG,
@@ -285,6 +286,9 @@ ${params.context}
       threadId: params.thread.id,
       userQuery: params.query,
       assistantModel: params.model,
+      ...params.currentMessage && {
+        order: params.currentMessage.order
+      }
     })
 
     let improvedQuery: string | undefined

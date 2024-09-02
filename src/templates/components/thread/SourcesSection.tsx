@@ -6,6 +6,7 @@ import { WEB_SEARCH_ENGINE_OPTIONS } from "$types/WEB_SEARCH_ENGINE"
 import classNames from "classnames"
 
 type Props = {
+  lastMessage?: boolean
   loading?: boolean,
   webSearchEngineType: string | null,
   sources: ThreadMessageComplete["sources"]["pages"]
@@ -15,6 +16,7 @@ type Props = {
 }
 
 const SourcesSection = ({
+  lastMessage,
   loading,
   webSearchEngineType,
   sources,
@@ -28,25 +30,46 @@ const SourcesSection = ({
 
   return (
     <>
-      <div id={"thread-sources-title"} class={"flex-container !gap-x-3 text-sm"}>
+      <div
+        {...lastMessage ? {
+          id: "thread-sources-title"
+        } : {}}
+        class={"flex-container !gap-x-3 text-sm"}
+      >
         <div class={"font-semibold"}>Sources</div>
         <div class={"flex-container !gap-x-2 text-gray-400"}>
           <Icon name="globe" viewBox="0 0 16 16" />
           <span safe>{WEB_SEARCH_ENGINE_OPTIONS().find(e => e.value === webSearchEngineType)?.label}</span>
         </div>
       </div>
-      <div id="thread-sources-container" class={"pt-2"} {...isCurrentMessage ? {
-        "data-current-message": ""
-        } : {}
-      }>
-        <div id="thread-sources-loader" class={classNames({
-          "!hidden": !loading
-        })}>
+      <div
+        {...lastMessage ? {
+          id: "thread-sources-container"
+        } : {}}
+        class={"pt-2"}
+        {...isCurrentMessage ? {
+          "data-current-message": ""
+          } : {}
+        }
+      >
+        <div
+          {...lastMessage ? {
+            id: "thread-sources-loader"
+          } : {}}
+          class={classNames({
+            "!hidden": !loading
+          })}
+        >
           <SourcesLoading />
         </div>
-        <div id="thread-sources" class={classNames("thread_sources_grid", {
-          "!hidden": loading
-        })}>
+        <div
+          {...lastMessage ? {
+            id: "thread-sources"
+          } : {}}
+          class={classNames("thread_sources_grid", {
+            "!hidden": loading
+          })}
+        >
           {
             sources.length > 5 ?
             sources.slice(0, 4).map(({ snippet, link, favicon, order, title }) => (

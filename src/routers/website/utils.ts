@@ -65,6 +65,8 @@ type ActionRoutersParams = {
   thread: {
     SEND_MESSAGE: { targetThreadId: number }
     DELETE: { targetThreadId: number }
+    RETRY: { targetThreadId: number }
+    EDIT_MESSAGE: { targetThreadId: number }
   }
 }
 

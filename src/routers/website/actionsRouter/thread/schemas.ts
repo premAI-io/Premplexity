@@ -58,4 +58,49 @@ export const schemas = {
       additionalProperties: false
     }
   } as const satisfies FastifySchema,
+  [ROUTE.RETRY]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" }
+      },
+      required: ["targetThreadId"],
+      additionalProperties: false
+    },
+    body: {
+      type: "object",
+      properties: {
+        model: { type: "string" },
+        searchEngine: { type: "string" },
+        search: {
+          anyOf: [
+            { type: "string" },
+            { type: "array", items: { type: "string" } }
+          ]
+        },
+        inputPrompt: { type: "string" }
+      },
+      additionalProperties: false
+    }
+  } as const satisfies FastifySchema,
+  [ROUTE.EDIT_MESSAGE]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" }
+      },
+      required: ["targetThreadId"],
+      additionalProperties: false
+    },
+    querystring: {
+      type: "object",
+      properties: {
+        message: { type: "string" },
+        model: { type: "string" },
+        searchEngine: { type: "string" },
+      },
+      required: ["message"],
+      additionalProperties: false
+    }
+  } as const satisfies FastifySchema
 }

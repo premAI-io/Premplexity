@@ -24,6 +24,8 @@ const ThreadBody = ({
   skeletonMessages
 }: Props) => {
 
+  const lastMessageId = thread.messages[thread.messages.length - 1]?.currentMessage.id
+
   return (
     <div class={"overflow-y-auto scrollbar flex-1"}>
       <div
@@ -35,7 +37,7 @@ const ThreadBody = ({
         {
           loading && skeletonMessages && thread.messages.length === 0 ?
           <div>
-            <UserMessage content={skeletonMessages.content} />
+            <UserMessage content={skeletonMessages.content} threadId={thread.id} />
             <SourcesSection
               threadId={thread.id}
               messageId={0}
@@ -52,39 +54,20 @@ const ThreadBody = ({
               messageId={0}
             />
             <TextSection
+              threadId={thread.id}
               loading
               isCurrentMessage
               assistantModel={skeletonMessages.assistantModel}
+              lastMessage
             />
           </div>
           :
-          thread.messages.map(({ history, currentMessage }) => (
+          thread.messages.map(({ currentMessage }) => (
             <>
-              {
-                history.slice(0, history.length - 1).map(message => (
-                  <div>
-                    <UserMessage content={message.userQuery} />
-                    <SourcesSection
-                      webSearchEngineType={message.webSearchEngineType}
-                      sources={message.sources.pages}
-                      threadId={thread.id}
-                      messageId={message.id}
-                    />
-                    <ImagesSection
-                      images={message.sources.images}
-                      threadId={thread.id}
-                      messageId={message.id}
-                    />
-                    <TextSection
-                      assistantModel={message.assistantModel}
-                      assistantError={message.assistantError}
-                      assistantResponse={insertSourcePopup(message.assistantResponse ?? "", message.sources.pages)}
-                    />
-                  </div>
-                ))
-              }
-              <div>
-                <UserMessage content={currentMessage.userQuery} />
+            {
+              currentMessage.id === lastMessageId ?
+              <div id="last-message">
+                <UserMessage content={currentMessage.userQuery} editable threadId={thread.id} />
                 <SourcesSection
                   loading={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
                   isCurrentMessage={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
@@ -92,6 +75,7 @@ const ThreadBody = ({
                   sources={currentMessage.sources.pages}
                   threadId={thread.id}
                   messageId={currentMessage.id}
+                  lastMessage={!(loading && skeletonMessages && thread.messages.length === 0)}
                 />
                 <ImagesSection
                   loading={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
@@ -99,15 +83,40 @@ const ThreadBody = ({
                   images={currentMessage.sources.images}
                   threadId={thread.id}
                   messageId={currentMessage.id}
+                  lastMessage={!(loading && skeletonMessages && thread.messages.length === 0)}
                 />
                 <TextSection
+                  threadId={thread.id}
                   loading={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
                   isCurrentMessage={loading ?? currentMessage.status === THREAD_MESSAGE_STATUS.PENDING}
                   assistantModel={currentMessage.assistantModel}
                   assistantError={currentMessage.assistantError}
                   assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
+                  lastMessage={!(loading && skeletonMessages && thread.messages.length === 0)}
                 />
               </div>
+              :
+              <div>
+                <UserMessage content={currentMessage.userQuery} threadId={thread.id} />
+                <SourcesSection
+                  webSearchEngineType={currentMessage.webSearchEngineType}
+                  sources={currentMessage.sources.pages}
+                  threadId={thread.id}
+                  messageId={currentMessage.id}
+                />
+                <ImagesSection
+                  images={currentMessage.sources.images}
+                  threadId={thread.id}
+                  messageId={currentMessage.id}
+                />
+                <TextSection
+                  threadId={thread.id}
+                  assistantModel={currentMessage.assistantModel}
+                  assistantError={currentMessage.assistantError}
+                  assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
+                />
+              </div>
+            }
             </>
           )).reverse()
         }

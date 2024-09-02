@@ -43,7 +43,7 @@ const ThreadPage = ({
       hx-push-url="false"
       {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
       {...{
-        "hx-on::before-request": "onPromptSubmit()",
+        "hx-on::before-request": "onPromptSubmit({ newMessageInserted: event.detail.target.id === this.id })",
       }}
     >
       <div id="thread-header" class={"thread__header"}>

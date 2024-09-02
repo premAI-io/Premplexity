@@ -146,7 +146,7 @@ export default class ThreadMessagesService extends BaseService<
     const orderedMessages = Object.values(messagesGroupedByOrder).sort((a, b) => a[0].order - b[0].order)
     return orderedMessages.map(history => ({
       history,
-      currentMessage: history[0]
+      currentMessage: history.sort((a, b) => new Date(a.userTimestamp).getTime() - new Date(b.userTimestamp).getTime()).slice(-1)[0]
     }))
   }
 

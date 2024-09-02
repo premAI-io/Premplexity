@@ -14,6 +14,7 @@ import { formatMarkdown, handleThreadSSEMessage, scrollToBottom } from "src/clie
 import { SelectOption } from "$templates/components/SelectSearchable"
 import { addPreCopyButtons } from "src/client/scripts/modules/markdown"
 import { afterImageSwap } from "src/client/scripts/modules/images-listing"
+import { onEditMessageClick } from "src/client/scripts/modules/edit-message"
 
 type OnSelectSearchItemClickOptions = {
   id: string
@@ -71,9 +72,11 @@ declare global {
     // input prompt
     onInputPromptInput: (event: InputEvent) => void
     onInputPromptKeydown: (event: KeyboardEvent) => void
-    onPromptSubmit: () => void
+    onPromptSubmit: (params: { newMessageInserted: boolean }) => void
     // sidebar
     onSidebarScroll: (event: Event) => void
+    // edit message
+    onEditMessageClick: (event: Event) => void
   }
   interface HTMLInputElement {
     hasFormListener?: boolean
@@ -141,7 +144,6 @@ window.addEventListener("DOMContentLoaded", () => {
   })
 
   document.body.addEventListener("afterImageSwap", () => {
-    console.log("afterImageSwap")
     afterImageSwap()
   })
 
@@ -495,3 +497,6 @@ window.onSidebarScroll = (event) => {
   const scrollPosition = sidebar.scrollTop
   localStorage.setItem("sidebarScrollPosition", scrollPosition.toString())
 }
+
+// edit message
+window.onEditMessageClick = onEditMessageClick

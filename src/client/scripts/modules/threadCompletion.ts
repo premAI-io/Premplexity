@@ -198,10 +198,16 @@ export const handleThreadSSEMessage = (
       }
       initSourcesPopup()
       addPreCopyButtons()
+      const redoButton = container.querySelector("#redo-button")
+      if (redoButton) {
+        redoButton.removeAttribute("disabled")
+      }
       const currentMessages = threadContainer.querySelectorAll("[data-current-message]")
       currentMessages.forEach(message => {
         message.removeAttribute("data-current-message")
       })
+      const inputPrompt = document.getElementById("input-prompt-inner-container") as HTMLTextAreaElement | null
+      inputPrompt?.removeAttribute("data-response-loading")
       break
     }
     default: {

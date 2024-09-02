@@ -67,3 +67,8 @@ pre button[data-value] {
 pre:hover button[data-value] {
   @apply block opacity-100;
 }
+
+/* div with content editable -> disable outline on focus */
+[contenteditable]:focus {
+  outline: none;
+}

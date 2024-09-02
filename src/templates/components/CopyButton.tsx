@@ -12,7 +12,7 @@ const CopyButton = ({
 }: Props) => {
   return (
     <button
-      class={classNames({
+      class={classNames("flex items-center justify-center", {
         "opacity-50": disabled
       })}
       type="button"

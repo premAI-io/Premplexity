@@ -13,6 +13,7 @@ import SOURCE_ENGINE_TYPE from "$types/SOURCE_ENGINE_TYPE"
 import UserMessage from "$templates/components/thread/UserMessage"
 import SourcesSection from "$templates/components/thread/SourcesSection"
 import TextSection from "$templates/components/thread/TextSection"
+import { ThreadMessageComplete } from "$services/ThreadMessagesService"
 
 export const routerPrefix = "/thread"
 
@@ -22,11 +23,12 @@ export const router = createRouter((server) => {
   const threadCoreService = container.resolve<ThreadCore>(ThreadCore.token)
   const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
 
-  const searchHandler = ({ query, model, thread, searchEngine }: {
+  const searchHandler = ({ query, model, thread, searchEngine, currentMessage }: {
     query: string
     model: string
     thread: ThreadComplete
     searchEngine: WEB_SEARCH_ENGINE
+    currentMessage?: ThreadMessageComplete
   }) => {
     threadCoreService.search({
       query,
@@ -43,7 +45,8 @@ export const router = createRouter((server) => {
             threadId: thread.id
           }) }
         )
-      }
+      },
+      ...currentMessage ? { currentMessage } : {}
     })
   }
 
@@ -163,8 +166,8 @@ export const router = createRouter((server) => {
     })
 
     return res.view(
-      <div>
-        <UserMessage content={message} />
+      <div id={"last-message"}>
+        <UserMessage content={message} editable threadId={thread.id} />
         <SourcesSection
           webSearchEngineType={searchEngine}
           sources={[]}
@@ -172,15 +175,113 @@ export const router = createRouter((server) => {
           isCurrentMessage={true}
           threadId={thread.id}
           messageId={0}
+          lastMessage
         />
         <TextSection
+          threadId={thread.id}
           assistantModel={model}
           assistantError={null}
           assistantResponse={null}
           loading={true}
           isCurrentMessage={true}
+          lastMessage
         />
       </div>
+    )
+  })
+
+  server.post(ROUTE.RETRY, {
+    schema: schemas[ROUTE.RETRY]
+  }, async (req, res) => {
+    const { targetThreadId } = req.params
+    const thread = await threadsService.getOrFail(targetThreadId)
+
+    const lastMessage = thread.messages.slice(-1)[0]
+    if (!lastMessage) {
+      return res.status(400).send("No messages in thread")
+    }
+
+    const model = req.body.model ?? lastMessage.currentMessage.assistantModel
+    const searchEngine = (req.body.searchEngine ?? lastMessage.currentMessage.webSearchEngineType) as WEB_SEARCH_ENGINE
+
+    searchHandler({
+      query: lastMessage.currentMessage.userQuery,
+      model,
+      thread,
+      searchEngine,
+      currentMessage: lastMessage.currentMessage
+    })
+
+    return res.view(
+    <>
+      <UserMessage content={lastMessage.currentMessage.userQuery} editable threadId={thread.id} />
+      <SourcesSection
+        webSearchEngineType={searchEngine}
+        sources={[]}
+        loading={true}
+        isCurrentMessage={true}
+        threadId={thread.id}
+        messageId={0}
+        lastMessage
+      />
+      <TextSection
+        threadId={thread.id}
+        assistantModel={model}
+        assistantError={null}
+        assistantResponse={null}
+        loading={true}
+        isCurrentMessage={true}
+        lastMessage
+      />
+    </>
+    )
+  })
+
+  server.post(ROUTE.EDIT_MESSAGE, {
+    schema: schemas[ROUTE.EDIT_MESSAGE]
+  }, async (req, res) => {
+    const { targetThreadId } = req.params
+    const { message } = req.query
+    const thread = await threadsService.getOrFail(targetThreadId)
+
+    const lastMessage = thread.messages.slice(-1)[0]
+    if (!lastMessage) {
+      return res.status(400).send("No messages in thread")
+    }
+
+    const model = req.query.model ?? lastMessage.currentMessage.assistantModel
+    const searchEngine = (req.query.searchEngine ?? lastMessage.currentMessage.webSearchEngineType) as WEB_SEARCH_ENGINE
+
+    searchHandler({
+      query: message,
+      model,
+      thread,
+      searchEngine,
+      currentMessage: lastMessage.currentMessage
+    })
+
+    return res.view(
+    <>
+      <UserMessage content={message} editable threadId={thread.id} />
+      <SourcesSection
+        webSearchEngineType={searchEngine}
+        sources={[]}
+        loading={true}
+        isCurrentMessage={true}
+        threadId={thread.id}
+        messageId={0}
+        lastMessage
+      />
+      <TextSection
+        threadId={thread.id}
+        assistantModel={model}
+        assistantError={null}
+        assistantResponse={null}
+        loading={true}
+        isCurrentMessage={true}
+        lastMessage
+      />
+    </>
     )
   })
 })

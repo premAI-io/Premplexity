@@ -8,6 +8,7 @@ type Props = {
   isCurrentMessage?: boolean
   threadId: number
   messageId: number
+  lastMessage?: boolean
 }
 
 const ImagesSection = ({
@@ -15,7 +16,8 @@ const ImagesSection = ({
   images,
   isCurrentMessage,
   threadId,
-  messageId
+  messageId,
+  lastMessage = false
 }: Props) => {
   if (!loading && images.length === 0) {
     return null
@@ -24,7 +26,9 @@ const ImagesSection = ({
   return (
     <>
       <div
-        id="thread-images-title"
+        {...lastMessage ? {
+          id: "thread-images-title"
+        } : {}}
         class={classNames("font-semibold mt-4 text-sm text-left",{
           "!hidden": loading
         })}
@@ -35,13 +39,24 @@ const ImagesSection = ({
       >
         Related images
       </div>
-      <div id="thread-images-container" class={"pt-2"} {...isCurrentMessage ? {
-        "data-current-message": ""
-        } : {}
-      }>
-        <div id="thread-images" class={classNames("thread_images_grid",{
-          "!hidden": loading
-        })}>
+      <div
+        {...lastMessage ? {
+          id: "thread-images-container"
+        } : {}}
+        class={"pt-2"}
+        {...isCurrentMessage ? {
+          "data-current-message": ""
+          } : {}
+        }
+      >
+        <div
+          {...lastMessage ? {
+            id: "thread-images"
+          } : {}}
+          class={classNames("thread_images_grid",{
+            "!hidden": loading
+          })}
+        >
           {
               images.slice(0, 6).map(image => (
                 <ThreadImageCard
