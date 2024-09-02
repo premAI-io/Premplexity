@@ -14,6 +14,7 @@ import UserMessage from "$templates/components/thread/UserMessage"
 import SourcesSection from "$templates/components/thread/SourcesSection"
 import TextSection from "$templates/components/thread/TextSection"
 import { ThreadMessageComplete } from "$services/ThreadMessagesService"
+import History from "$templates/components/mobile/History"
 
 export const routerPrefix = "/thread"
 
@@ -91,6 +92,7 @@ export const router = createRouter((server) => {
             activeThreadId={thread.id}
             threadsList={threadsList}
             swapOOB="outerHTML"
+            active="chat"
           />
           <ThreadPage
             swapOOB="outerHTML"
@@ -136,9 +138,31 @@ export const router = createRouter((server) => {
               <Sidebar
                 activeThreadId={activeThreadId ? parseInt(activeThreadId) : undefined}
                 threadsList={threadsList}
+                active="chat"
               />
             )
         }
+      } else if (pathname === "/history") {
+        const threadsList = await threadsService.getThreadsGroupedByDate(userId)
+        return res
+          .headers({
+            "HX-Retarget": "#sidebar,#history-list",
+            "HX-Reswap": "none"
+          })
+          .view(
+            <>
+              <Sidebar
+                threadsList={threadsList}
+                active="chat"
+                swapOOB="outerHTML"
+                withMobileNavbar={false}
+              />
+              <History
+                threadsList={threadsList}
+                swapOOB="outerHTML"
+              />
+            </>
+          )
       }
     }
 

@@ -16,6 +16,9 @@ export const createSourceCard = (source: Page) => {
         <div class="source-card__source" safe>
           ${source.link}
         </div>
+        <div class={"source-card__source--mobile"} safe>
+          ${source.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split("/")[0]}
+        </div>
         <div class="source-card__id">
           ${source.order}
         </div>
@@ -105,15 +108,15 @@ export const createViewMoreCard = ({
 }) => {
   return `
     <div
-      class="source-card__container bg-gray-600 cursor-pointer !justify-between !p-0"
+      class="source-card__container bg-gray-600 cursor-pointer !w-fit md:!w-full !flex-row md:!flex-col md:!justify-between md:!p-0"
       hx-get="/partials/thread/${targetThreadId}/${targetMessageId}/sources-modal"
       hx-target="#modal"
       hx-swap="innerHTML"
     >
-      <div class="text-left pt-[8.5px] pl-[4.75px]">
+      <div class="md:text-left md:pt-[8.5px] md:pl-[4.75px]">
         <svg width="16" height="16" viewBox="0 0 20 20" role="img"><use href="#book"></use></svg>
       </div>
-      <div class="text-right pb-1 pr-2 text-xs">
+      <div class="md:text-right md:pb-1 md:pr-2 text-xs truncate">
         View more
       </div>
     </div>
@@ -133,12 +136,20 @@ export const createImageCard = ({
 }) => {
   const template = `
     <div
-      class="image-card-container"
+      class="image-card-container hidden md:block"
       hx-get="/partials/thread/${targetThreadId}/${targetMessageId}/${image.order}/images-listing"
       hx-target="#modal"
       hx-swap="innerHTML"
     >
       <img src="${image.thumbnail}" class="h-full w-full object-center object-cover" />
+    </div>
+    <div
+      class="image-card-container md:hidden"
+      hx-get="/partials/thread/${targetThreadId}/${targetMessageId}/${image.order}/open-image"
+      hx-target="#modal"
+      hx-swap="innerHTML"
+    >
+      <img src="${image.thumbnail}" class="h-full w-auto max-w-none object-center object-cover" />
     </div>
   `
 

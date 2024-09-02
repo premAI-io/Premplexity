@@ -47,4 +47,16 @@ export const schemas = {
       additionalProperties: false,
     },
   } as const satisfies FastifySchema,
+  [ROUTE.OPEN_IMAGE]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" },
+        targetMessageId: { type: "number" },
+        targetImageOrder: { type: "number" },
+      },
+      required: ["targetThreadId", "targetMessageId", "targetImageOrder"],
+      additionalProperties: false,
+    },
+  } as const satisfies FastifySchema,
 }

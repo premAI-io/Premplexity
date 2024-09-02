@@ -7,6 +7,7 @@ import DeleteThreadModal from "$templates/components/DeleteThreadModal"
 import ImageLinkButton from "$templates/components/imagesListing/ImageLinkButton"
 import ImagesListing from "$templates/components/imagesListing/ImagesListing"
 import MainImage from "$templates/components/imagesListing/MainImage"
+import ImageMobile from "$templates/components/mobile/Image"
 import SourcesModal from "$templates/components/thread/SourcesModal"
 import { eq } from "drizzle-orm"
 import { container } from "tsyringe"
@@ -109,6 +110,33 @@ export const router = createRouter((server) => {
           <ImageLinkButton href={currentImage.link} swapOOB="outerHTML" />
           <MainImage image={currentImage.image} thumbnail={currentImage.thumbnail} swapOOB="outerHTML" />
         </>
+      )
+  })
+
+  server.get(ROUTE.OPEN_IMAGE, {
+    schema: schemas[ROUTE.OPEN_IMAGE]
+  }, async (req, res) => {
+    const { targetThreadId, targetMessageId, targetImageOrder } = req.params
+
+    const thread = await threadsService.getOrFail(targetThreadId)
+
+    if (thread.userId !== req.callerUser.id) {
+      return res.status(403).send("Forbidden")
+    }
+
+    const message = await threadMessagesService.getOrFail(targetMessageId, {
+      where: eq(threadMessagesService.mainTable.threadId, targetThreadId)
+    })
+
+    let currentImage = message.sources.images.find(image => image.order === targetImageOrder)
+    if (!currentImage) {
+      currentImage = message.sources.images[0]
+    }
+
+    return res
+      .header("HX-Trigger-After-Swap", "afterImageSwap")
+      .view(
+        <ImageMobile link={currentImage.link} image={currentImage.image} thumbnail={currentImage.thumbnail} />
       )
   })
 })

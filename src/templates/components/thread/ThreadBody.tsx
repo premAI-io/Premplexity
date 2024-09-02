@@ -28,10 +28,10 @@ const ThreadBody = ({
   const lastMessageId = thread.messages[thread.messages.length - 1]?.currentMessage.id
 
   return (
-    <div class={"overflow-y-auto scrollbar flex-1"}>
+    <div class={"overflow-y-auto scrollbar md:flex-1 mt-[130px] md:mt-0 pb-[60px] md:pb-0"}>
       <div
         id="thread-body"
-        class={"flex-1 flex flex-col-reverse text-center max-w-[813px] w-[75%] mx-auto overflow-y-auto px-2 pb-4"}
+        class={"thread-body"}
         {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
         data-thread-id={thread.id}
       >

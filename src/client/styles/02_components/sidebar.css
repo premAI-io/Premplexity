@@ -1,5 +1,5 @@
 .sidebar {
-  @apply min-w-64 max-w-64 w-64 h-full flex flex-col justify-between bg-gray-900 border-r border-r-gray-700 select-none;
+  @apply min-w-64 max-w-64 w-64 h-full hidden md:flex flex-col justify-between bg-gray-900 border-r border-r-gray-700 select-none;
   padding: 16px 16px 8px 8px;
 }
 

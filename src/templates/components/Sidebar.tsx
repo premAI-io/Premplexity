@@ -4,19 +4,27 @@ import DropdownTrigger from "$templates/components/DropdownTrigger"
 import Icon from "$templates/components/Icon"
 import Logo from "$templates/components/Logo"
 import { ThreadListItem } from "$templates/views/NewThreadView"
+import MobileNavbar from "$templates/components/mobile/Navbar"
 
 type Props = {
   threadsList: ThreadListItem[]
   activeThreadId?: number
   swapOOB?: string
+  active: "chat" | "history"
+  lastViewedThreadId?: number
+  withMobileNavbar?: boolean
 }
 
 const Sidebar = ({
   threadsList,
   activeThreadId,
-  swapOOB
+  swapOOB,
+  active,
+  lastViewedThreadId,
+  withMobileNavbar = true
 }: Props) => {
   return (
+    <>
     <div
       id="sidebar"
       class="sidebar"
@@ -116,6 +124,11 @@ const Sidebar = ({
         }
       </div>
     </div>
+    {
+      withMobileNavbar ?
+      <MobileNavbar active={active} lastViewedThreadId={lastViewedThreadId} /> : null
+    }
+    </>
   )
 }
 
