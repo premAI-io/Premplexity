@@ -107,7 +107,7 @@ export const router = createRouter((server) => {
       .view(
         <>
           <ImageLinkButton href={currentImage.link} swapOOB="outerHTML" />
-          <MainImage image={currentImage.image} swapOOB="outerHTML" />
+          <MainImage image={currentImage.image} thumbnail={currentImage.thumbnail} swapOOB="outerHTML" />
         </>
       )
   })

@@ -7,9 +7,15 @@ export const afterImageSwap = () => {
     return
   }
 
+  container?.classList.remove("error")
   container?.classList.add("loading")
 
   mainImage?.addEventListener("load", () => {
+    container?.classList.remove("loading")
+  })
+
+  mainImage?.addEventListener("error", () => {
+    mainImage.src = mainImage.getAttribute("data-thumbnail") ?? ""
     container?.classList.remove("loading")
   })
 }

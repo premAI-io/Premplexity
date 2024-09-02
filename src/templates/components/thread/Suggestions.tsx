@@ -8,6 +8,10 @@ type Props = {
 const Suggestions = ({
   message
 }: Props) => {
+  if (message.followUpQuestions.length === 0) {
+    return null
+  }
+
   return (
     <div id="follow-up-questions" class={"grid gap-[10px] w-full"}>
       <div class={"text-gray-500 text-base text-left"}>Suggestions</div>

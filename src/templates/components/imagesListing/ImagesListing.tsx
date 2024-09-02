@@ -34,7 +34,7 @@ const ImagesListing = ({
         </div>
       </div>
       <div class={"images-listing__content"}>
-        <MainImage image={currentImage.image} />
+        <MainImage image={currentImage.image} thumbnail={currentImage.thumbnail} />
         <ImagesList images={message.sources.images} currentImageId={currentImage.id} threadId={thread.id} />
       </div>
     </div>
