@@ -1,5 +1,5 @@
 import { SearchCallbackParams } from "$components/ThreadCore"
-import { createImageCard, createSourceCard, createViewMoreCard, insertSourcePopup } from "$utils/thread"
+import { createImageCard, createSourceCard, createSuggestionsSection, createViewMoreCard, insertSourcePopup } from "$utils/thread"
 import initSourcesPopup from "src/client/scripts/modules/source-popup"
 import { SearchResults } from "$components/SerpAPI"
 import { addPreCopyButtons, markdownToHTML } from "src/client/scripts/modules/markdown"
@@ -161,7 +161,14 @@ export const handleThreadSSEMessage = (
       break
     }
     case "followUpQuestions": {
-      console.log("followUpQuestions", content)
+      const lastMessageContainer = document.getElementById("last-message")
+      if (!lastMessageContainer) {
+        return
+      }
+
+      const container = createSuggestionsSection(content.data, threadId)
+      lastMessageContainer.insertAdjacentHTML("beforeend", container)
+      htmx.process(lastMessageContainer)
       break
     }
     case "end": {

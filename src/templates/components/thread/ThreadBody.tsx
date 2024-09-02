@@ -1,6 +1,7 @@
 import { ThreadComplete } from "$services/ThreadsService"
 import ImagesSection from "$templates/components/thread/ImagesSection"
 import SourcesSection from "$templates/components/thread/SourcesSection"
+import Suggestions from "$templates/components/thread/Suggestions"
 import TextSection from "$templates/components/thread/TextSection"
 import UserMessage from "$templates/components/thread/UserMessage"
 import THREAD_MESSAGE_STATUS from "$types/THREAD_MESSAGE_STATUS"
@@ -94,6 +95,10 @@ const ThreadBody = ({
                   assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
                   lastMessage={!(loading && skeletonMessages && thread.messages.length === 0)}
                 />
+                {loading ?
+                  <></> :
+                  <Suggestions message={currentMessage} />
+                }
               </div>
               :
               <div>

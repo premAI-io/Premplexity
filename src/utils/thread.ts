@@ -1,4 +1,5 @@
 import { Page, Image } from "$components/SerpAPI"
+import { SearchCallbackParams } from "$components/ThreadCore"
 
 // --------------- SOURCE CARD TEMPLATES ---------------
 
@@ -175,16 +176,33 @@ export const insertSourcePopup = (text: string, sources: Page[]) => {
     const el = match.replace(">", ` data-source-popup="${JSON.stringify(source).replace(/"/g, "&quot;")}" >`)
 
     text = text.replace(match, el)
-
-    // const sourcePopup = createSourcePopup(source)
-    // const spanElement = `
-    //   <span>
-    //     ${match}
-    //     ${sourcePopup}
-    //   </span>
-    // `
-    // text = text.replace(match, spanElement)
   })
 
   return text
+}
+
+// --------------- SUGGESTIONS ---------------
+
+export const createSuggestionsSection = (suggestions: Extract<SearchCallbackParams, { type: "followUpQuestions" }>["data"], threadId: number) => {
+  return `
+    <div id="follow-up-questions" class="grid gap-[10px] w-full">
+      <div class="text-gray-500 text-base text-left">Suggestions</div>
+      ${suggestions.filter(suggestion => suggestion.length > 0).map(suggestion => (
+        `
+          <div
+            class="suggestion-item"
+            hx-post="/actions/thread/${threadId}/sendMessage"
+            hx-headers='{"HX-Disable-Loader": "true"}'
+            hx-vals='{"message": "${suggestion}"}'
+            hx-target="#thread-body"
+            hx-swap="afterbegin"
+            hx-push-url="false"
+            hx-on::before-request="onPromptSubmit({ newMessageInserted: true })"
+          >
+            ${suggestion}
+          </div>
+        `
+      )).join("")}
+    </div>
+  `
 }

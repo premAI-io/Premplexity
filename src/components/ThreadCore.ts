@@ -156,6 +156,7 @@ You are an AI tasked with providing follow-up questions. Follow these guidelines
 - Each follow-up question should be self-contained and not rely on previous questions for context.
 - You MUST respond with ${params.n} follow-up questions
 - Respond ONLY with the follow-up questions, one per line
+- Do not include any additional information or context in your response
 
 ------ PREVIOUS CONVERSATION FOR CONTEXT PURPOSE --------
 ${params.context}

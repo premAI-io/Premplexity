@@ -99,7 +99,7 @@ export default class ThreadsService extends BaseService<typeof threadsTable, Thr
   }): Promise<ThreadComplete> => {
     const thread = await this.insert({
       userId: options.userId,
-      title: options.message,
+      title: options.message.length > 50 ? options.message.slice(0, 47) + "..." : options.message,
       creationTimestamp: new Date().toISOString()
     })
 
