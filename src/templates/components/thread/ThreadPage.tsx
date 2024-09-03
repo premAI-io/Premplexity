@@ -41,7 +41,7 @@ const ThreadPage = ({
       hx-push-url="false"
       {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
       {...{
-        "hx-on::before-request": "onPromptSubmit({ newMessageInserted: event.detail.target.id === this.id })",
+        "hx-on::before-request": "onPromptSubmit({ newMessageInserted: event.target.id === this.id })",
       }}
     >
       <Header availableModels={availableModels} availableSources={availableSources} />

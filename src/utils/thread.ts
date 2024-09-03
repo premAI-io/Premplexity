@@ -16,7 +16,7 @@ export const createSourceCard = (source: Page) => {
         <div class="source-card__source" safe>
           ${source.link}
         </div>
-        <div class={"source-card__source--mobile"} safe>
+        <div class="source-card__source--mobile" safe>
           ${source.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split("/")[0]}
         </div>
         <div class="source-card__id">
