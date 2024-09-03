@@ -108,7 +108,7 @@ export const router = createRouter((server) => {
       .view(
         <>
           <ImageLinkButton href={currentImage.link} swapOOB="outerHTML" />
-          <MainImage image={currentImage.image} thumbnail={currentImage.thumbnail} swapOOB="outerHTML" />
+          <MainImage image={currentImage.image ?? currentImage.thumbnail} thumbnail={currentImage.thumbnail} swapOOB="outerHTML" />
         </>
       )
   })
@@ -136,7 +136,7 @@ export const router = createRouter((server) => {
     return res
       .header("HX-Trigger-After-Swap", "afterImageSwap")
       .view(
-        <ImageMobile link={currentImage.link} image={currentImage.image} thumbnail={currentImage.thumbnail} />
+        <ImageMobile link={currentImage.link} image={currentImage.image ?? currentImage.thumbnail} thumbnail={currentImage.thumbnail} />
       )
   })
 })

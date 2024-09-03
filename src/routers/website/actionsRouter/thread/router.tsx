@@ -15,6 +15,9 @@ import SourcesSection from "$templates/components/thread/SourcesSection"
 import TextSection from "$templates/components/thread/TextSection"
 import { ThreadMessageComplete } from "$services/ThreadMessagesService"
 import History from "$templates/components/mobile/History"
+import ShareModal from "$templates/components/ShareModal"
+import Configs from "$components/Configs"
+import ThreadShareLinksService from "$services/ThreadShareLinksService"
 
 export const routerPrefix = "/thread"
 
@@ -23,6 +26,8 @@ export const router = createRouter((server) => {
   const sseComponent = container.resolve<WebappSSEManager>(WebappSSEManager.token)
   const threadCoreService = container.resolve<ThreadCore>(ThreadCore.token)
   const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
+  const configs = container.resolve<Configs>(Configs.token)
+  const threadShareLinksService = container.resolve<ThreadShareLinksService>(ThreadShareLinksService.token)
 
   const searchHandler = ({ query, model, thread, searchEngine, currentMessage }: {
     query: string
@@ -307,5 +312,31 @@ export const router = createRouter((server) => {
       />
     </>
     )
+  })
+
+  server.get(ROUTE.SHARE, {
+    schema: schemas[ROUTE.SHARE]
+  }, async (req, res) => {
+    const { targetThreadId } = req.params
+    const thread = await threadsService.getOrFail(targetThreadId)
+
+    if (thread.userId !== req.callerUser.id) {
+      return res.status(403).send("Forbidden")
+    }
+
+    const snapshot = await threadShareLinksService.create(targetThreadId)
+    const baseUrl = configs.env.APP_BASE_URL
+
+    return res
+      .headers({
+        "HX-Retarget": "#modal",
+        "HX-Reswap": "innerHTML"
+      })
+      .view(
+        <ShareModal
+          snapshot={snapshot}
+          baseUrl={baseUrl}
+        />
+      )
   })
 })

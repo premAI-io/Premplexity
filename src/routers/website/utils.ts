@@ -2,6 +2,7 @@ import { FastifyJsonSchemaInstance } from "$types/index"
 import { ContextConfigDefault, FastifyInstance, FastifyPluginCallback, FastifyReply, FastifyRequest, FastifyRequestContext, FastifySchema, RouteGenericInterface, preHandlerHookHandler } from "fastify"
 import { FastifyTypeProviderDefault, ResolveFastifyReplyReturnType } from "fastify/types/type-provider"
 import { THREAD_ACTIONS_ROUTE, threadRouterPrefix } from "./actionsRouter/thread"
+import { SNAPSHOT_ACTIONS_ROUTE, snapshotRouterPrefix } from "./actionsRouter/snapshot"
 import { THREAD_PARTIALS_ROUTE } from "$routers/website/partialsRouter/thread/index"
 
 // ==================== ROUTER ==================== //
@@ -44,9 +45,11 @@ export function registerActionsRouter(server: FastifyInstance, router: FastifyPl
 
 type ActionRouter =
 | "thread"
+| "snapshot"
 
 type ActionRoutersPaths = {
   thread: typeof THREAD_ACTIONS_ROUTE
+  snapshot: typeof SNAPSHOT_ACTIONS_ROUTE
 }
 
 const actionRoutersConfig: {
@@ -58,6 +61,10 @@ const actionRoutersConfig: {
   thread: {
     paths: THREAD_ACTIONS_ROUTE,
     prefix: threadRouterPrefix
+  },
+  snapshot: {
+    paths: SNAPSHOT_ACTIONS_ROUTE,
+    prefix: snapshotRouterPrefix
   }
 }
 
@@ -67,6 +74,10 @@ type ActionRoutersParams = {
     DELETE: { targetThreadId: number }
     RETRY: { targetThreadId: number }
     EDIT_MESSAGE: { targetThreadId: number }
+    SHARE: { targetThreadId: number }
+  },
+  snapshot: {
+    IMPORT: { targetSnapshotCode: string }
   }
 }
 

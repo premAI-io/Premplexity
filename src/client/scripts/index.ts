@@ -338,7 +338,7 @@ window.copyToClipboard = async (eventOrValue: MouseEvent | string, onSuccess?: (
     await navigator.clipboard.writeText(value)
     onSuccess?.(value)
   } catch (err) {
-    alert("Failed to copy text to clipboard")
+    alert("Failed to copy text to clipboard: ")
   }
 }
 

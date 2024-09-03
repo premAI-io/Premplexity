@@ -17,7 +17,7 @@
 }
 
 .input {
-  @apply w-full h-10 text-sm leading-[1.25] text-gray-300 bg-white px-4 border border-gray-300 rounded-lg placeholder-gray-500 outline-none overflow-x-hidden text-ellipsis focus:border-primary-600;
+  @apply w-full h-10 text-sm leading-[1.25] text-gray-300 bg-gray-800 px-4 border border-gray-300 rounded-lg placeholder-gray-500 outline-none overflow-x-hidden text-ellipsis ;
   transition: border-color 0.32s ease-in-out;
 }
 
@@ -84,7 +84,7 @@
   }
 
   .input {
-    @apply border-red-500 bg-red-50 placeholder-red-400 text-red-700 focus:border-red-800;
+    @apply border-red-500 bg-gray-800 placeholder-red-400 text-red-700 focus:border-red-800;
   }
 
   .input__caption {
@@ -99,7 +99,7 @@
 
 .input__wrap--readonly {
   .input {
-    @apply bg-gray-100 border-gray-400;
+    @apply bg-gray-800 border-gray-400;
   }
 
   &.input__wrap--error {
@@ -112,7 +112,7 @@
     }
 
     .input {
-      @apply bg-gray-100 placeholder-gray-500 border-gray-400;
+      @apply bg-gray-800 placeholder-gray-500 border-gray-400;
     }
 
     .input__caption {
@@ -131,8 +131,4 @@
 
 .month-item-year {
   background-color: white;
-}
-
-:root {
-  --litepicker-is-today-color: #1C64F2;
 }

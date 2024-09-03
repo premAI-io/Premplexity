@@ -26,7 +26,7 @@ const DeleteThreadModal = ({
             Cancel
           </Button>
           <form
-            class={"w-full"}
+            class={"md:w-fit w-full"}
             method="post"
             action={getActionPath("thread", "DELETE", { targetThreadId: threadId })}
             hx-boost="true"
@@ -35,7 +35,7 @@ const DeleteThreadModal = ({
               ["hx-on::after-request"]: "closeModal('delete-thread-modal')"
             }}
           >
-            <Button class="w-full" type="submit" theme="danger">
+            <Button class="w-full md:w-auto" type="submit" theme="danger">
               Delete
             </Button>
           </form>
