@@ -2,11 +2,11 @@ import Button from "$templates/components/Button"
 import Icon from "$templates/components/Icon"
 
 type Props = {
-  swapOOB?: string
+  mobile?: boolean
 }
 
 const NewThreadButton = ({
-  swapOOB
+  mobile
 }: Props) => {
   return (
     <Button
@@ -17,10 +17,10 @@ const NewThreadButton = ({
       type="submit"
       hx-include="input[name='model'],input[name='searchEngine']"
       hx-push-url="/"
-      {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
+      class={`flex items-center gap-2 ${mobile ? "!px-[14px] !py-2" : ""}`}
     >
       <Icon name="plus" />
-      New
+      {mobile ? "" : "New"}
     </Button>
   )
 }

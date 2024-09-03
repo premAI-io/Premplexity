@@ -42,7 +42,7 @@ const SourcesModal = ({
                 <div class={"source-card__image"}>
                   <img src={favicon ?? "https://via.placeholder.com/150"} class={"h-full w-full object-center object-cover"} />
                 </div>
-                <div class={"source-card__source max-w-[300px]"} safe>
+                <div class={"source-card__source max-w-[150px] md:max-w-[300px] !block"} safe>
                   {link}
                 </div>
                 <div class={"source-card__id"}>

@@ -1,5 +1,5 @@
 .modal__wrap {
-  @apply fixed top-0 left-0 w-full h-full items-center justify-center hidden z-50;
+  @apply fixed top-0 left-0 w-full md:h-full h-[calc(100vh-110px)] items-end md:items-center justify-center hidden z-50;
 
   &.is-open {
     @apply flex;
@@ -29,11 +29,12 @@
 }
 
 .modal__overlay {
-  @apply fixed top-0 left-0 w-full h-full bg-gray-800 opacity-70 z-10;
+  @apply fixed top-0 left-0 w-full h-[calc(100vh-110px)] md:h-full bg-gray-800 opacity-70 z-10;
 }
 
 .modal {
-  @apply w-[95%] border border-gray-700 bg-gray-900 rounded-lg shadow-md p-5 relative z-20 max-h-[90%] overflow-y-auto scrollbar;
+  @apply w-full md:w-[95%] border border-gray-700 bg-gray-800 md:bg-gray-900 md:rounded-lg md:shadow-md p-5 relative z-20 max-h-[90%] overflow-y-auto scrollbar
+  rounded-t-lg;
 }
 
 .modal__close {

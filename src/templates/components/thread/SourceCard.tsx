@@ -18,15 +18,15 @@ const SourceCard = (props: Props) => {
   if (props.isViewMore) {
     return (
       <div
-        class={"source-card__container bg-gray-600 cursor-pointer !justify-between !p-0"}
+        class={"source-card__container bg-gray-600 cursor-pointer !w-fit md:!w-full !flex-row md:!flex-col md:!justify-between md:!p-0"}
         hx-get={getPartialPath("thread", "SOURCES_MODAL", { targetThreadId: props.threadId, targetMessageId: props.messageId })}
         hx-target="#modal"
         hx-swap="innerHTML"
       >
-        <div class={"text-left pt-[8.5px] pl-[4.75px]"}>
+        <div class={"md:text-left md:pt-[8.5px] md:pl-[4.75px]"}>
           <Icon name="book" />
         </div>
-        <div class={"text-right pb-1 pr-2 text-xs"}>
+        <div class={"md:text-right md:pb-1 md:pr-2 text-xs truncate"}>
           View more
         </div>
       </div>
@@ -51,6 +51,9 @@ const SourceCard = (props: Props) => {
         </div>
         <div class={"source-card__source"} safe>
           {source}
+        </div>
+        <div class={"source-card__source--mobile"} safe>
+          {source.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split("/")[0]}
         </div>
         <div class={"source-card__id"}>
           {id}

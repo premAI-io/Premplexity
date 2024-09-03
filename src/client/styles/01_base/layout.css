@@ -14,12 +14,8 @@ body {
   @apply mx-auto;
 }
 
-.desktop-container {
-  @apply h-full w-full hidden md:flex items-start;
-}
-
-.mobile-container {
-  @apply h-full w-full block md:hidden;
+#thread-container {
+  @apply h-full w-full md:flex items-start;
 }
 
 .flex-container {
@@ -33,7 +29,7 @@ body {
 *[data-tooltip-text]:after {
   content: attr(data-tooltip-text);
   position: fixed;
-  @apply bg-gray-900 border border-gray-700 text-white text-xs px-2 py-1 rounded-lg max-w-[300px] text-wrap pointer-events-none;
+  @apply bg-gray-900 border border-gray-700 text-white text-xs px-2 py-1 rounded-lg max-w-[300px] text-wrap pointer-events-none hidden md:block;
   --translate-y: calc(-100% - 8px);
   transform: translate(-50%, var(--translate-y));
   z-index: 99;

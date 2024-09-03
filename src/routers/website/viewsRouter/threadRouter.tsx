@@ -8,9 +8,11 @@ import PremAI from "$components/PremAI"
 import { WEB_SEARCH_ENGINE_OPTIONS } from "$types/WEB_SEARCH_ENGINE"
 
 export const router: FastifyPluginCallback = (server, _, done) => {
+  const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
+  const premAI = container.resolve<PremAI>(PremAI.token)
+
   server.get("/", {}, async (req, res) => {
     const userId = req.callerUser.id
-    const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
     const threadsList = await threadsService.getThreadsGroupedByDate(userId)
 
     const query = req.query as {
@@ -18,7 +20,6 @@ export const router: FastifyPluginCallback = (server, _, done) => {
       searchEngine?: string
     }
 
-    const premAI = container.resolve<PremAI>(PremAI.token)
     const availableModels = await premAI.getAvailableModels(query?.model)
 
     return res.view(
@@ -31,7 +32,6 @@ export const router: FastifyPluginCallback = (server, _, done) => {
 
   server.get("/thread/:targetThreadId", {}, async (req: FastifyRequest<{ Params: { targetThreadId: string } }>, res) => {
     const userId = req.callerUser.id
-    const threadsService = container.resolve<ThreadsService>(ThreadsService.token)
     const threadsList = await threadsService.getThreadsGroupedByDate(userId)
 
     const currentThread = threadsList.flatMap(({ threads }) => threads).find(({ id }) => id === parseInt(req.params.targetThreadId))
@@ -43,7 +43,6 @@ export const router: FastifyPluginCallback = (server, _, done) => {
     const currentModel = currentThread.messages[currentThread.messages.length - 1].currentMessage.assistantModel
     const currentSearchEngine = currentThread.messages[currentThread.messages.length - 1].currentMessage.webSearchEngineType
 
-    const premAI = container.resolve<PremAI>(PremAI.token)
     const availableModels = await premAI.getAvailableModels(currentModel)
 
     return res.view(

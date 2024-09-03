@@ -4,11 +4,11 @@ import { NEW_THREAD_SUGGESTIONS } from "$types/SUGGESTIONS"
 
 const NewThreadBody = () => {
   return (
-    <div id="thread-body" class={"flex-1 pt-20 text-center max-w-[678px] w-[70%] mx-auto"}>
-      <Icon name="initial-chat-icon" size={54} viewBox="0 0 54 43" />
-      <div class={"mt-8 text-white font-medium text-xl text-left"}>Ask a question or start by our suggestion on trending topics!</div>
-      <div class={"mt-11 grid gap-[10px] w-full"}>
-        <div class={"text-gray-500 text-base text-left"}>Suggestions</div>
+    <div id="thread-body" class={"new-thread-body"}>
+      <Icon class={"md:!inline-flex !hidden"} name="initial-chat-icon" size={54} viewBox="0 0 54 43" />
+      <div class={"md:mt-8 text-white font-medium text-base md:text-xl text-left"}>Ask a question or start by our suggestion on trending topics!</div>
+      <div class={"mt-5 md:mt-11 grid gap-[10px] w-full"}>
+        <div class={"text-gray-500 text-xs md:text-base text-left"}>Suggestions</div>
         {NEW_THREAD_SUGGESTIONS.map(suggestion => (
           <div
             class="suggestion-item"

@@ -18,7 +18,7 @@ const InputPrompt = () => {
       <Button
         id="input-prompt-submit"
         theme="primary"
-        class="!w-9 !h-9 !p-0 flex items-center justify-center !absolute bottom-[10px] right-[10px]"
+        class="!w-7 !h-7 md:!w-9 md:!h-9 !p-0 flex items-center justify-center !absolute bottom-[6.5px] right-[8px] md:bottom-[10px] md:right-[10px]"
         type="submit"
         form={newThreadFormId}
         disabled

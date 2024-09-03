@@ -2,8 +2,20 @@ import htmx from "htmx.org"
 
 export const onInputPromptInput = (event: InputEvent) => {
   const target = event.target as HTMLTextAreaElement
-  target.style.height = "auto"
-  target.style.height = target.scrollHeight + "px"
+
+  if (!target) {
+    return
+  }
+
+  const screenWidth = window.innerWidth
+  if (screenWidth < 768) {
+    target.style.height = "24px"
+    target.style.height = target.scrollHeight + "px"
+  } else {
+    target.style.height = "auto"
+    target.style.height = target.scrollHeight + "px"
+  }
+
 
   const inputPromptSubmit = document.getElementById("input-prompt-submit")
   if (!inputPromptSubmit) {
