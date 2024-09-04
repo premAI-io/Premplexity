@@ -1,12 +1,14 @@
 import htmx from "htmx.org"
 
 export const onEditMessageClick = (event: Event) => {
+  event.stopPropagation()
   const target = (event.target as HTMLElement).closest("button") as HTMLButtonElement
   const div = target.closest("div")?.querySelector("div[data-message]") as HTMLDivElement
 
   if (div) {
     div.contentEditable = "true"
     div.addEventListener("keydown", onMessageKeyDown)
+    div.setAttribute("data-original", div.innerText)
     div.addEventListener("focus", () => {
       const range = document.createRange()
       range.selectNodeContents(div)
@@ -17,6 +19,21 @@ export const onEditMessageClick = (event: Event) => {
       }
     })
     div.focus()
+  }
+  document.addEventListener("click", onOutsideClick)
+}
+
+const onOutsideClick = (event: MouseEvent) => {
+  if ((event.target as HTMLElement).closest("div[data-original]")) {
+    return
+  }
+
+  const div = document.querySelector("div[data-original]") as HTMLDivElement
+  if (div) {
+    div.innerText = div.getAttribute("data-original") || ""
+    div.removeAttribute("data-original")
+    div.removeEventListener("keydown", onMessageKeyDown)
+    div.contentEditable = "false"
   }
 }
 
