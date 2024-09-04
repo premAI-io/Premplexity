@@ -29,3 +29,9 @@
     @apply !inline-flex;
   }
 }
+
+#page:has(.input-prompt__inner-container[data-response-loading]) {
+  #edit-message-button {
+    @apply opacity-50 pointer-events-none;
+  }
+}

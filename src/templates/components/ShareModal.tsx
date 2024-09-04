@@ -1,10 +1,8 @@
 import { getActionPath } from "$routers/website/utils"
 import { ThreadShareLinkComplete } from "$services/ThreadShareLinksService"
 import Button from "$templates/components/Button"
-import CopyButton from "$templates/components/CopyButton"
 import Icon from "$templates/components/Icon"
 import Input from "$templates/components/Input"
-import InputCopy from "$templates/components/InputCopy"
 import Modal from "$templates/components/Modal"
 
 type Props = {
