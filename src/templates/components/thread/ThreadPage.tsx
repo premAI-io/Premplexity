@@ -44,7 +44,7 @@ const ThreadPage = ({
         "hx-on::before-request": "onPromptSubmit({ newMessageInserted: event.target.id === this.id })",
       }}
     >
-      <Header availableModels={availableModels} availableSources={availableSources} />
+      <Header threadId={thread.id} availableModels={availableModels} availableSources={availableSources} />
       <ThreadBody thread={thread} loading={loading} skeletonMessages={skeletonMessages} />
       <InputPrompt />
     </form>

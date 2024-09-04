@@ -102,5 +102,15 @@ export const schemas = {
       required: ["message"],
       additionalProperties: false
     }
+  } as const satisfies FastifySchema,
+  [ROUTE.SHARE]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" }
+      },
+      required: ["targetThreadId"],
+      additionalProperties: false
+    },
   } as const satisfies FastifySchema
 }

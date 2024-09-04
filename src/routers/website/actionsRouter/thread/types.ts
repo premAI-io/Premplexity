@@ -4,4 +4,5 @@ export enum ROUTE {
   SEND_MESSAGE = "/:targetThreadId/sendMessage",
   RETRY = "/:targetThreadId/retry",
   EDIT_MESSAGE = "/:targetThreadId/editMessage",
+  SHARE = "/:targetThreadId/share",
 }

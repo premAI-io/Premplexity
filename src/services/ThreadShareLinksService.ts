@@ -7,6 +7,7 @@ import { asc, eq, inArray } from "drizzle-orm"
 import ThreadShareLinkMessagesService from "$services/ThreadShareLinkMessagesService"
 import ThreadMessagesService from "$services/ThreadMessagesService"
 import THREAD_MESSAGE_STATUS from "$types/THREAD_MESSAGE_STATUS"
+import ThreadMessageSourcesService from "$services/ThreadMessageSourcesService"
 
 export type WithThread<T> = T & {
   originalThread: ThreadComplete
@@ -28,6 +29,8 @@ export default class ThreadShareLinksService extends BaseService<typeof threadSh
     private threadShareLinkMessagesService: ThreadShareLinkMessagesService,
     @inject(ThreadMessagesService.token)
     private threadMessagesService: ThreadMessagesService,
+    @inject(ThreadMessageSourcesService.token)
+    private threadMessageSourcesService: ThreadMessageSourcesService
   ) {
     super(drizzleDB)
   }
@@ -135,6 +138,52 @@ export default class ThreadShareLinksService extends BaseService<typeof threadSh
     return Promise.resolve(threadShareLinks)
       .then(this._injectThreads)
       .then(this._injectMessages)
+  }
+
+  generateThread = async (shareThreadLink: ThreadShareLink, userId: number): Promise<ThreadComplete> => {
+    const originalThread = await this.threadsService.getOrFail(shareThreadLink.threadId)
+    const shareLinkMessages = await this.threadShareLinkMessagesService.list({
+      where: eq(this.threadShareLinkMessagesService.mainTable.threadShareLinkId, shareThreadLink.id)
+    })
+    const messages = await this.threadMessagesService.list({
+      where: inArray(this.threadMessagesService.mainTable.id, shareLinkMessages.map(m => m.threadMessageId)),
+      orderBy: [asc(this.threadMessagesService.mainTable.order)]
+    })
+
+    const thread = await this.threadsService.createThread({
+      userId,
+      message: originalThread.title,
+    })
+
+    messages.forEach(async message => {
+      const sources = message.sources
+      const { id, ...messageWithoutId } = message
+      const clonedMessage = await this.threadMessagesService.insert({
+        ...messageWithoutId,
+        threadId: thread.id
+      })
+
+      if (sources.images.length) {
+        await this.threadMessageSourcesService.insert(
+          sources.images.map(({ id, ...imageWithoutId }) => ({
+            ...imageWithoutId,
+            threadMessageId: clonedMessage.id
+          }))
+        )
+      }
+
+      if (sources.pages.length) {
+        await this.threadMessageSourcesService.insert(
+          sources.pages.map(({ id, ...pageWithoutId }) => ({
+            ...pageWithoutId,
+            threadMessageId: clonedMessage.id
+          }))
+        )
+      }
+    })
+
+
+    return thread
   }
 
   static token = Symbol("ThreadShareLinksService")
