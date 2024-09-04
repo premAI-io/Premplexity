@@ -41,12 +41,12 @@ const ThreadPage = ({
       hx-push-url="false"
       {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
       {...{
-        "hx-on::before-request": "onPromptSubmit({ newMessageInserted: event.target.id === this.id })",
+        "hx-on::before-request": "if (event.target.closest('.image-card-container')) { return; }; onPromptSubmit({ newMessageInserted: event.target.id === this.id })",
       }}
     >
       <Header threadId={thread.id} availableModels={availableModels} availableSources={availableSources} />
       <ThreadBody thread={thread} loading={loading} skeletonMessages={skeletonMessages} />
-      <InputPrompt />
+      <InputPrompt loading={loading} />
     </form>
   )
 }

@@ -1,14 +1,22 @@
 import Button from "$templates/components/Button"
 import Icon from "$templates/components/Icon"
 import { formId as newThreadFormId } from "$templates/components/new-thread/NewThreadPage"
+import Spinner from "$templates/components/Spinner"
 
-const InputPrompt = () => {
+type Props = {
+  loading?: boolean
+}
+
+const InputPrompt = ({
+  loading
+}: Props) => {
   return (
     <div class={"input-prompt__container"}>
       <textarea
         id="input-prompt-inner-container"
         class={"input-prompt__inner-container"}
         text-ellipsis-exclude
+        {...loading ? { "data-response-loading": true } : {}}
         name="inputPrompt"
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
@@ -24,6 +32,7 @@ const InputPrompt = () => {
         disabled
       >
         <Icon name="arrow-up" />
+        <Spinner class="!w-4 !h-4 md:!w-6 md:!h-6 !absolute" />
       </Button>
     </div>
   )

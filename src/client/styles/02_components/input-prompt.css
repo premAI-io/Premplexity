@@ -8,8 +8,24 @@
   @apply md:py-1 pl-3 pr-8 md:pr-11 overflow-y-auto md:h-full w-full min-h-[24px] h-[24px] max-h-[60px]
   resize-none md:min-h-[calc(100%-0.5rem)] md:max-h-[calc(100%-0.2rem)]
   bg-transparent text-gray-100 outline-none;
+
+  + #input-prompt-submit > .icon {
+    @apply !inline-flex;
+  }
+
+  + #input-prompt-submit > .icon.animate-spin {
+    @apply !hidden;
+  }
 }
 
 .input-prompt__inner-container[data-response-loading] {
   @apply pointer-events-none;
+
+  + #input-prompt-submit > .icon:first-child {
+    @apply !hidden;
+  }
+
+  + #input-prompt-submit > .icon.animate-spin {
+    @apply !inline-flex;
+  }
 }
