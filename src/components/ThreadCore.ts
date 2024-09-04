@@ -31,13 +31,22 @@ export type SearchCallbackParams = {
   data: SearchResults
 } | {
   type: "improvedQuery"
-  data: string
+  data: {
+    data: string
+    messageId: number
+  }
 } | {
   type: "completionChunk"
-  data: string
+  data: {
+    data: string
+    messageId: number
+  }
 } | {
   type: "followUpQuestions"
-  data: string[]
+  data: {
+    data: string[]
+    messageId: number
+  }
 } | {
   type: "end"
   data: EndCallbackData
@@ -316,7 +325,10 @@ ${params.context}
           if (improvedQuery && params.cb) {
             params.cb({
               type: "improvedQuery",
-              data: improvedQuery,
+              data: {
+                data: improvedQuery,
+                messageId: message.id
+              },
             })
           }
         } else if (error) {
@@ -425,7 +437,10 @@ ${params.context}
           if (params.cb) {
             params.cb({
               type: "completionChunk",
-              data
+              data: {
+                data,
+                messageId: message.id
+              }
             })
           }
         }
@@ -457,7 +472,10 @@ ${params.context}
       if (params.cb) {
         params.cb({
           type: "followUpQuestions",
-          data: followUpData,
+          data: {
+            data: followUpData,
+            messageId: message.id
+          },
         })
       }
     } else if (followUpError) {

@@ -62,15 +62,6 @@ export const onPromptSubmit = ({
   prompt.value = ""
   prompt.setAttribute("data-response-loading", "true")
 
-  const inputPromptSubmit = document.getElementById("input-prompt-submit")
-  if (!inputPromptSubmit) {
-    return
-  }
-
-  inputPromptSubmit.setAttribute("disabled", "true")
-  inputPromptSubmit.setAttribute("disabled", "true")
-  inputPromptSubmit.classList.add("btn--disabled")
-
   document.getElementById("redo-button")?.remove()
   if (newMessageInserted) {
     document.getElementById("last-message")?.removeAttribute("id")

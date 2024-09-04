@@ -214,6 +214,7 @@ export const router = createRouter((server) => {
           loading={true}
           isCurrentMessage={true}
           lastMessage
+          messageId={0}
         />
       </div>
     )
@@ -261,6 +262,7 @@ export const router = createRouter((server) => {
         loading={true}
         isCurrentMessage={true}
         lastMessage
+        messageId={0}
       />
     </>
     )
@@ -309,6 +311,7 @@ export const router = createRouter((server) => {
         loading={true}
         isCurrentMessage={true}
         lastMessage
+        messageId={0}
       />
     </>
     )
