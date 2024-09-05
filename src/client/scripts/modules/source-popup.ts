@@ -13,7 +13,6 @@ const init = () => {
 class SourcePopup {
   private popup: HTMLElement
   private parent: HTMLElement
-  private timeoutId: number | null = null
 
   constructor(parent: HTMLElement) {
     const popupData = JSON.parse(
@@ -41,25 +40,20 @@ class SourcePopup {
   }
 
   private showPopup = () => {
-    this.timeoutId = setTimeout(() => {
-      this.parent.insertAdjacentElement("afterend", this.popup)
-      const parentRect = this.parent.getBoundingClientRect()
-      const top = parentRect.top - 167 - 10
-      const left = parentRect.left - 237 / 2 + parentRect.width / 2
-      if (top < 0) {
-        this.popup.style.top = "10px"
-        this.popup.style.left = `${parentRect.left - 237 - 10}px`
-      } else {
-        this.popup.style.top = `${top}px`
-        this.popup.style.left = `${left}px`
-      }
-    }, 300) as unknown as number
+    this.parent.insertAdjacentElement("afterend", this.popup)
+    const parentRect = this.parent.getBoundingClientRect()
+    const top = parentRect.top - 167 - 10
+    const left = parentRect.left - 237 / 2 + parentRect.width / 2
+    if (top < 0) {
+      this.popup.style.top = "10px"
+      this.popup.style.left = `${parentRect.left - 237 - 10}px`
+    } else {
+      this.popup.style.top = `${top}px`
+      this.popup.style.left = `${left}px`
+    }
   }
 
   private hidePopup = () => {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-    }
     this.popup.remove()
   }
 }

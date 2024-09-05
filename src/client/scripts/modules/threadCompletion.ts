@@ -1,5 +1,5 @@
 import { SearchCallbackParams } from "$components/ThreadCore"
-import { createImageCard, createSourceCard, createSuggestionsSection, createViewMoreCard, insertSourcePopup } from "$utils/thread"
+import { createImageCard, createSourceCard, createSuggestionsSection, createSuggestionsSkeleton, createViewMoreCard, insertSourcePopup } from "$utils/thread"
 import initSourcesPopup from "src/client/scripts/modules/source-popup"
 import { SearchResults } from "$components/SerpAPI"
 import { addPreCopyButtons, markdownToHTML } from "src/client/scripts/modules/markdown"
@@ -182,6 +182,25 @@ export const handleThreadSSEMessage = (
       addPreCopyButtons()
       break
     }
+    case "startFollowUpQuestions": {
+      const lastMessageContainer = document.getElementById("last-message")
+      if (!lastMessageContainer) {
+        return
+      }
+
+      const children = lastMessageContainer.querySelectorAll("[data-current-message]")
+      const stopped = !(Array.from(children).some(child => {
+        return child.getAttribute("data-current-message") === content.data.messageId.toString()
+      }))
+      if (stopped) {
+        return
+      }
+
+      const container = createSuggestionsSkeleton()
+      lastMessageContainer.insertAdjacentHTML("beforeend", container)
+
+      break
+    }
     case "followUpQuestions": {
       const lastMessageContainer = document.getElementById("last-message")
       if (!lastMessageContainer) {
@@ -197,6 +216,10 @@ export const handleThreadSSEMessage = (
       }
 
       const container = createSuggestionsSection(content.data, threadId)
+
+      const loaderContainer = lastMessageContainer.querySelector("#follow-up-questions-loading")
+      loaderContainer?.remove()
+
       lastMessageContainer.insertAdjacentHTML("beforeend", container)
       htmx.process(lastMessageContainer)
       break
@@ -259,6 +282,9 @@ export const handleThreadSSEMessage = (
       currentMessages.forEach(message => {
         message.removeAttribute("data-current-message")
       })
+
+      const loaderContainer = lastMessageContainer.querySelector("#follow-up-questions-loading")
+      loaderContainer?.remove()
 
       updateSidebarItem(threadContainer, threadId)
 

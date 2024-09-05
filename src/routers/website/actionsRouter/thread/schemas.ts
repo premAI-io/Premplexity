@@ -100,7 +100,7 @@ export const schemas = {
         searchEngine: { type: "string" },
       },
       required: ["message"],
-      additionalProperties: false
+      additionalProperties: true
     }
   } as const satisfies FastifySchema,
   [ROUTE.SHARE]: {

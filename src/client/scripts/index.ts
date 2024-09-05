@@ -14,7 +14,7 @@ import { blockExecution, formatMarkdown, handleThreadSSEMessage, scrollToBottom 
 import { SelectOption } from "$templates/components/SelectSearchable"
 import { addPreCopyButtons } from "src/client/scripts/modules/markdown"
 import { afterImageSwap } from "src/client/scripts/modules/images-listing"
-import { onEditMessageClick } from "src/client/scripts/modules/edit-message"
+import { onCancelEditMessageClick, onConfirmEditMessageClick, onEditMessageClick, openConfirmModal } from "src/client/scripts/modules/edit-message"
 
 type OnSelectSearchItemClickOptions = {
   id: string
@@ -78,6 +78,9 @@ declare global {
     onSidebarScroll: (event: Event) => void
     // edit message
     onEditMessageClick: (event: Event) => void
+    onCancelEditMessageClick: (event: Event) => void
+    onConfirmEditMessageClick: (event: Event) => void
+    openConfirmModal: (event: Event) => void
   }
   interface HTMLInputElement {
     hasFormListener?: boolean
@@ -500,3 +503,6 @@ window.onSidebarScroll = (event) => {
 
 // edit message
 window.onEditMessageClick = onEditMessageClick
+window.onCancelEditMessageClick = onCancelEditMessageClick
+window.onConfirmEditMessageClick = onConfirmEditMessageClick
+window.openConfirmModal = openConfirmModal

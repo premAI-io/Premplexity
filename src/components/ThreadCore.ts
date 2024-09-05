@@ -43,6 +43,11 @@ export type SearchCallbackParams = {
     messageId: number
   }
 } | {
+  type: "startFollowUpQuestions"
+  data: {
+    messageId: number
+  }
+} | {
   type: "followUpQuestions"
   data: {
     data: string[]
@@ -450,6 +455,13 @@ ${params.context}
 
       out.content = completion
     }
+
+    params.cb?.({
+      type: "startFollowUpQuestions",
+      data: {
+        messageId: message.id
+      }
+    })
 
     const { data: followUpData, error: followUpError } = await this.generateFollowUpQuestions({
       previousMessages: previousMessagesFormatted.concat([

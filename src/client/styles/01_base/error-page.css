@@ -5,7 +5,6 @@
 .error-page__card {
   @apply w-full flex flex-col items-center justify-center
   p-[96px] bg-gray-700 shadow-lg rounded-lg;
-  height: calc(100vh - 32px);
 }
 
 .error-page__code {
@@ -13,9 +12,9 @@
 }
 
 .error-page__title {
-  @apply text-4xl font-bold
+  @apply text-4xl font-bold text-center
 }
 
 .error-page__message {
-  @apply text-lg text-gray-500
+  @apply text-lg text-gray-500 text-center
 }

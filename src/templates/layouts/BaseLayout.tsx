@@ -14,7 +14,7 @@ const BaseLayout = ({
       <div safe>{`${err}`}</div>
     )}>
       {isHtmxRequest
-        ? <Page>{children}</Page>
+        ? <Page isMobile={globalResources.IS_MOBILE}>{children}</Page>
         :
         <>
           {"<!DOCTYPE html>"}
@@ -22,7 +22,7 @@ const BaseLayout = ({
             <Head globalResources={globalResources} />
 
             <Body>
-              <Page>
+              <Page isMobile={globalResources.IS_MOBILE}>
                 {children}
               </Page>
             </Body>

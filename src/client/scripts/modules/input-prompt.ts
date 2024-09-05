@@ -66,6 +66,7 @@ export const onPromptSubmit = ({
   if (newMessageInserted) {
     document.getElementById("last-message")?.removeAttribute("id")
     document.getElementById("edit-message-button")?.remove()
+    document.querySelector("div[data-user-message]")?.removeAttribute("data-user-message")
   }
 
   document.getElementById("follow-up-questions")?.remove()

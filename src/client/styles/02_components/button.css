@@ -15,6 +15,10 @@
 
 .btn--secondary {
   @apply bg-gray-500 border-gray-500 text-gray-100 hover:bg-gray-600 focus:bg-gray-600 focus:outline-gray-200;
+
+  &.btn--outline {
+    @apply bg-transparent border-gray-500 text-gray-300 hover:bg-gray-600 hover:text-white focus:border-gray-500;
+  }
 }
 
 .btn--danger {

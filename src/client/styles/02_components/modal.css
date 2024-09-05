@@ -56,18 +56,18 @@
 /* Sizes */
 .modal__wrap--sm {
   .modal {
-    @apply max-w-[455px];
+    @apply md:max-w-[455px];
   }
 }
 
 .modal__wrap--md {
   .modal {
-    @apply max-w-[540px];
+    @apply md:max-w-[540px];
   }
 }
 
 .modal__wrap--lg {
   .modal {
-    @apply max-w-[613px];
+    @apply md:max-w-[613px];
   }
 }

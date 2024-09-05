@@ -55,6 +55,7 @@ const Head = ({
           window.RECAPTCHA_V3_SITE_KEY = "${globalResources.RECAPTCHA_V3_SITE_KEY}"
         `}
       </script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     </head>
   )
 }

@@ -170,12 +170,15 @@ void (async () => {
   server.addHook("onRequest", async (req) => {
     req.routers = []
 
+    const isMobile = req.headers["user-agent"]?.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i)
+
     req.globalResources = {
       FAVICON_PATH,
       ESBUILD_STYLE_BUNDLE_PATH,
       ESBUILD_SCRIPT_BUNDLE_PATH,
       RECAPTCHA_V2_SITE_KEY: env.RECAPTCHA_V2_SITE_KEY,
-      RECAPTCHA_V3_SITE_KEY: env.RECAPTCHA_V3_SITE_KEY
+      RECAPTCHA_V3_SITE_KEY: env.RECAPTCHA_V3_SITE_KEY,
+      IS_MOBILE: !!isMobile
     }
 
     req.locale = getLocale(req.headers["accept-language"])

@@ -38,3 +38,10 @@
   @apply w-full h-[10px] rounded-md animate-pulse;
   background: linear-gradient(90deg, #525151 0%, #313131 100%);
 }
+
+/**************************** SUGGESTIONS ****************************/
+
+.loading__suggest__container {
+  @apply w-full h-[50px] border border-gray-600 rounded-lg p-2 animate-pulse;
+  background: linear-gradient(90deg, #525151 0%, #313131 100%);
+}

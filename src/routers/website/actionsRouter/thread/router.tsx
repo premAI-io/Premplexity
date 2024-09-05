@@ -63,7 +63,7 @@ export const router = createRouter((server) => {
     const userId = req.callerUser.id
     const message = inputPrompt.length ? inputPrompt : bodyMessage
 
-    if (!message) {
+    if (!message || message.length === 0) {
       return res.status(400).send("Message is required")
     }
 
@@ -181,7 +181,7 @@ export const router = createRouter((server) => {
     const message = inputPrompt.length ? inputPrompt : bodyMessage
     const threadId = req.params.targetThreadId
 
-    if (!message) {
+    if (!message || message.length === 0) {
       return res.status(400).send("Message is required")
     }
 

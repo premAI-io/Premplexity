@@ -4,6 +4,8 @@ import { createRouter } from "../../utils"
 import ThreadsService from "$services/ThreadsService"
 import { container } from "tsyringe"
 import ThreadShareLinksService from "$services/ThreadShareLinksService"
+import NotFoundPage from "$templates/views/NotFoundView"
+import BaseLayout from "$templates/layouts/BaseLayout"
 
 export const routerPrefix = "/snapshot"
 
@@ -22,6 +24,10 @@ export const router = createRouter((server) => {
     }
 
     const originalThread = await threadsService.getOrFail(snapshot.threadId)
+    if (originalThread.deleted) {
+      return res.view(<NotFoundPage />, BaseLayout)
+    }
+
     if (originalThread.userId === req.callerUser.id) {
       return res.redirect("/thread/" + originalThread.id)
     }

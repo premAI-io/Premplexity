@@ -194,6 +194,17 @@ export const insertSourcePopup = (text: string, sources: Page[]) => {
 
 // --------------- SUGGESTIONS ---------------
 
+export const createSuggestionsSkeleton = () => {
+  return `
+    <div id="follow-up-questions-loading" class="grid gap-[10px] w-full">
+      <div class="text-gray-500 text-base text-left">Suggestions</div>
+      <div class="loading__suggest__container"></div>
+      <div class="loading__suggest__container"></div>
+      <div class="loading__suggest__container"></div>
+    </div>
+  `
+}
+
 export const createSuggestionsSection = (suggestions: Extract<SearchCallbackParams, { type: "followUpQuestions" }>["data"], threadId: number) => {
   if (suggestions.data.length === 0) {
     return ""
@@ -208,7 +219,7 @@ export const createSuggestionsSection = (suggestions: Extract<SearchCallbackPara
             class="suggestion-item"
             hx-post="/actions/thread/${threadId}/sendMessage"
             hx-headers='{"HX-Disable-Loader": "true"}'
-            hx-vals='{"message": "${suggestion}"}'
+            hx-vals='{"message": "${suggestion.replace(/"/g, "&quot;").replace(/'/g, "&#39;")}"}'
             hx-target="#thread-body"
             hx-swap="afterbegin"
             hx-push-url="false"

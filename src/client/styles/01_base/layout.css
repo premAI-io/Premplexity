@@ -10,12 +10,16 @@ body {
   --gradient--primary: linear-gradient(97deg, #7F96FF -3.51%, #F58E8E 109.45%);
 }
 
+html, body {
+  overscroll-behavior-y: none;
+}
+
 .container {
   @apply mx-auto;
 }
 
 #thread-container {
-  @apply h-full w-full md:flex items-start;
+  @apply h-full w-full md:flex items-start overflow-hidden;
 }
 
 .flex-container {
