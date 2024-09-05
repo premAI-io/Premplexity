@@ -118,6 +118,11 @@ window.addEventListener("DOMContentLoaded", () => {
     formatMarkdown()
     addPreCopyButtons()
 
+    const target = (event as CustomEvent).detail.target as HTMLElement
+    if (target.id === "thread-body" || target.id === "page") {
+      scrollToBottom()
+    }
+
     const sidebar = document.getElementById("sidebar")?.querySelector(".sidebar__body")
     if (sidebar) {
       const scrollPosition = localStorage.getItem("sidebarScrollPosition")
@@ -134,13 +139,6 @@ window.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
-    }
-  })
-
-  window.addEventListener("htmx:afterSettle", (event) => {
-    const target = (event as CustomEvent).detail.target as HTMLElement
-    if (target.id === "thread-body" || target.id === "page") {
-      scrollToBottom()
     }
   })
 
