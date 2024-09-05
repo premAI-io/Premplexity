@@ -63,6 +63,7 @@ export const generateOpenAPIErrorSchema = (errors: ERROR_CODE[]) => {
         ...generateOpenAPIErrorDefinition(error),
       }
     }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }, {} as any)
 }
 

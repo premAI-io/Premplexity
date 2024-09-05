@@ -20,6 +20,7 @@ export type IconName =
   | "history"
   | "edit"
   | "file-copy"
+  | "check"
 export type IconProps = Omit<JSX.HtmlTag, "children"> & {
   class?: string
   name: IconName

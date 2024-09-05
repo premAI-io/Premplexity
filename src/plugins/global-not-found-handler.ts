@@ -17,13 +17,5 @@ export default (
     return reply.code(statusCode).send(jsonResponse)
   }
 
-  // WEBSITE
-
-  // if (request.callerUser) {
-  //   return reply.view(NotFoundPage({
-  //     loggedIn: true
-  //   }), DashboardLayout)
-  // }
-
   return reply.view(NotFoundPage({}), BaseLayout)
 }

@@ -15,8 +15,6 @@ const basicAuthHandler: SecurityHandlerFunction = async (req: FastifyRequest, re
     return false
   }
 
-  // check if username and password are correct
-
   return true
 }
 
