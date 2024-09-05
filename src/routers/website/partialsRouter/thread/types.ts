@@ -4,4 +4,5 @@ export enum ROUTE {
   IMAGES_LISTING = "/:targetThreadId/:targetMessageId/:targetImageOrder/images-listing",
   IMAGE = "/:targetThreadId/:targetMessageId/:targetImageOrder/image",
   OPEN_IMAGE = "/:targetThreadId/:targetMessageId/:targetImageOrder/open-image",
+  SIDEBAR_ITEM = "/:targetThreadId/sidebar-item",
 }

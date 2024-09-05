@@ -59,4 +59,14 @@ export const schemas = {
       additionalProperties: false,
     },
   } as const satisfies FastifySchema,
+  [ROUTE.SIDEBAR_ITEM]: {
+    params: {
+      type: "object",
+      properties: {
+        targetThreadId: { type: "number" },
+      },
+      required: ["targetThreadId"],
+      additionalProperties: false,
+    },
+  } as const satisfies FastifySchema,
 }

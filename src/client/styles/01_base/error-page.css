@@ -4,12 +4,12 @@
 
 .error-page__card {
   @apply w-full flex flex-col items-center justify-center
-  p-[96px] bg-white shadow-lg rounded-lg;
+  p-[96px] bg-gray-700 shadow-lg rounded-lg;
   height: calc(100vh - 32px);
 }
 
 .error-page__code {
-  @apply text-8xl font-extrabold text-primary-800
+  @apply text-8xl font-extrabold text-gray-300
 }
 
 .error-page__title {

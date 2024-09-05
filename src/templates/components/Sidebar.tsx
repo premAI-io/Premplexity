@@ -83,7 +83,7 @@ const Sidebar = ({
                   ]
                   if (chat.id === activeThreadId) {
                     return (
-                      <div class={"sidebar__body__item cursor-default active"}>
+                      <div id={`thread-${chat.id}-sidebar`} class={"sidebar__body__item cursor-default active"}>
                         <div class={"truncate"} safe>{chat.title}</div>
                         <DropdownTrigger
                           aria-haspopup="true"
@@ -104,7 +104,7 @@ const Sidebar = ({
                   }
 
                   return (
-                    <div class={"sidebar__body__item cursor-pointer"} hx-get={`/thread/${chat.id}`} hx-push-url="true">
+                    <div id={`thread-${chat.id}-sidebar`} class={"sidebar__body__item cursor-pointer"} hx-get={`/thread/${chat.id}`} hx-push-url="true">
                       <div class={"truncate"} safe>{chat.title}</div>
                       <DropdownTrigger
                         class="hidden thread-dropdown-trigger"

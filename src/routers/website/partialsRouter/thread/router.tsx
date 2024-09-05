@@ -1,14 +1,18 @@
 import { schemas } from "$routers/website/partialsRouter/thread/schemas"
 import { ROUTE } from "$routers/website/partialsRouter/thread/types"
-import { createRouter } from "$routers/website/utils"
+import { createRouter, getActionPath, getPartialPath } from "$routers/website/utils"
 import ThreadMessagesService from "$services/ThreadMessagesService"
 import ThreadsService from "$services/ThreadsService"
 import DeleteThreadModal from "$templates/components/DeleteThreadModal"
+import Dropdown, { DropdownItem } from "$templates/components/Dropdown"
+import DropdownTrigger from "$templates/components/DropdownTrigger"
+import Icon from "$templates/components/Icon"
 import ImageLinkButton from "$templates/components/imagesListing/ImageLinkButton"
 import ImagesListing from "$templates/components/imagesListing/ImagesListing"
 import MainImage from "$templates/components/imagesListing/MainImage"
 import ImageMobile from "$templates/components/mobile/Image"
 import SourcesModal from "$templates/components/thread/SourcesModal"
+import THREAD_MESSAGE_STATUS from "$types/THREAD_MESSAGE_STATUS"
 import { eq } from "drizzle-orm"
 import { container } from "tsyringe"
 
@@ -138,5 +142,59 @@ export const router = createRouter((server) => {
       .view(
         <ImageMobile link={currentImage.link} image={currentImage.image ?? currentImage.thumbnail} thumbnail={currentImage.thumbnail} />
       )
+  })
+
+  server.get(ROUTE.SIDEBAR_ITEM, {
+    schema: schemas[ROUTE.SIDEBAR_ITEM]
+  }, async (req, res) => {
+    const { targetThreadId } = req.params
+
+    const thread = await threadsService.getOrFail(targetThreadId)
+
+    const dropdownId = `thread-${thread.id}-dropdown`
+    const dropdownPosition = "right"
+    const hasMessages = !!thread.messages.filter(m => m.currentMessage.status === THREAD_MESSAGE_STATUS.COMPLETED).length
+    const items: DropdownItem[] = [
+      ...hasMessages ? [{
+        title: "Share thread",
+        icon: "upload",
+        type: "primary",
+        href: getActionPath("thread", "SHARE", { targetThreadId: thread.id }),
+        "hx-target": "#modal",
+        "hx-swap": "innerHTML",
+        "hx-boost": "true",
+        "hx-push-url": "false",
+      } as DropdownItem] : [],
+      {
+        title: "Delete",
+        icon: "trash",
+        type: "danger",
+        href: getPartialPath("thread", "DELETE_MODAL", { targetThreadId: thread.id }),
+        "hx-target": "#modal",
+        "hx-swap": "innerHTML",
+        "hx-boost": "true",
+        "hx-push-url": "false",
+      }
+    ]
+
+    return res.view(
+      <div id={`thread-${thread.id}-sidebar`} class={"sidebar__body__item cursor-default active"}>
+        <div class={"truncate"} safe>{thread.title}</div>
+        <DropdownTrigger
+          aria-haspopup="true"
+          aria-controls={dropdownId}
+          dropdownId={dropdownId}
+        >
+          <Icon name="dots-vertical" size={18} />
+        </DropdownTrigger>
+
+        <Dropdown
+          clone
+          id={dropdownId}
+          items={items}
+          position={dropdownPosition}
+        />
+      </div>
+    )
   })
 })

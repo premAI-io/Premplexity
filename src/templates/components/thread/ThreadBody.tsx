@@ -1,3 +1,4 @@
+import { getPartialPath } from "$routers/website/utils"
 import { ThreadComplete } from "$services/ThreadsService"
 import ImagesSection from "$templates/components/thread/ImagesSection"
 import SourcesSection from "$templates/components/thread/SourcesSection"
@@ -34,6 +35,7 @@ const ThreadBody = ({
         class={"thread-body"}
         {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
         data-thread-id={thread.id}
+        data-sidebar-item-endpoint={getPartialPath("thread", "SIDEBAR_ITEM", { targetThreadId: thread.id })}
       >
         {
           loading && skeletonMessages && thread.messages.length === 0 ?

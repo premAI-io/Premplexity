@@ -236,7 +236,11 @@ export const handleThreadSSEMessage = (
       currentMessages.forEach(message => {
         message.removeAttribute("data-current-message")
       })
+
+      updateSidebarItem(threadContainer, threadId)
+
       const inputPrompt = document.getElementById("input-prompt-inner-container") as HTMLTextAreaElement | null
+      inputPrompt?.parentNode?.querySelector("#input-prompt-submit")?.setAttribute("disabled", "true")
       inputPrompt?.removeAttribute("data-response-loading")
       break
     }
@@ -309,4 +313,16 @@ export const blockExecution = () => {
 
   const inputPrompt = document.getElementById("input-prompt-inner-container") as HTMLTextAreaElement | null
   inputPrompt?.removeAttribute("data-response-loading")
+}
+
+const updateSidebarItem = (container: HTMLElement, threadId: number) => {
+  const enpoint = container.getAttribute("data-sidebar-item-endpoint")
+  if (!enpoint) {
+    return
+  }
+
+  htmx.ajax("GET", enpoint, {
+    target: `#thread-${threadId}-sidebar`,
+    swap: "outerHTML"
+  })
 }
