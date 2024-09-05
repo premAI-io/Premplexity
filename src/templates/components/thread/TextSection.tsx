@@ -14,6 +14,7 @@ type Props = {
   assistantResponse?: ThreadMessageComplete["assistantResponse"],
   isCurrentMessage?: boolean
   lastMessage?: boolean
+  messageId: number
 }
 
 const TextSection = ({
@@ -23,16 +24,17 @@ const TextSection = ({
   assistantError,
   assistantResponse,
   isCurrentMessage,
-  lastMessage = false
+  lastMessage = false,
+  messageId
 }: Props) => {
   return (
     <>
-      <div data-last-message={`${lastMessage}`} class={"flex-container !gap-x-3 text-sm pt-4"}>
+      <div class={"flex-container !gap-x-3 text-sm pt-4"}>
         <PremLogo />
         <div class={"font-semibold"} safe>{assistantModel}</div>
       </div>
       <div id={"thread-text-container"} class={"pt-2"} {...isCurrentMessage ? {
-        "data-current-message": ""
+        "data-current-message": messageId
         } : {}
       }>
         <div id="thread-text-loader" class={classNames({

@@ -33,7 +33,7 @@ const ImagesSection = ({
           "!hidden": loading
         })}
         {...isCurrentMessage ? {
-          "data-current-message": ""
+          "data-current-message": messageId
           } : {}
         }
       >
@@ -45,7 +45,7 @@ const ImagesSection = ({
         } : {}}
         class={"pt-2"}
         {...isCurrentMessage ? {
-          "data-current-message": ""
+          "data-current-message": messageId
           } : {}
         }
       >

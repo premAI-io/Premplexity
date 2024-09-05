@@ -9,11 +9,11 @@
   resize-none md:min-h-[calc(100%-0.5rem)] md:max-h-[calc(100%-0.2rem)]
   bg-transparent text-gray-100 outline-none;
 
-  + #input-prompt-submit > .icon {
+  + #input-prompt-submit {
     @apply !inline-flex;
-  }
+  };
 
-  + #input-prompt-submit > .icon.animate-spin {
+  + #input-prompt-submit + #input-prompt-stop {
     @apply !hidden;
   }
 }
@@ -21,11 +21,11 @@
 .input-prompt__inner-container[data-response-loading] {
   @apply pointer-events-none;
 
-  + #input-prompt-submit > .icon:first-child {
+  + #input-prompt-submit {
     @apply !hidden;
-  }
+  };
 
-  + #input-prompt-submit > .icon.animate-spin {
+  + #input-prompt-submit + #input-prompt-stop {
     @apply !inline-flex;
   }
 }

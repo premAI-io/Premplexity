@@ -195,14 +195,14 @@ export const insertSourcePopup = (text: string, sources: Page[]) => {
 // --------------- SUGGESTIONS ---------------
 
 export const createSuggestionsSection = (suggestions: Extract<SearchCallbackParams, { type: "followUpQuestions" }>["data"], threadId: number) => {
-  if (suggestions.length === 0) {
+  if (suggestions.data.length === 0) {
     return ""
   }
 
   return `
     <div id="follow-up-questions" class="grid gap-[10px] w-full">
       <div class="text-gray-500 text-base text-left">Suggestions</div>
-      ${suggestions.filter(suggestion => suggestion.length > 0).map(suggestion => (
+      ${suggestions.data.filter(suggestion => suggestion.length > 0).map(suggestion => (
         `
           <div
             class="suggestion-item"

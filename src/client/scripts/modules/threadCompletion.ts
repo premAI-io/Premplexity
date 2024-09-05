@@ -34,10 +34,25 @@ export const handleThreadSSEMessage = (
     return
   }
 
+  const lastMessageContainer = document.getElementById("last-message")
+  if (!lastMessageContainer) {
+    return
+  }
+
   switch (content.type) {
+    case "improvedQuery": {
+      const children = lastMessageContainer.querySelectorAll("[data-current-message]")
+      children.forEach(child => {
+        const value = child.getAttribute("data-current-message")
+        if (value === "0") {
+          child.setAttribute("data-current-message", content.data.messageId.toString())
+        }
+      })
+      break
+    }
     case "searchSources": {
       // ----------------- SOURCES -----------------
-      const mainSourcesContainer = threadContainer.querySelector("#thread-sources-container[data-current-message]")
+      const mainSourcesContainer = threadContainer.querySelector("#thread-sources-container[data-current-message='" + content.data.messageId + "']")
       if (!mainSourcesContainer) {
         return
       }
@@ -118,7 +133,7 @@ export const handleThreadSSEMessage = (
       break
     }
     case "completionChunk": {
-      const container = threadContainer.querySelector("#thread-text-container[data-current-message]")
+      const container = threadContainer.querySelector("#thread-text-container[data-current-message='" + content.data.messageId + "']")
       if (!container) {
         return
       }
@@ -132,7 +147,7 @@ export const handleThreadSSEMessage = (
       textContainer.classList.remove("!hidden")
 
 
-      const text = content.data
+      const text = content.data.data
       textContainer.innerHTML += text
 
       const completeText = (textContainer.getAttribute("data-text") ?? "").replace(/&lt;/g, "<").replace(/&gt;/g, ">") + text
@@ -166,13 +181,21 @@ export const handleThreadSSEMessage = (
         return
       }
 
+      const children = lastMessageContainer.querySelectorAll("[data-current-message]")
+      const stopped = !(Array.from(children).some(child => {
+        return child.getAttribute("data-current-message") === content.data.messageId.toString()
+      }))
+      if (stopped) {
+        return
+      }
+
       const container = createSuggestionsSection(content.data, threadId)
       lastMessageContainer.insertAdjacentHTML("beforeend", container)
       htmx.process(lastMessageContainer)
       break
     }
     case "end": {
-      const container = threadContainer.querySelector("#thread-text-container[data-current-message]")
+      const container = threadContainer.querySelector("#thread-text-container[data-current-message='" + content.data.messageId + "']")
       if (!container) {
         return
       }
@@ -209,7 +232,7 @@ export const handleThreadSSEMessage = (
       if (redoButton) {
         redoButton.removeAttribute("disabled")
       }
-      const currentMessages = threadContainer.querySelectorAll("[data-current-message]")
+      const currentMessages = threadContainer.querySelectorAll("[data-current-message='" + content.data.messageId + "']")
       currentMessages.forEach(message => {
         message.removeAttribute("data-current-message")
       })
@@ -243,4 +266,47 @@ export const scrollToBottom = () => {
   if (threadContainer) {
     threadContainer.scrollTop = threadContainer.scrollHeight
   }
+}
+
+export const blockExecution = () => {
+  const lastMessageContainer = document.getElementById("last-message")
+  if (!lastMessageContainer) {
+    return
+  }
+  const sourcesTitle = lastMessageContainer.querySelector("#thread-sources-title")
+  if (sourcesTitle) {
+    sourcesTitle.remove()
+  }
+  const mainSourcesContainer = lastMessageContainer.querySelector("#thread-sources-container[data-current-message]")
+  const sourceLoadersContainer = mainSourcesContainer?.querySelector("#thread-sources-loader")
+  if (!sourceLoadersContainer?.classList.contains("!hidden")) {
+    mainSourcesContainer?.remove()
+  }
+
+  const textContainer = lastMessageContainer.querySelector("#thread-text-container[data-current-message]")
+  const textLoadersContainer = textContainer?.querySelector("#thread-text-loader")
+  textLoadersContainer?.classList.add("!hidden")
+  const textContent = textContainer?.querySelector("#thread-text")
+  textContent?.classList.remove("!hidden")
+  if (textContent) {
+    textContent.innerHTML = "Execution stopped"
+  }
+
+  const copyButton = lastMessageContainer.querySelector("#copy-response-button")
+  if (copyButton) {
+    copyButton.setAttribute("disabled", "true")
+  }
+
+  const children = lastMessageContainer.querySelectorAll("[data-current-message]")
+  children.forEach(child => {
+    child.removeAttribute("data-current-message")
+  })
+
+  const redoButton = lastMessageContainer.querySelector("#redo-button")
+  if (redoButton) {
+    redoButton.removeAttribute("disabled")
+  }
+
+  const inputPrompt = document.getElementById("input-prompt-inner-container") as HTMLTextAreaElement | null
+  inputPrompt?.removeAttribute("data-response-loading")
 }

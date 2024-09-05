@@ -32,7 +32,18 @@ const InputPrompt = ({
         disabled
       >
         <Icon name="arrow-up" />
-        <Spinner class="!w-4 !h-4 md:!w-6 md:!h-6 !absolute" />
+      </Button>
+      <Button
+        id="input-prompt-stop"
+        theme="primary"
+        class="!w-7 !h-7 md:!w-9 md:!h-9 !p-0 flex items-center justify-center !absolute bottom-[6.5px] right-[8px] md:bottom-[10px] md:right-[10px]"
+        type="button"
+        onclick="blockExecution()"
+      >
+        <div data-spinner class={"flex items-center justify-center"}>
+          <Spinner class="!w-6 !h-6 !absolute" />
+          <div class={"w-3 h-3 rounded-sm bg-[currentColor] !absolute"} />
+        </div>
       </Button>
     </div>
   )

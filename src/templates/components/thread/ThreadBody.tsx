@@ -60,6 +60,7 @@ const ThreadBody = ({
               isCurrentMessage
               assistantModel={skeletonMessages.assistantModel}
               lastMessage
+              messageId={0}
             />
           </div>
           :
@@ -94,6 +95,7 @@ const ThreadBody = ({
                   assistantError={currentMessage.assistantError}
                   assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
                   lastMessage={!(loading && skeletonMessages && thread.messages.length === 0)}
+                  messageId={currentMessage.id}
                 />
                 {loading ?
                   <></> :
@@ -119,6 +121,7 @@ const ThreadBody = ({
                   assistantModel={currentMessage.assistantModel}
                   assistantError={currentMessage.assistantError}
                   assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
+                  messageId={currentMessage.id}
                 />
               </div>
             }

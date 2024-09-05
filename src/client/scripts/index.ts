@@ -10,7 +10,7 @@ import { initTooltips } from "src/client/scripts/modules/tooltip"
 import { ToastType, createToast } from "src/client/scripts/modules/toast"
 import { initTextEllipsis } from "src/client/scripts/modules/text-ellipsis"
 import { onInputPromptInput, onInputPromptKeydown, onPromptSubmit } from "src/client/scripts/modules/input-prompt"
-import { formatMarkdown, handleThreadSSEMessage, scrollToBottom } from "src/client/scripts/modules/threadCompletion"
+import { blockExecution, formatMarkdown, handleThreadSSEMessage, scrollToBottom } from "src/client/scripts/modules/threadCompletion"
 import { SelectOption } from "$templates/components/SelectSearchable"
 import { addPreCopyButtons } from "src/client/scripts/modules/markdown"
 import { afterImageSwap } from "src/client/scripts/modules/images-listing"
@@ -73,6 +73,7 @@ declare global {
     onInputPromptInput: (event: InputEvent) => void
     onInputPromptKeydown: (event: KeyboardEvent) => void
     onPromptSubmit: (params: { newMessageInserted: boolean }) => void
+    blockExecution: () => void
     // sidebar
     onSidebarScroll: (event: Event) => void
     // edit message
@@ -489,6 +490,7 @@ window.showToast = createToast
 window.onInputPromptInput = onInputPromptInput
 window.onInputPromptKeydown = onInputPromptKeydown
 window.onPromptSubmit = onPromptSubmit
+window.blockExecution = blockExecution
 
 // sidebar
 window.onSidebarScroll = (event) => {
