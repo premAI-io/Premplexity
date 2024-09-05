@@ -24,6 +24,7 @@ export type EndCallbackData = {
   improvedQuery?: string,
   followUpQuestions?: string[]
   messageId: number
+  hasMoreErrorData?: boolean
 }
 
 export type SearchCallbackParams = {
@@ -390,7 +391,7 @@ ${params.context}
       })
     }
 
-    const { data, error } = await this.premAI.completion({
+    const { data, error, completeError } = await this.premAI.completion({
       projectId: this.configs.env.PREM_PROJECT_ID,
       stream: true,
       messages: [
@@ -415,7 +416,8 @@ ${params.context}
       content: null,
       error: null,
       improvedQuery,
-      messageId: message.id
+      messageId: message.id,
+      hasMoreErrorData: !!completeError
     }
 
     if (error) {
@@ -493,6 +495,7 @@ ${params.context}
     await this.threadMessagesService.update(message.id, {
       assistantResponse: out.content,
       assistantError: out.error?.toString(),
+      errorData: completeError,
       assistantTimestamp: new Date().toISOString(),
     })
 

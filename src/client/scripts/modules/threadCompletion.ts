@@ -51,6 +51,13 @@ export const handleThreadSSEMessage = (
       break
     }
     case "searchSources": {
+      const children = lastMessageContainer.querySelectorAll("[data-current-message]")
+      children.forEach(child => {
+        const value = child.getAttribute("data-current-message")
+        if (value === "0") {
+          child.setAttribute("data-current-message", content.data.messageId.toString())
+        }
+      })
       // ----------------- SOURCES -----------------
       const mainSourcesContainer = threadContainer.querySelector("#thread-sources-container[data-current-message='" + content.data.messageId + "']")
       if (!mainSourcesContainer) {
@@ -225,6 +232,22 @@ export const handleThreadSSEMessage = (
       } else if (content.data.error) {
         textContainer.classList.add("text-red-500")
         textContainer.innerHTML = content.data.error
+
+        if (content.data.hasMoreErrorData) {
+          const seeMoreLink = document.createElement("a")
+          seeMoreLink.classList.add("hover:underline")
+          seeMoreLink.href = `/partials/thread/${threadId}/${content.data.messageId}/error-modal`
+          seeMoreLink.setAttribute("hx-target", "#modal")
+          seeMoreLink.setAttribute("hx-swap", "innerHTML")
+          seeMoreLink.setAttribute("hx-push-url", "false")
+          seeMoreLink.setAttribute("hx-boost", "true")
+          seeMoreLink.innerText = "See more details"
+          const span = document.createElement("span")
+          span.innerText = ". "
+          textContainer.appendChild(span)
+          textContainer.appendChild(seeMoreLink)
+          htmx.process(textContainer)
+        }
       }
       initSourcesPopup()
       addPreCopyButtons()
@@ -261,7 +284,22 @@ export const formatMarkdown = () => {
       textContainer.innerHTML = markdownToHTML(textContainer.innerHTML.replace(/&lt;/g, "<").replace(/&gt;/g, ">"))
       initSourcesPopup()
       textContainer.setAttribute("markdown-formatted", "true")
+      htmx.process(textContainer)
     }
+  })
+  const errorsContainers = document.querySelectorAll("#error-modal #error-content")
+  errorsContainers.forEach(container => {
+    if (container.getAttribute("markdown-formatted") === "true") {
+      return
+    }
+    try {
+      const obj = JSON.parse(container.innerHTML)
+      const stringified = JSON.stringify(obj, null, 2)
+      container.innerHTML = markdownToHTML("```json\n" + stringified + "\n```")
+    } catch (error) {
+      container.innerHTML = markdownToHTML(container.innerHTML)
+    }
+    container.setAttribute("markdown-formatted", "true")
   })
 }
 

@@ -124,7 +124,8 @@ type PartialsRoutersParams = {
     IMAGES_LISTING: { targetThreadId: number, targetMessageId: number, targetImageOrder: number },
     IMAGE: { targetThreadId: number, targetMessageId: number, targetImageOrder: number },
     OPEN_IMAGE: { targetThreadId: number, targetMessageId: number, targetImageOrder: number },
-    SIDEBAR_ITEM: { targetThreadId: number }
+    SIDEBAR_ITEM: { targetThreadId: number },
+    ERROR_MODAL: { targetThreadId: number, targetMessageId: number },
   }
 }
 

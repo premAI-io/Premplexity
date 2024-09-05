@@ -1,9 +1,7 @@
-// import Button from "$templates/components/Button"
 import classNames from "classnames"
 
 type ErrorPageProps = {
   children?: JSX.Element
-  showButton?: boolean
   loggedIn?: boolean
   code: number
   title: string
@@ -12,7 +10,6 @@ type ErrorPageProps = {
 
 const ErrorPage = ({
   children,
-  showButton = true,
   loggedIn = false,
   code,
   title,
@@ -32,12 +29,6 @@ const ErrorPage = ({
               {message}
             </div>
             : null
-        }
-        {showButton ?
-          <a href={"/"} hx-boost="true" class={"mt-8"}>
-            {/* <Button>Homepage</Button> */}
-          </a>
-          : null
         }
       </div>
     </div>

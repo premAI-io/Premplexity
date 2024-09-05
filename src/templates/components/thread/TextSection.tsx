@@ -1,4 +1,4 @@
-import { getActionPath } from "$routers/website/utils"
+import { getActionPath, getPartialPath } from "$routers/website/utils"
 import { ThreadMessageComplete } from "$services/ThreadMessagesService"
 import CopyButton from "$templates/components/CopyButton"
 import Icon from "$templates/components/Icon"
@@ -11,6 +11,7 @@ type Props = {
   loading?: boolean,
   assistantModel: ThreadMessageComplete["assistantModel"],
   assistantError?: ThreadMessageComplete["assistantError"],
+  errorData?: ThreadMessageComplete["errorData"],
   assistantResponse?: ThreadMessageComplete["assistantResponse"],
   isCurrentMessage?: boolean
   lastMessage?: boolean
@@ -22,6 +23,7 @@ const TextSection = ({
   loading,
   assistantModel,
   assistantError,
+  errorData,
   assistantResponse,
   isCurrentMessage,
   lastMessage = false,
@@ -47,6 +49,22 @@ const TextSection = ({
           "text-red-500": assistantError
         })}>
           {assistantError ?? assistantResponse as "safe"}
+          {assistantError && errorData ?
+            <>
+              <span>. </span>
+              <a
+                class={"hover:underline"}
+                href={getPartialPath("thread", "ERROR_MODAL", { targetThreadId: threadId, targetMessageId: messageId })}
+                hx-target="#modal"
+                hx-swap="innerHTML"
+                hx-push-url="false"
+                hx-boost="true"
+              >
+                See more details
+              </a>
+            </>
+            : null
+          }
         </div>
         <div class={"flex gap-6 items-center justify-end w-full my-4"}>
           {

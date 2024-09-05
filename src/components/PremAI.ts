@@ -3,7 +3,6 @@ import Prem from "@premai/prem-sdk"
 import { AxiosError } from "axios"
 import { container, inject, singleton } from "tsyringe"
 
-
 @singleton()
 export default class PremAI {
   readonly client: Prem
@@ -47,24 +46,36 @@ export default class PremAI {
 
       return {
         data,
-        error: null
+        error: null,
+        completeError: null
       }
     } catch (err) {
       if (err instanceof AxiosError) {
         return {
           error: err.response?.status + " | " + err.response?.data,
-          data: null
+          data: null,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          completeError: err.toString()
         }
       } else {
+        let completeError: string | null = null
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((err as any)._outBuffer instanceof Buffer) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          completeError = (err as any)._outBuffer.toString("utf-8").replace(/\0/g, "")
+          if (completeError) {
+            const jsonIndex = completeError.indexOf("}") + 1
+            completeError = completeError.substring(0, jsonIndex)
+          }
+        }
+
         // TODO: Parse error to show a more user-friendly message
         return {
           error: "Generic error occurred",
-          data: null
+          data: null,
+          completeError
         }
-        // return {
-        //   error: (err as Error).toString(),
-        //   data: null
-        // }
       }
     }
   }

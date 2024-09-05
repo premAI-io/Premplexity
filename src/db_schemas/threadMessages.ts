@@ -33,6 +33,7 @@ export const threadMessages = pgTable("ThreadMessages", {
   assistantError: text("assistantError"),
   assistantTimestamp: timestamp("assistantTimestamp", { withTimezone: true, mode: "string" }),
   assistantModel: varchar("assistantModel", { length: 255 }).notNull(),
+  errorData: text("errorData"),
 
   followUpQuestions: jsonb("followUpQuestions").notNull().$type<string[]>().default([]),
 })

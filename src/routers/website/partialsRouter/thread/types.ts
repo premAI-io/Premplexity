@@ -5,4 +5,5 @@ export enum ROUTE {
   IMAGE = "/:targetThreadId/:targetMessageId/:targetImageOrder/image",
   OPEN_IMAGE = "/:targetThreadId/:targetMessageId/:targetImageOrder/open-image",
   SIDEBAR_ITEM = "/:targetThreadId/sidebar-item",
+  ERROR_MODAL = "/:targetThreadId/:targetMessageId/error-modal",
 }

@@ -98,6 +98,7 @@ const ThreadBody = ({
                   assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
                   lastMessage={!(loading && skeletonMessages && thread.messages.length === 0)}
                   messageId={currentMessage.id}
+                  errorData={currentMessage.errorData}
                 />
                 {loading ?
                   <></> :
@@ -124,6 +125,7 @@ const ThreadBody = ({
                   assistantError={currentMessage.assistantError}
                   assistantResponse={insertSourcePopup(currentMessage.assistantResponse ?? "", currentMessage.sources.pages)}
                   messageId={currentMessage.id}
+                  errorData={currentMessage.errorData}
                 />
               </div>
             }

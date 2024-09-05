@@ -6,6 +6,7 @@ import ThreadsService from "$services/ThreadsService"
 import DeleteThreadModal from "$templates/components/DeleteThreadModal"
 import Dropdown, { DropdownItem } from "$templates/components/Dropdown"
 import DropdownTrigger from "$templates/components/DropdownTrigger"
+import ErrorModal from "$templates/components/ErrorModal"
 import Icon from "$templates/components/Icon"
 import ImageLinkButton from "$templates/components/imagesListing/ImageLinkButton"
 import ImagesListing from "$templates/components/imagesListing/ImagesListing"
@@ -195,6 +196,26 @@ export const router = createRouter((server) => {
           position={dropdownPosition}
         />
       </div>
+    )
+  })
+
+  server.get(ROUTE.ERROR_MODAL, {
+    schema: schemas[ROUTE.ERROR_MODAL]
+  }, async (req, res) => {
+    const { targetThreadId, targetMessageId } = req.params
+
+    const message = await threadMessagesService.getOrFail(targetMessageId, {
+      where: eq(threadMessagesService.mainTable.threadId, targetThreadId)
+    })
+
+    if (!message.errorData) {
+      return res.status(404).send("Not found")
+    }
+
+    return res.view(
+      <ErrorModal
+        error={message.errorData}
+      />
     )
   })
 })

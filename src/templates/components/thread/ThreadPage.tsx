@@ -41,7 +41,7 @@ const ThreadPage = ({
       hx-push-url="false"
       {...swapOOB ? { "hx-swap-oob": swapOOB } : {}}
       {...{
-        "hx-on::before-request": "if (event.target.closest('.image-card-container')) { return; }; onPromptSubmit({ newMessageInserted: event.target.id === this.id })",
+        "hx-on::before-request": "if (event.target.closest('.image-card-container') || event.target.closest('#thread-text')) { return; }; onPromptSubmit({ newMessageInserted: event.target.id === this.id })",
       }}
     >
       <Header threadId={thread.id} availableModels={availableModels} availableSources={availableSources} />
