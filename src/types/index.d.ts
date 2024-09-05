@@ -14,8 +14,6 @@ export type GlobalResources = {
   FAVICON_PATH: string,
   ESBUILD_STYLE_BUNDLE_PATH: string
   ESBUILD_SCRIPT_BUNDLE_PATH: string
-  RECAPTCHA_V2_SITE_KEY: string
-  RECAPTCHA_V3_SITE_KEY: string
   IS_MOBILE: boolean
 }
 

@@ -26,10 +26,6 @@ html, body {
   @apply flex items-center gap-x-4;
 }
 
-.grecaptcha-badge {
-  visibility: hidden;
-}
-
 *[data-tooltip-text]:after {
   content: attr(data-tooltip-text);
   position: fixed;
