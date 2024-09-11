@@ -26,7 +26,7 @@ export const threadMessageSources = pgTable(
     snippet: varchar("snippet"),
     favicon: varchar("favicon"),
 
-    // TODO for IMAGE
+    // For IMAGE
     thumbnail: varchar("thumbnail"),
     image: varchar("image")
   }

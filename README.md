@@ -38,7 +38,7 @@
   PREM_API_KEY=your_api_key
   ```
 
-1. Get SerpApi key
+5. Get SerpApi key
 
       - Go to your [SerpAPI](https://serpapi.com/dashboard) account and create a new project.
       - Get your API key and paste it in the `.env` file.
@@ -49,7 +49,7 @@
 
 ## Development
 
-Make sure you have docker running and no other services are running on the ports `5432` and `3000`. Start the local infrastructure:
+Make sure you have docker running and no other services are running on the ports `5432` and `3000` (or in the ports that you have set on `.env` file). Start the local infrastructure:
 
 ```bash
 npm run dev
@@ -113,24 +113,6 @@ Run the following command to seed the database with initial data:
 ```bash
 npm run db:seed
 ```
-
-## Local testing
-
-To run the tests, ensure your local development environment is set up according to the instructions in the **Setup** and **Development** sections. All tests are located in the `/src/tests` folder.
-
-Run all tests using the following command:
-
-```bash
-npm test
-```
-
-To execute a specific test, use the --name flag followed by the name of the test you wish to run:
-
-```bash
-npm test --name=test_name
-```
-
-Replace test_name with the actual name of the test you want to execute. This will run the test that matches the given name.
 
 ## Troubleshooting
 

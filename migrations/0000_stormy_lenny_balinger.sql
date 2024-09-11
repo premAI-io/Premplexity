@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE "public"."threadMessageSourceTypeEnum" AS ENUM('WEB_PAGE');
+ CREATE TYPE "public"."threadMessageSourceTypeEnum" AS ENUM('WEB_PAGE', 'IMAGE');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -17,10 +17,12 @@ CREATE TABLE IF NOT EXISTS "ThreadMessageSources" (
 	"threadMessageId" integer NOT NULL,
 	"type" "threadMessageSourceTypeEnum" NOT NULL,
 	"order" integer NOT NULL,
-	"title" varchar,
 	"link" varchar,
+	"title" varchar,
 	"snippet" varchar,
-	"favicon" varchar
+	"favicon" varchar,
+	"thumbnail" varchar,
+	"image" varchar
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ThreadMessages" (
@@ -36,6 +38,7 @@ CREATE TABLE IF NOT EXISTS "ThreadMessages" (
 	"assistantError" text,
 	"assistantTimestamp" timestamp with time zone,
 	"assistantModel" varchar(255) NOT NULL,
+	"errorData" text,
 	"followUpQuestions" jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 --> statement-breakpoint

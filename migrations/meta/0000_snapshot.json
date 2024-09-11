@@ -1,5 +1,5 @@
 {
-  "id": "9f1fc8fb-2d1d-4a48-ab07-3697a746e496",
+  "id": "21aa795b-ae5b-4baa-bca1-852c2bb96ad2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -87,14 +87,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "title": {
-          "name": "title",
+        "link": {
+          "name": "link",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "link": {
-          "name": "link",
+        "title": {
+          "name": "title",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -107,6 +107,18 @@
         },
         "favicon": {
           "name": "favicon",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail": {
+          "name": "thumbnail",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image": {
+          "name": "image",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -207,6 +219,12 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "errorData": {
+          "name": "errorData",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "followUpQuestions": {
           "name": "followUpQuestions",
@@ -424,7 +442,8 @@
       "name": "threadMessageSourceTypeEnum",
       "schema": "public",
       "values": [
-        "WEB_PAGE"
+        "WEB_PAGE",
+        "IMAGE"
       ]
     }
   },

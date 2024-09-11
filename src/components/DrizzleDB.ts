@@ -12,8 +12,6 @@ import * as threadShareLinkMessagesSchemas from "$db_schemas/threadShareLinkMess
 import * as threadShareLinksSchemas from "$db_schemas/threadShareLinks"
 import * as threadsSchemas from "$db_schemas/threads"
 
-
-
 import { Logger, sql } from "drizzle-orm"
 
 const getDrizzle = (sql: Postgres.Sql, logger?: Logger) => {

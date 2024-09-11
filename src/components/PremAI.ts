@@ -70,7 +70,6 @@ export default class PremAI {
           }
         }
 
-        // TODO: Parse error to show a more user-friendly message
         return {
           error: "Generic error occurred",
           data: null,

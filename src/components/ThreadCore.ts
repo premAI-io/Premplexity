@@ -17,7 +17,7 @@ export type EndCallbackData = {
     searchSources: SearchResults
   }
   | {
-    ragSources: null // TODO v2
+    ragSources: null
   },
   content: string | null,
   error: string | null,
@@ -178,7 +178,7 @@ ${params.context}
 
 `
 
-  private improveQuery = async(params: {
+  private improveQuery = async (params: {
     query: string,
     searchEngine: string,
     previousMessages: AssistantHistoryMessage[]
@@ -224,7 +224,7 @@ ${params.context}
       .flat()
   }
 
-  private generateFollowUpQuestions = async(params: {
+  private generateFollowUpQuestions = async (params: {
     previousMessages: AssistantHistoryMessage[]
   }) => {
     const {
@@ -338,7 +338,7 @@ ${params.context}
             })
           }
         } else if (error) {
-          // TODO log the error, consider stopping the whole execution...
+          console.error("IMPROVE QUERY ERROR", error)
         }
       }
 
@@ -493,8 +493,7 @@ ${params.context}
         })
       }
     } else if (followUpError) {
-      console.log("FOLLOW UP ERROR", followUpError)
-      // TODO log the error, consider stopping the whole execution...
+      console.error("FOLLOW UP ERROR", followUpError)
     }
 
     if (params.cb) {

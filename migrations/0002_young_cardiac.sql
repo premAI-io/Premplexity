@@ -1,1 +1,0 @@
-ALTER TABLE "ThreadMessages" ADD COLUMN "errorData" text;

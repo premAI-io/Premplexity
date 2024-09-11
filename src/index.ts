@@ -22,10 +22,6 @@ import Configs from "$components/Configs"
 // SERVICES
 import UsersService, { BaseUser } from "$services/UsersService"
 
-// SECURITY
-import securityHook from "src/securities/securityHook"
-import securityHandlers from "src/securities/handlers"
-
 // OTHERS
 import meta from "./meta.json"
 import * as Sentry from "@sentry/node"
@@ -59,11 +55,10 @@ declare module "fastify" {
       callerUserId: number
     }
   }
+
   interface FastifyContextConfig {
     security?: {
-      apiKey?: boolean
       session?: string,
-      basicAuth?: boolean
     }
   }
 }
@@ -198,15 +193,6 @@ void (async () => {
     req.callerUser = callerUser
   })
 
-  server.addHook("preHandler", async (req) => {
-    // INJECT TARGETS
-    const promises: Promise<void>[] = []
-
-    await Promise.all(promises)
-  })
-
-  server.addHook("preHandler", securityHook(securityHandlers))
-
   server.addHook("onSend", (req, reply, payload, done) => {
     if (!reply.sent) {
       reply.header("X-Request-Id", req.requestId)
@@ -226,19 +212,10 @@ void (async () => {
       openapi: "3.1.0",
       components: {
         securitySchemes: {
-          apiKey: {
-            type: "apiKey",
-            name: "Authorization",
-            in: "header",
-          },
           session: {
             type: "apiKey",
             name: "premplexity.session.id",
             in: "cookie"
-          },
-          basicAuth: {
-            type: "http",
-            scheme: "basic"
           }
         }
       }
@@ -257,16 +234,8 @@ void (async () => {
           obj.schema.security = []
         }
 
-        if (obj.route.config?.security?.apiKey) {
-          obj.schema.security = obj.schema.security.concat({ apiKey: [] })
-        }
-
         if (obj.route.config?.security?.session) {
           obj.schema.security = obj.schema.security.concat({ session: [] })
-        }
-
-        if (obj.route.config?.security?.basicAuth) {
-          obj.schema.security = obj.schema.security.concat({ basicAuth: [] })
         }
 
         if (!obj.url.startsWith("/api/")) {
@@ -293,7 +262,6 @@ void (async () => {
           globalResources: this.request.globalResources,
           isHtmxRequest: this.request.headers["hx-request"] === "true",
           routerName: ""
-          // this.request.routers?.at(-1) || "root"
         })
       } else {
         out = jsx.toString()
