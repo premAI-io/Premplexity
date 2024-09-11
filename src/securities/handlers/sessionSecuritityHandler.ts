@@ -1,13 +1,9 @@
 import USER_ROLE from "$types/USER_ROLES"
 import { SecurityHandlerFunction } from "$types/security"
 import { captureException } from "@sentry/node"
-import { FastifyRequest } from "fastify"
 import { evaluate } from "mathjs"
 
-const getUserRoles = async (req: FastifyRequest): Promise<USER_ROLE[]> => {
-  // const callerUser = req.callerUser
-  // const authenticatedUser = req.authenticatedUser
-
+const getUserRoles = async (): Promise<USER_ROLE[]> => {
   const roles: USER_ROLE[] = []
 
   return roles
@@ -37,7 +33,7 @@ const sessionSecurityHandler: SecurityHandlerFunction = async (
     return false
   }
 
-  const userRoles: USER_ROLE[] = await getUserRoles(req)
+  const userRoles: USER_ROLE[] = await getUserRoles()
 
   let expression: string = allRoles.reduce(
     (acc: string, e) =>

@@ -41,20 +41,6 @@ const Head = ({
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap"
         rel="stylesheet"
       ></link>
-      <script type="text/javascript">
-        {`
-          var onloadCallback = function() {
-            window.recaptcha.recaptchaV2onLoad(window.grecaptcha, "${globalResources.RECAPTCHA_V2_SITE_KEY}")
-          }
-        `}
-      </script>
-      <script src={`https://www.google.com/recaptcha/api.js?render=${globalResources.RECAPTCHA_V3_SITE_KEY}`}></script>
-      <script>
-        {`
-          window.RECAPTCHA_V2_SITE_KEY = "${globalResources.RECAPTCHA_V2_SITE_KEY}"
-          window.RECAPTCHA_V3_SITE_KEY = "${globalResources.RECAPTCHA_V3_SITE_KEY}"
-        `}
-      </script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     </head>
   )

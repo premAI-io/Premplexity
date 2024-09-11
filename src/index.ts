@@ -16,13 +16,8 @@ import actionsRouter from "./routers/website/actionsRouter"
 import partialsRouter from "./routers/website/partialsRouter"
 
 // COMPONENTS
-import PostgresDB from "$components/PostgresDB"
-import DrizzleDB from "$components/DrizzleDB"
 import DrizzleSessionStore from "$components/DrizzleSessionStore"
 import Configs from "$components/Configs"
-import SerpAPI from "$components/SerpAPI"
-import PremAI from "$components/PremAI"
-import ThredCore from "$components/ThreadCore"
 
 // SERVICES
 import UsersService, { BaseUser } from "$services/UsersService"
@@ -41,7 +36,7 @@ import globalErrorHandler from "$plugins/global-error-handler"
 import globalNotFoundHandler from "$plugins/global-not-found-handler"
 import { join } from "path"
 import { createReadStream } from "fs"
-import { getHtmxBrowserUrl, getLocale } from "$routers/website/utils"
+import { getLocale } from "$routers/website/utils"
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -97,11 +92,7 @@ const ESBUILD_SCRIPT_BUNDLE_PATH =
 
 void (async () => {
   const { env } = container.resolve<Configs>(Configs.token)
-  const drizzleDB = container.resolve<DrizzleDB>(DrizzleDB.token)
   const usersService = container.resolve<UsersService>(UsersService.token)
-  const serpAPI = container.resolve<SerpAPI>(SerpAPI.token)
-  const premAI = container.resolve<PremAI>(PremAI.token)
-  const threadCore = container.resolve<ThredCore>(ThredCore.token)
   let isShuttingDown = false
 
   const gracefulShutdown = (signal: string) => async () => {
@@ -176,8 +167,6 @@ void (async () => {
       FAVICON_PATH,
       ESBUILD_STYLE_BUNDLE_PATH,
       ESBUILD_SCRIPT_BUNDLE_PATH,
-      RECAPTCHA_V2_SITE_KEY: env.RECAPTCHA_V2_SITE_KEY,
-      RECAPTCHA_V3_SITE_KEY: env.RECAPTCHA_V3_SITE_KEY,
       IS_MOBILE: !!isMobile
     }
 
@@ -212,13 +201,6 @@ void (async () => {
   server.addHook("preHandler", async (req) => {
     // INJECT TARGETS
     const promises: Promise<void>[] = []
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const requestQuery = (req.query || {}) as Record<string, any>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const requestBody = (req.body || {}) as Record<string, any>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const requestParams = (req.params || {}) as Record<string, any>
 
     await Promise.all(promises)
   })

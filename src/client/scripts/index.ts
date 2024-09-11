@@ -1,7 +1,6 @@
 import "../htmx"
 import htmx from "htmx.org"
 import "htmx.org/dist/ext/response-targets"
-import recaptcha, { Module as Recaptcha } from "./modules/recaptcha"
 import { loader } from "./modules/loader"
 import "./modules/dropdown"
 import "./modules/form"
@@ -48,10 +47,6 @@ declare global {
     hideLoader: () => void
     downloadFile: (event: CustomEvent, button: HTMLButtonElement) => void
     hideSelect: (event: CustomEvent, selectId: string) => void
-    // recaptcha
-    recaptcha: Recaptcha,
-    RECAPTCHA_V3_SITE_KEY: string,
-    RECAPTCHA_V2_SITE_KEY: string
     // forms
     formValues: {
       [formId: string]: {
@@ -480,9 +475,6 @@ window.downloadFile = async (event) => {
   link.click()
   document.body.removeChild(link)
 }
-
-// recaptcha
-window.recaptcha = recaptcha
 
 // toast
 window.showToast = createToast

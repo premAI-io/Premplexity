@@ -1,5 +1,5 @@
 import { FastifyJsonSchemaInstance } from "$types/index"
-import { ContextConfigDefault, FastifyInstance, FastifyPluginCallback, FastifyReply, FastifyRequest, FastifyRequestContext, FastifySchema, RouteGenericInterface, preHandlerHookHandler } from "fastify"
+import { ContextConfigDefault, FastifyInstance, FastifyPluginCallback, FastifyReply, FastifyRequest, FastifyRequestContext, FastifySchema, RouteGenericInterface } from "fastify"
 import { FastifyTypeProviderDefault, ResolveFastifyReplyReturnType } from "fastify/types/type-provider"
 import { THREAD_ACTIONS_ROUTE, threadRouterPrefix } from "./actionsRouter/thread"
 import { SNAPSHOT_ACTIONS_ROUTE, snapshotRouterPrefix } from "./actionsRouter/snapshot"
@@ -170,18 +170,7 @@ type AuthenticatedRequest<Schema extends RouteGenericInterface = RouteGenericInt
   // callerUser: BaseUser
   routers: string[]
 }
-const privateRoutePreHandler: preHandlerHookHandler = (req, res, done) => {
-  // if (!req.callerUser) {
-  //   if (isHtmxRequest(req)) {
-  //     res.header("HX-Location", "/").send()
-  //   } else {
-  //     res.redirect("/")
-  //     return
-  //   }
-  // }
 
-  return done()
-}
 export function registerPrivateRoute<Schema extends RouteGenericInterface>(
   server: FastifyInstance,
   path: string,
@@ -192,47 +181,9 @@ export function registerPrivateRoute<Schema extends RouteGenericInterface>(
     method: "GET",
     url: path,
     config,
-    preHandler: privateRoutePreHandler,
     handler: (req, res) => handler(req as AuthenticatedRequest<Schema>, res)
   })
 }
-
-/*
-  Not authenticated routes
-  - The user is redirected to settings page if authenticated
-  - If not authenticated, `user` is inferred as `null` so that it can be type-safely used in the handler
-*/
-// type NotAuthenticatedRequest<Schema extends RouteGenericInterface = RouteGenericInterface> = Omit<FastifyRequest<Schema>, "authenticatedUser" | "callerUser" | "routers"> & {
-//   authenticatedUser: null
-//   callerUser: null
-//   routers: string[]
-// }
-
-const authRoutePreHandler: preHandlerHookHandler = (req, res, done) => {
-  // if (req.callerUser) {
-  //   if (isHtmxRequest(req)) {
-  //     res.header("HX-Location", "/settings").send()
-  //   } else {
-  //     res.redirect("/settings")
-  //     return
-  //   }
-  // }
-
-  return done()
-}
-
-// export function registerAuthRoute<Schema extends RouteGenericInterface>(
-//   server: FastifyInstance,
-//   path: string,
-//   handler: (req: NotAuthenticatedRequest<Schema>, res: FastifyReply) => ResolveFastifyReplyReturnType<FastifyTypeProviderDefault, FastifySchema, Schema>
-// ) {
-//   server.route<Schema>({
-//     method: "GET",
-//     url: path,
-//     preHandler: authRoutePreHandler,
-//     handler: (req, res) => handler(req as NotAuthenticatedRequest<Schema>, res)
-//   })
-// }
 
 // ==================== HELPERS ==================== //
 

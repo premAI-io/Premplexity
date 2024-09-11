@@ -3,9 +3,8 @@ import { SessionStore } from "@fastify/session"
 import { container, inject, injectable } from "tsyringe"
 import DrizzleDB, { DrizzleWithSchemas } from "./DrizzleDB"
 import * as sessionsSchemas from "$db_schemas/sessions"
-import { eq, inArray, or } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 import PostgresDB from "./PostgresDB"
-import QueryLogger from "$components/QueryLogger"
 
 @injectable()
 export default class DrizzleSessionStore {
@@ -15,9 +14,7 @@ export default class DrizzleSessionStore {
     @inject(PostgresDB.token)
     private postgresDB: PostgresDB,
   ) {
-    const drizzleDB = new DrizzleDB(postgresDB, new QueryLogger({
-      onQuery: (query, params) => { }
-    }))
+    const drizzleDB = new DrizzleDB(postgresDB)
 
     this.db = drizzleDB.drizzle
   }
