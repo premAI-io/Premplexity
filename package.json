@@ -10,6 +10,7 @@
   "scripts": {
     "server:dev": "nodemon",
     "dev": "./dev.sh",
+    "test": "",
     "makemigrations": "drizzle-kit generate",
     "dropmigration": "drizzle-kit drop",
     "custommigration": "drizzle-kit generate --custom",
