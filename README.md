@@ -1,10 +1,6 @@
 <img
-
 src="https://static.premai.io/premplexity/White.png"
-
-alt="Overview"
-
-/>
+alt="Overview"/>
 
 ## Open-source, Fast, Private
 
@@ -19,7 +15,7 @@ Premplexity is a completely open-source AI-powered utility belt for gathering in
 - Answering questions
 
 - Exploring topics in depth
-
+  v
 - Organizing your Library
 
 ## Examples
