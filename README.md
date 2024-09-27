@@ -1,6 +1,40 @@
-# Premplexity
+<img
 
-## Requirements
+src="https://static.premai.io/premplexity/White.png"
+
+alt="Overview"
+
+/>
+
+## Open-source, Fast, Private
+
+##### Quench your thirst for discovery while boosting curiosity.
+
+Premplexity is a completely open-source AI-powered utility belt for gathering information fast and privately. Answering questions is a trivial task you can do with any traditional search engine. With Premplexity you can retain full control over your searchs and have ownership over the information you gather.
+
+# Why should I use Premplexity?
+
+- Explore the web for new topics, and summarize anything without the creepy trackers 🧟‍♂️👣
+
+- Answering questions
+
+- Exploring topics in depth
+
+- Organizing your Library
+
+## Examples
+
+[💻 What are some upcoming tech trends for 2024?](https://premplexity.premai.io/thread/110)
+
+[🔍 What are the benefits of cloud computing for startups?](https://premplexity.premai.io/thread/111)
+
+[📱 How can businesses adapt to digital transformation?](https://premplexity.premai.io/thread/114)
+
+[🚀 How can AI revolutionize customer service?](https://premplexity.premai.io/thread/115)
+
+## Want to run Premplexity on your own machine?
+
+### Here are some Requirements.
 
 - [nvm](https://nodejs.org/en/download/package-manager)
 - [docker](https://docs.docker.com/get-started/get-docker)
@@ -11,41 +45,41 @@
 
 1. Use the correct node version
 
-    ```bash
-    nvm use
-    ```
+   ```bash
+   nvm use
+   ```
 
 2. Copy the `.env-sample` file to `.env`
 
-    ```bash
-    cp .env-sample .env
-    ```
+   ```bash
+   cp .env-sample .env
+   ```
 
 3. Install dependencies
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 4. Create Prem project
 
-    - Go to your [Prem](https://app.premai.io/projects/) account and create a new project.
-    - Copy the project ID and paste it in the `.env` file.
-    - Create a new API key and paste it in the `.env` file.
+   - Go to your [Prem](https://app.premai.io/projects/) account and create a new project.
+   - Copy the project ID and paste it in the `.env` file.
+   - Create a new API key and paste it in the `.env` file.
 
-  ```bash
-  PREM_PROJECT_ID=your_project_id
-  PREM_API_KEY=your_api_key
-  ```
+```bash
+PREM_PROJECT_ID=your_project_id
+PREM_API_KEY=your_api_key
+```
 
 5. Get SerpApi key
 
-      - Go to your [SerpAPI](https://serpapi.com/dashboard) account and create a new project.
-      - Get your API key and paste it in the `.env` file.
+   - Go to your [SerpAPI](https://serpapi.com/dashboard) account and create a new project.
+   - Get your API key and paste it in the `.env` file.
 
-  ```bash
-  SERPAPI_KEY=your_api_key
-  ```
+```bash
+SERPAPI_KEY=your_api_key
+```
 
 ## Development
 
