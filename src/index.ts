@@ -71,17 +71,17 @@ const FAVICON_PATH = Object.keys(meta.outputs!)
   .join("/")
   .split("public/")[1]
 const ANDROID_CHROME_ICON_PATH = Object.keys(meta.outputs!)
-.find((filename) => filename.includes("android-chrome-192x192-") && filename.endsWith(".png"))!
-.split("/")
-.slice(1)
-.join("/")
-.split("public/")[1]
+  .find((filename) => filename.includes("android-chrome-192x192-") && filename.endsWith(".png"))!
+  .split("/")
+  .slice(1)
+  .join("/")
+  .split("public/")[1]
 const APPLE_TOUCH_ICON_PATH = Object.keys(meta.outputs!)
-.find((filename) => filename.includes("apple-touch-icon-") && filename.endsWith(".png"))!
-.split("/")
-.slice(1)
-.join("/")
-.split("public/")[1]
+  .find((filename) => filename.includes("apple-touch-icon-") && filename.endsWith(".png"))!
+  .split("/")
+  .slice(1)
+  .join("/")
+  .split("public/")[1]
 const ESBUILD_STYLE_BUNDLE_PATH =
   "/" +
   Object.keys(meta.outputs!)
@@ -296,7 +296,7 @@ void (async () => {
     const faviconPath = join(__dirname, "public", ANDROID_CHROME_ICON_PATH)
     const stat = fs.statSync(faviconPath)
     reply.headers({
-      "Content-Type" : "image/png",
+      "Content-Type": "image/png",
       "Content-Length": stat.size
     })
     fs.createReadStream(faviconPath).pipe(reply.raw)
@@ -306,7 +306,7 @@ void (async () => {
     const faviconPath = join(__dirname, "public", APPLE_TOUCH_ICON_PATH)
     const stat = fs.statSync(faviconPath)
     reply.headers({
-      "Content-Type" : "image/png",
+      "Content-Type": "image/png",
       "Content-Length": stat.size
     })
     fs.createReadStream(faviconPath).pipe(reply.raw)

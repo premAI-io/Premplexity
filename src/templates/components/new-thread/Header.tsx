@@ -65,6 +65,7 @@ const Header = ({
               dropdownOpen={false}
               form={formId}
             />
+            <input id="client-input" type="hidden" name="client" />
           </div>
         </div>
         <div class={"hidden md:flex justify-center items-center ml-auto"}>

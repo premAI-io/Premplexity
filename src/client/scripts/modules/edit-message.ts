@@ -1,4 +1,5 @@
 import htmx from "htmx.org"
+import { setClient } from "src/client/scripts/index"
 
 export const onEditMessageClick = (event: Event) => {
   event.stopPropagation()
@@ -80,9 +81,12 @@ export const onConfirmEditMessageClick = (event: Event) => {
 
   const encodedMessage = encodeURIComponent(message)
 
+  setClient()
+  const client = new URLSearchParams(window.location.search).get("client") || "PREM"
+
   htmx.ajax(
     "POST",
-    endpoint + `?model=${model}&searchEngine=${searchEngine}&message=${encodedMessage}`,
+    endpoint + `?model=${model}&searchEngine=${searchEngine}&message=${encodedMessage}&client=${client}`,
     {
       target: "#last-message",
       swap: "innerHTML",

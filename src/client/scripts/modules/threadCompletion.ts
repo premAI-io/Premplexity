@@ -295,6 +295,10 @@ export const handleThreadSSEMessage = (
       document.getElementById("edit-message-button")?.removeAttribute("disabled")
       break
     }
+    case "timing": {
+      console.log("TIMING", content.data)
+      break
+    }
     default: {
       break
     }
@@ -333,6 +337,9 @@ export const formatMarkdown = () => {
 
 export const scrollToBottom = () => {
   const threadContainer = document.getElementById("thread-body")?.parentNode as HTMLElement
+  if (!threadContainer) {
+    return
+  }
   const isNewThreadPage = threadContainer.closest("[data-new-thread-page]")
   if (threadContainer && !isNewThreadPage) {
     threadContainer.scrollTop = threadContainer.scrollHeight

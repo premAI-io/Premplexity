@@ -56,6 +56,16 @@ export type SearchCallbackParams = {
 } | {
   type: "end"
   data: EndCallbackData
+} | {
+  type: "timing"
+  data: {
+    client: string,
+    events: {
+      timestamp: string,
+      note: string,
+      delayFromPrevious: number
+    }[]
+  }
 }
 
 export type SearchCallback = (
@@ -244,7 +254,7 @@ ${params.context}
     let parsed = null
     if (data) {
       try {
-        parsed = data.choices[0].message.content!.split("\n").map((line) => line.trim())
+        parsed = data.choices[0].message.content!.split("\n").map((line: string) => line.trim())
       } catch (_) {
         return {
           error: "Failed to parse the follow-up questions",
@@ -275,6 +285,7 @@ ${params.context}
 
   public async search(
     params: {
+      client: "PREM" | "OPENAI",
       thread: ThreadComplete
       query: string
       maxResults?: number
@@ -294,6 +305,19 @@ ${params.context}
       throw new Error("Thread is not in ready status")
     }
 
+    const events: {
+      timestamp: Date,
+      note: string
+    }[] = []
+
+    const newEvent = (note: string) => {
+      events.push({
+        timestamp: new Date(),
+        note
+      })
+    }
+
+    newEvent("Search started")
     const previousMessagesFormatted = ThreadCore.formatMessages(params.thread.messages)
 
     const message = await this.threadMessagesService.insert({
@@ -315,11 +339,13 @@ ${params.context}
     // This allow to make a more accurate search with the context of the conversation
     if (params.sourceEngineType === SOURCE_ENGINE_TYPE.WEB) {
       if (this.configs.env.ENHANCE_USER_QUERY) {
+        newEvent("Query enhancement started")
         const { data, error } = await this.improveQuery({
           query: params.query,
           searchEngine: params.searchEngine,
           previousMessages: previousMessagesFormatted
         })
+        newEvent("Query enhancement completed")
 
         if (data) {
           improvedQuery = data
@@ -342,12 +368,14 @@ ${params.context}
         }
       }
 
+      newEvent("Search sources started")
       searchSources = await this.serpAPI.search({
         query: improvedQuery || params.query,
         engine: params.searchEngine,
         max_results: params.maxResults,
         messageId: message.id,
       })
+      newEvent("Search sources completed")
 
       // Save search pages as message sources
       if (searchSources.pages.length) {
@@ -396,6 +424,7 @@ ${params.context}
       })
     }
 
+    newEvent("Main completion started")
     const { data, error, completeError } = await this.premAI.completion({
       projectId: this.configs.env.PREM_PROJECT_ID,
       stream: true,
@@ -430,11 +459,17 @@ ${params.context}
     } else {
       let completion = ""
 
+      let first = false
       for await (const chunk of data!) {
         if (!chunk.choices.length) {
           out.error = "Error: empty completion chunk"
           out.content = null
           break
+        }
+
+        if (!first) {
+          first = true
+          newEvent("First completion chunk received")
         }
 
         const data = chunk.choices[0].delta.content
@@ -453,6 +488,8 @@ ${params.context}
         }
       }
 
+      newEvent("Main completion completed")
+
       out.content = completion
     }
 
@@ -463,6 +500,7 @@ ${params.context}
       }
     })
 
+    newEvent("Follow-up questions started")
     const { data: followUpData, error: followUpError } = await this.generateFollowUpQuestions({
       previousMessages: previousMessagesFormatted.concat([
         {
@@ -475,6 +513,7 @@ ${params.context}
         }
       ])
     })
+    newEvent("Follow-up questions completed")
 
     if (followUpData) {
       out.followUpQuestions = followUpData
@@ -500,6 +539,18 @@ ${params.context}
       params.cb({
         type: "end",
         data: out,
+      })
+
+      params.cb({
+        type: "timing",
+        data: {
+          client: params.client,
+          events: events.map((event, i) => ({
+            note: event.note,
+            timestamp: event.timestamp.toISOString(),
+            delayFromPrevious: i > 0 ? event.timestamp.getTime() - events[i - 1].timestamp.getTime() : 0
+          }))
+        }
       })
     }
 
