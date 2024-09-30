@@ -6,17 +6,19 @@ alt="Overview"/>
 
 ##### Quench your thirst for discovery while boosting curiosity.
 
-Premplexity is a completely open-source AI-powered utility belt for gathering information fast and privately. Answering questions is a trivial task you can do with any traditional search engine. With Premplexity you can retain full control over your searchs and have ownership over the information you gather.
+Premplexity is a completely open-source AI-powered utility belt for gathering information fast and privately. Answering questions is a trivial task you can do with any traditional search engine. With Premplexity you can retain full control over your searches and have ownership over the information you gather.
 
-# Why should I use Premplexity?
+# What should I use Premplexity for?
 
-- Explore the web for new topics, and summarize anything without the creepy trackers 🧟‍♂️👣
+- Privately explore the web for new topics, and summarize anything without the creepy trackers 🧟‍♂️👣
 
-- Answering questions
+- Answering questions: Go from a question to an answer as fast as possible. It doesn't matter if its a simple or complex question. Find the best answers from the most up to date sources. Generate code, summarize anything in one open environment.
 
-- Exploring topics in depth
-  v
-- Organizing your Library
+- Exploring topics in depth: Learn new things on the fly and access the main sources of information.
+
+- Choose the right AI models for your use case: Choose from a variety of AI models and pick the one that best fits your use case.
+
+- Fork and run locally: Run Premplexity locally on your own machine. Make it your OWN!
 
 ## Examples
 
