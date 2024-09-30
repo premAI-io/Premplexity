@@ -6,6 +6,7 @@ export const schemas = {
     body: {
       type: "object",
       properties: {
+        client: { type: "string", enum: ["OPENAI", "PREM"], default: "PREM" },
         model: { type: "string" },
         searchEngine: { type: "string" },
         message: { type: "string" },
@@ -43,6 +44,7 @@ export const schemas = {
     body: {
       type: "object",
       properties: {
+        client: { type: "string", enum: ["OPENAI", "PREM"], default: "PREM" },
         model: { type: "string" },
         searchEngine: { type: "string" },
         message: { type: "string" },
@@ -70,6 +72,7 @@ export const schemas = {
     body: {
       type: "object",
       properties: {
+        client: { type: "string", enum: ["OPENAI", "PREM"], default: "PREM" },
         model: { type: "string" },
         searchEngine: { type: "string" },
         search: {
@@ -98,9 +101,14 @@ export const schemas = {
         message: { type: "string" },
         model: { type: "string" },
         searchEngine: { type: "string" },
+        client: { type: "string", enum: ["OPENAI", "PREM"], default: "PREM" }
       },
       required: ["message"],
       additionalProperties: true
+    },
+    body: {
+      type: "object",
+      additionalProperties: false
     }
   } as const satisfies FastifySchema,
   [ROUTE.SHARE]: {

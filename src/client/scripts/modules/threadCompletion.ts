@@ -295,6 +295,10 @@ export const handleThreadSSEMessage = (
       document.getElementById("edit-message-button")?.removeAttribute("disabled")
       break
     }
+    case "timing": {
+      console.log("TIMING", content.data)
+      break
+    }
     default: {
       break
     }

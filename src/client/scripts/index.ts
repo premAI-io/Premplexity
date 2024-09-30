@@ -97,7 +97,19 @@ htmx.config.historyCacheSize = 0
 htmx.config.scrollIntoViewOnBoost = false
 htmx.config.defaultSwapStyle = "outerHTML"
 
+export const setClient = () => {
+  const input = document.getElementById("client-input")
+  if (!input) {
+    return
+  }
+
+  const client = new URLSearchParams(window.location.search).get("client") || "PREM"
+  input.setAttribute("value", client)
+}
+
 window.addEventListener("DOMContentLoaded", () => {
+  setClient()
+
   let debounceTimeout: number
   let buttonLoadingTimeout: number
   initTooltips()
@@ -124,6 +136,7 @@ window.addEventListener("DOMContentLoaded", () => {
   })
 
   window.addEventListener("htmx:afterSwap", () => {
+    setClient()
     initTextEllipsis()
     initTooltips()
     formatMarkdown()

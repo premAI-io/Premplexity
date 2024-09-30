@@ -24,7 +24,8 @@ declare global {
       QUERY_ENHANCER_MODEL: string,
       DEFAULT_CHAT_MODEL: string,
       FOLLOW_UP_MODEL: string
-      GITHUB_REPO_URL: string
+      GITHUB_REPO_URL: string,
+      OPENAI_KEY: string
     }
   }
 }
@@ -53,5 +54,6 @@ export type Env = {
   DEFAULT_CHAT_MODEL: string,
   QUERY_ENHANCER_MODEL: string,
   FOLLOW_UP_MODEL: string,
-  GITHUB_REPO_URL: string
+  GITHUB_REPO_URL: string,
+  OPENAI_KEY: string
 }

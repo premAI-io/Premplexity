@@ -29,14 +29,16 @@ export const router = createRouter((server) => {
   const configs = container.resolve<Configs>(Configs.token)
   const threadShareLinksService = container.resolve<ThreadShareLinksService>(ThreadShareLinksService.token)
 
-  const searchHandler = ({ query, model, thread, searchEngine, currentMessage }: {
+  const searchHandler = ({ query, model, thread, searchEngine, currentMessage, client }: {
     query: string
     model: string
     thread: ThreadComplete
     searchEngine: WEB_SEARCH_ENGINE
-    currentMessage?: ThreadMessageComplete
+    currentMessage?: ThreadMessageComplete,
+    client: "OPENAI" | "PREM"
   }) => {
     threadCoreService.search({
+      client,
       query,
       model,
       thread,
@@ -46,10 +48,12 @@ export const router = createRouter((server) => {
       cb: async (data) => {
         sseComponent.SSEManager.broadcast(
           WebappSSEManager.getUserRoomId(thread.userId),
-          { data: JSON.stringify({
-            content: data,
-            threadId: thread.id
-          }) }
+          {
+            data: JSON.stringify({
+              content: data,
+              threadId: thread.id
+            })
+          }
         )
       },
       ...currentMessage ? { currentMessage } : {}
@@ -76,7 +80,8 @@ export const router = createRouter((server) => {
       query: message,
       model,
       thread,
-      searchEngine: searchEngine as WEB_SEARCH_ENGINE
+      searchEngine: searchEngine as WEB_SEARCH_ENGINE,
+      client: req.body.client
     })
 
     const threadsList = await threadsService.getThreadsGroupedByDate(userId)
@@ -86,9 +91,11 @@ export const router = createRouter((server) => {
 
     thread = await threadsService.getOrFail(thread.id)
 
+    const client = req.body.client
+
     return res
       .headers({
-        "HX-Replace-Url": `/thread/${thread.id}`,
+        "HX-Replace-Url": `/thread/${thread.id}?client=${client}`,
         "HX-Reswap": "none"
       })
       .view(
@@ -112,7 +119,8 @@ export const router = createRouter((server) => {
                 content: message,
                 assistantModel: model,
                 webSearchEngineType: searchEngine
-              }} : {}
+              }
+            } : {}
             }
           />
         </>
@@ -196,7 +204,8 @@ export const router = createRouter((server) => {
       query: message,
       model,
       thread,
-      searchEngine: searchEngine as WEB_SEARCH_ENGINE
+      searchEngine: searchEngine as WEB_SEARCH_ENGINE,
+      client: req.body.client
     })
 
     return res.view(
@@ -248,32 +257,32 @@ export const router = createRouter((server) => {
       model,
       thread,
       searchEngine,
-      currentMessage: lastMessage.currentMessage
+      client: req.body.client
     })
 
     return res.view(
-    <>
-      <UserMessage content={lastMessage.currentMessage.userQuery} editable threadId={thread.id} />
-      <SourcesSection
-        webSearchEngineType={searchEngine}
-        sources={[]}
-        loading={true}
-        isCurrentMessage={true}
-        threadId={thread.id}
-        messageId={0}
-        lastMessage
-      />
-      <TextSection
-        threadId={thread.id}
-        assistantModel={model}
-        assistantError={null}
-        assistantResponse={null}
-        loading={true}
-        isCurrentMessage={true}
-        lastMessage
-        messageId={0}
-      />
-    </>
+      <>
+        <UserMessage content={lastMessage.currentMessage.userQuery} editable threadId={thread.id} />
+        <SourcesSection
+          webSearchEngineType={searchEngine}
+          sources={[]}
+          loading={true}
+          isCurrentMessage={true}
+          threadId={thread.id}
+          messageId={0}
+          lastMessage
+        />
+        <TextSection
+          threadId={thread.id}
+          assistantModel={model}
+          assistantError={null}
+          assistantResponse={null}
+          loading={true}
+          isCurrentMessage={true}
+          lastMessage
+          messageId={0}
+        />
+      </>
     )
   })
 
@@ -301,32 +310,33 @@ export const router = createRouter((server) => {
       model,
       thread,
       searchEngine,
-      currentMessage: lastMessage.currentMessage
+      currentMessage: lastMessage.currentMessage,
+      client: req.query.client
     })
 
     return res.view(
-    <>
-      <UserMessage content={message} editable threadId={thread.id} />
-      <SourcesSection
-        webSearchEngineType={searchEngine}
-        sources={[]}
-        loading={true}
-        isCurrentMessage={true}
-        threadId={thread.id}
-        messageId={0}
-        lastMessage
-      />
-      <TextSection
-        threadId={thread.id}
-        assistantModel={model}
-        assistantError={null}
-        assistantResponse={null}
-        loading={true}
-        isCurrentMessage={true}
-        lastMessage
-        messageId={0}
-      />
-    </>
+      <>
+        <UserMessage content={message} editable threadId={thread.id} />
+        <SourcesSection
+          webSearchEngineType={searchEngine}
+          sources={[]}
+          loading={true}
+          isCurrentMessage={true}
+          threadId={thread.id}
+          messageId={0}
+          lastMessage
+        />
+        <TextSection
+          threadId={thread.id}
+          assistantModel={model}
+          assistantError={null}
+          assistantResponse={null}
+          loading={true}
+          isCurrentMessage={true}
+          lastMessage
+          messageId={0}
+        />
+      </>
     )
   })
 

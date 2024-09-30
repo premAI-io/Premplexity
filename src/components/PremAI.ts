@@ -5,10 +5,14 @@ import Prem from "@premai/prem-sdk"
 import { AxiosError } from "axios"
 import { container, inject, singleton } from "tsyringe"
 
+import Openai from "openai"
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs"
+
 @singleton()
 export default class PremAI {
   readonly client: Prem
   readonly defaultChatModel: string
+  readonly openai: Openai
 
   constructor(
     @inject(Configs.token)
@@ -18,10 +22,40 @@ export default class PremAI {
       apiKey: configs.env.PREM_API_KEY
     })
 
+    this.openai = new Openai({
+      apiKey: configs.env.OPENAI_KEY
+    })
+
     this.defaultChatModel = configs.env.DEFAULT_CHAT_MODEL
   }
 
-  completion = async <T extends boolean>({
+  completion = async<T extends boolean>({
+    client = "PREM",
+    ...options
+  }: {
+    client?: "OPENAI" | "PREM",
+    messages: {
+      role: "user" | "assistant"
+      content?: string
+    }[],
+    model?: string,
+    projectId: number,
+    systemPrompt?: string
+    stream?: T
+  }) => {
+    if (client === "PREM") {
+      return this.completionPrem<T>(options)
+    }
+
+    return this.completionOpenai(options) as unknown as {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: any
+      error: string | null
+      completeError: string | null
+    }
+  }
+
+  completionPrem = async <T extends boolean>({
     messages,
     model = "gpt-3.5-turbo",
     projectId,
@@ -77,6 +111,49 @@ export default class PremAI {
           data: null,
           completeError
         }
+      }
+    }
+  }
+
+  completionOpenai = async <T extends boolean>({
+    messages,
+    model = "gpt-3.5-turbo",
+    projectId,
+    systemPrompt,
+    stream = false as T
+  }: {
+    messages: {
+      role: "user" | "assistant"
+      content?: string
+    }[],
+    model?: string,
+    projectId: number,
+    systemPrompt?: string
+    stream?: T
+  }) => {
+    try {
+      const data = await this.openai.chat.completions.create({
+        messages: [
+          ...systemPrompt ? [{
+            role: "system" as const,
+            content: systemPrompt
+          }] : [],
+          ...messages as ChatCompletionMessageParam[]
+        ],
+        stream,
+        model: "gpt-4o-mini"
+      })
+
+      return {
+        data,
+        error: null,
+        completeError: null
+      }
+    } catch (err) {
+      return {
+        error: "Generic error occurred",
+        data: null,
+        completeError: "Generic error occurred"
       }
     }
   }
