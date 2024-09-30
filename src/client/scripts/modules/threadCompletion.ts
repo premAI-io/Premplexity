@@ -333,6 +333,9 @@ export const formatMarkdown = () => {
 
 export const scrollToBottom = () => {
   const threadContainer = document.getElementById("thread-body")?.parentNode as HTMLElement
+  if (!threadContainer) {
+    return
+  }
   const isNewThreadPage = threadContainer.closest("[data-new-thread-page]")
   if (threadContainer && !isNewThreadPage) {
     threadContainer.scrollTop = threadContainer.scrollHeight
