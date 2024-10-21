@@ -1,0 +1,46 @@
+.thread__header {
+  @apply md:static md:w-full md:flex md:items-center md:justify-between md:py-4 md:px-8 py-5 px-4 fixed top-0 left-0 w-full z-10 bg-gray-800;
+}
+
+.suggestion-item {
+  @apply bg-gray-900 border border-gray-700 rounded-lg p-2
+  text-gray-300 text-base font-bold text-left
+  cursor-pointer
+}
+
+#thread-text {
+  @apply w-[calc(100%-0.5rem)] ml-2 pl-4 border-l border-gray-600 text-left overflow-hidden;
+}
+
+.thread_sources_grid {
+  @apply w-full md:grid md:grid-cols-5 gap-2 flex overflow-auto scrollbar-none
+}
+
+.thread_images_grid {
+  @apply w-full md:grid md:grid-cols-6 gap-4 flex overflow-auto scrollbar-none
+}
+
+.image-card-container {
+  @apply w-full h-[75px] border border-gray-600 rounded-[4px] cursor-pointer;
+}
+
+#thread-text .source {
+  @apply source-card__id !inline-flex mx-0.5;
+}
+
+.new-thread-body {
+  @apply h-[calc(100%-42px)] md:flex-1 px-4 pt-[146px] md:px-0 md:pt-20 md:text-center md:max-w-[678px] md:w-[70%] md:mx-auto
+}
+
+.thread-body {
+  @apply md:pt-0 md:flex-1 flex flex-col-reverse text-center
+  max-w-[813px] md:w-[75%] mx-auto px-4 md:px-2 pb-4
+}
+
+#edit-message-actions-buttons:has( + div > div[data-message-container]:not([data-container-hidden])) {
+  @apply hidden
+}
+
+#edit-message-button:has(+ * + div > div[data-message-container][data-container-hidden]) {
+  @apply hidden
+}

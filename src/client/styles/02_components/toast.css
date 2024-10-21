@@ -1,0 +1,61 @@
+#toast {
+  /* this is the container */
+  @apply fixed bottom-0 flex flex-col z-[9999] pr-4 pb-4 gap-y-2;
+  @apply right-0;
+}
+
+.toast {
+  @apply p-4 rounded-lg shadow-lg bg-white flex items-center gap-4 w-[320px] text-sm text-gray-500;
+  animation: slideIn 0.3s forwards;
+  transition: border-color 0.32s ease-in-out;
+}
+
+.toast .icon-container {
+  @apply w-8 h-8 shrink-0 flex items-center justify-center rounded-lg;
+}
+
+.toast--success {
+  .icon-container {
+    @apply bg-green-100 text-green-600;
+  }
+}
+
+.toast--error {
+  .icon-container {
+    @apply bg-red-100 text-red-600;
+  }
+}
+
+.toast--info, .toast--loading {
+  .icon-container {
+    @apply bg-blue-100 text-blue-600;
+  }
+}
+
+.toast--warning {
+  .icon-container {
+    @apply bg-yellow-100 text-yellow-600;
+  }
+}
+
+.toast--hide {
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

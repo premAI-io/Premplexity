@@ -1,0 +1,20 @@
+.error-page__container {
+  @apply w-full p-4
+}
+
+.error-page__card {
+  @apply w-full flex flex-col items-center justify-center
+  p-[96px] bg-gray-700 shadow-lg rounded-lg;
+}
+
+.error-page__code {
+  @apply text-8xl font-extrabold text-gray-300
+}
+
+.error-page__title {
+  @apply text-4xl font-bold text-center
+}
+
+.error-page__message {
+  @apply text-lg text-gray-500 text-center
+}

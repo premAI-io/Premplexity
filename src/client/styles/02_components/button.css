@@ -1,0 +1,138 @@
+.btn {
+  @apply border rounded-lg outline-2 text-sm font-medium inline-flex justify-center items-center gap-x-2 relative disabled:pointer-events-none disabled:opacity-50;
+  transition: background-color 0.32s ease-in-out, color 0.32s ease-in-out;
+}
+
+.btn__content {
+  @apply h-full inline-flex justify-center items-center gap-x-2;
+}
+
+/* Themes */
+.btn--primary {
+  @apply border-none text-white;
+  background: var(--gradient--primary);
+}
+
+.btn--secondary {
+  @apply bg-gray-500 border-gray-500 text-gray-100 hover:bg-gray-600 focus:bg-gray-600 focus:outline-gray-200;
+
+  &.btn--outline {
+    @apply bg-transparent border-gray-500 text-gray-300 hover:bg-gray-600 hover:text-white focus:border-gray-500;
+  }
+}
+
+.btn--danger {
+  @apply bg-red-700 border-red-700 text-white hover:bg-red-800 focus:bg-red-800 focus:outline-red-200;
+
+  &.btn--outline {
+    @apply bg-transparent border-red-800 text-red-800 hover:bg-red-800 hover:text-white focus:border-red-800;
+  }
+}
+
+.btn--success {
+  @apply bg-green-700 border-green-700 text-white hover:bg-green-800 focus:bg-green-800 focus:outline-green-200;
+
+  &.btn--outline {
+    @apply bg-transparent border-green-800 text-green-800 hover:bg-green-800 hover:text-white focus:border-green-800;
+  }
+}
+
+.btn--warning {
+  @apply bg-orange-700 border-orange-700 text-white hover:bg-orange-800 focus:bg-orange-800 focus:outline-orange-200;
+
+  &.btn--outline {
+    @apply bg-transparent border-orange-800 text-orange-800 hover:bg-orange-800 hover:text-white focus:border-orange-800;
+  }
+}
+
+.btn--info {
+  @apply bg-gray-500 border-gray-500 text-white hover:bg-gray-600 focus:bg-gray-600 focus:outline-gray-200;
+
+  &.btn--outline {
+    @apply bg-transparent border-gray-500 text-gray-500 hover:bg-gray-600 hover:text-white focus:outline-gray-500;
+  }
+}
+
+.btn--square {
+  @apply w-[34px] h-[34px] !p-0 rounded-[50%];
+}
+
+/* Sizes */
+.btn--xs {
+  @apply h-8 px-3 text-xs;
+
+  &.btn--round,
+  &.btn--square {
+    @apply w-8;
+  }
+}
+
+.btn--sm {
+  @apply h-9 px-3 text-sm;
+
+  &.btn--round,
+  &.btn--square {
+    @apply w-9;
+  }
+}
+
+.btn--md {
+  @apply h-10 px-5 text-sm;
+
+  &.btn--round,
+  &.btn--square {
+    @apply w-10;
+  }
+}
+
+.btn--lg {
+  @apply h-12 px-5 text-base;
+
+  &.btn--round,
+  &.btn--square {
+    @apply w-12;
+  }
+}
+
+.btn--xl {
+  @apply h-[52px] px-6 text-base;
+
+  &.btn--round,
+  &.btn--square {
+    @apply w-[52px];
+  }
+}
+
+.button--round,
+.button--square {
+  @apply px-0;
+}
+
+.btn--round {
+  @apply rounded-full;
+}
+
+/* State */
+.btn--disabled {
+  @apply pointer-events-none bg-gray-400 border-gray-400;
+}
+
+button:disabled {
+  @apply opacity-50;
+}
+
+.btn__spinner {
+  @apply hidden z-[1] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+.btn--loading {
+  @apply pointer-events-none opacity-50;
+
+  .btn__spinner {
+    @apply flex items-start;
+  }
+
+  .btn__content {
+    @apply invisible;
+  }
+}

@@ -1,0 +1,28 @@
+.sidebar {
+  @apply min-w-64 max-w-64 w-64 h-full hidden md:flex flex-col justify-between bg-gray-900 border-r border-r-gray-700 select-none;
+  padding: 16px 16px 8px 8px;
+}
+
+.sidebar__head {
+  @apply border-b border-b-gray-700 pb-2 flex flex-col gap-y-8
+}
+
+.sidebar__body {
+  @apply flex-1 mt-2 flex flex-col gap-y-2 overflow-y-auto scrollbar pr-1
+}
+
+.sidebar__body__item {
+  @apply flex items-center justify-between gap-x-1 text-gray-300 text-xs p-2 border border-gray-700 rounded-lg;
+
+  > .title {
+    @apply truncate;
+  }
+}
+
+.sidebar__body__item:hover > .thread-dropdown-trigger {
+  @apply flex;
+}
+
+.sidebar__body__item.active {
+  @apply bg-gray-700 text-white;
+}

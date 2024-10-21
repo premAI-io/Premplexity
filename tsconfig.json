@@ -1,0 +1,84 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "$components/*": [
+        "src/components/*"
+      ],
+      "$routers/*": [
+        "src/routers/*"
+      ],
+      "$schemas/*": [
+        "src/schemas/*"
+      ],
+      "$services/*": [
+        "src/services/*"
+      ],
+      "$templates/*": [
+        "src/templates/*"
+      ],
+      "$types": [
+        "src/types/index.ts"
+      ],
+      "$types/*": [
+        "src/types/*"
+      ],
+      "$utils/*": [
+        "src/utils/*"
+      ],
+      "$db_schemas/*": [
+        "src/db_schemas/*"
+      ],
+      "$models/*": [
+        "src/services/*"
+      ],
+      "$hooks/*": [
+        "src/hooks/*"
+      ],
+      "$plugins/*": [
+        "src/plugins/*"
+      ],
+      "$seeds/*": [
+        "src/seeds/*"
+      ]
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@kitajs/html",
+    "plugins": [
+      {
+        "name": "@kitajs/ts-html-plugin"
+      }
+    ],
+    "resolveJsonModule": true,
+    "lib": [
+      "dom",
+      "WebWorker",
+      "ES2021.String"
+    ],
+    "skipLibCheck": true,
+    "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "sourceMap": true,
+    "inlineSources": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "sourceRoot": "/",
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+}

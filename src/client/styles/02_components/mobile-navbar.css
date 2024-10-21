@@ -1,0 +1,11 @@
+.mobile-navbar {
+  @apply bg-gray-800 border-t border-t-gray-700 grid grid-cols-2 fixed md:hidden bottom-0 w-full z-50 h-[54px];
+}
+
+.mobile-navbar__item {
+@apply flex items-center justify-center text-gray-400 text-[10px] flex-col gap-1.5;
+}
+
+.mobile-navbar__item.active {
+  @apply text-white pointer-events-none;
+}
