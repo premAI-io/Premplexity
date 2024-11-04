@@ -1,14 +1,40 @@
-version: "3.7"
+volumes:
+  postgres_data: {}
 
 services:
   postgres:
     image: postgres:14.5-alpine3.16
     command: postgres -c stats_temp_directory=/tmp
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - ${POSTGRES_PORT:-5432}:5432
+      - 5432:5432
+    networks:
+      - app_network
+
+  app:
+    build:
+      context: .
+    command: >
+      sh -c "
+        echo 'Waiting for PostgreSQL to be ready...'
+        while ! nc -z postgres 5432; do
+          sleep 0.1
+        done
+        echo 'PostgreSQL is ready!'
+        npm run migrate && npm start
+      "
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

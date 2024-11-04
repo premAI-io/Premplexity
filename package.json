@@ -8,8 +8,8 @@
     "npm": ">=9"
   },
   "scripts": {
-    "server:dev": "nodemon",
-    "dev": "./dev.sh",
+    "dev": "nodemon",
+    "studio": "./node_modules/drizzle-kit/bin.cjs studio",
     "test": "",
     "makemigrations": "drizzle-kit generate",
     "dropmigration": "drizzle-kit drop",
