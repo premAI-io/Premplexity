@@ -1,4 +1,36 @@
-# Premplexity
+<img
+src="https://static.premai.io/premplexity/White.png"
+alt="Overview"/>
+
+## Open-source, Fast, Private
+
+##### Quench your thirst for discovery while boosting curiosity.
+
+Premplexity is a completely open-source AI-powered utility belt for gathering information fast and privately. Answering questions is a trivial task you can do with any traditional search engine. With Premplexity you can retain full control over your searches and have ownership over the information you gather.
+
+# What should I use Premplexity for?
+
+- Privately explore the web for new topics, and summarize anything without the creepy trackers 🧟‍♂️👣
+
+- Answering questions: Go from a question to an answer as fast as possible. It doesn't matter if its a simple or complex question. Find the best answers from the most up to date sources. Generate code, summarize anything in one open environment.
+
+- Exploring topics in depth: Learn new things on the fly and access the main sources of information.
+
+- Choose the right AI models for your use case: Choose from a variety of AI models and pick the one that best fits your use case.
+
+- Fork and run locally: Run Premplexity locally on your own machine. Make it your OWN!
+
+## Examples
+
+[💻 What are some upcoming tech trends for 2024?](https://premplexity.premai.io/thread/110)
+
+[🔍 What are the benefits of cloud computing for startups?](https://premplexity.premai.io/thread/111)
+
+[📱 How can businesses adapt to digital transformation?](https://premplexity.premai.io/thread/114)
+
+[🚀 How can AI revolutionize customer service?](https://premplexity.premai.io/thread/115)
+
+## Want to run Premplexity on your own machine?
 
 ## Requirements
 
