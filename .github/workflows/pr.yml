@@ -25,10 +25,10 @@ jobs:
           sleep 10
 
       - name: Run tests
-        run: docker-compose run --rm app npm run test
+        run: docker compose run --rm app npm run test
       
       - name: Run XSS scan
-        run: docker-compose run --rm app npm run xss:scan
+        run: docker compose run --rm app npm run xss:scan
       
       - name: Docker Compose down
         run: docker compose down -v
