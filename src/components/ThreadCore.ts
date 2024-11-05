@@ -187,16 +187,12 @@ You are an AI tasked with providing follow-up questions. Follow these guidelines
 ${params.context}
 
 `
-
   private improveQuery = async (params: {
     query: string,
     searchEngine: string,
     previousMessages: AssistantHistoryMessage[]
   }) => {
-    const {
-      error,
-      data
-    } = await this.premAI.completion({
+    const response = await this.premAI.completion({
       projectId: this.configs.env.PREM_PROJECT_ID,
       stream: false,
       messages: [
@@ -213,8 +209,8 @@ ${params.context}
     })
 
     return {
-      error,
-      data: data?.choices[0].message.content
+      error: response?.error,
+      data: response?.data?.choices[0].message.content
     }
   }
 
@@ -237,10 +233,7 @@ ${params.context}
   private generateFollowUpQuestions = async (params: {
     previousMessages: AssistantHistoryMessage[]
   }) => {
-    const {
-      error,
-      data
-    } = await this.premAI.completion({
+    const response = await this.premAI.completion({
       projectId: this.configs.env.PREM_PROJECT_ID,
       stream: false,
       messages: params.previousMessages,
@@ -252,9 +245,9 @@ ${params.context}
     })
 
     let parsed = null
-    if (data) {
+    if (response?.data) {
       try {
-        parsed = data.choices[0].message.content!.split("\n").map((line: string) => line.trim())
+        parsed = response.data.choices[0].message.content!.split("\n").map((line: string) => line.trim())
       } catch (_) {
         return {
           error: "Failed to parse the follow-up questions",
@@ -278,14 +271,14 @@ ${params.context}
     }
 
     return {
-      error,
+      error: response?.error,
       data: parsed
     }
   }
 
   public async search(
     params: {
-      client: "PREM" | "OPENAI",
+      client: "PREM",
       thread: ThreadComplete
       query: string
       maxResults?: number
@@ -423,9 +416,8 @@ ${params.context}
         }
       })
     }
-
     newEvent("Main completion started")
-    const { data, error, completeError } = await this.premAI.completion({
+    const result = await this.premAI.completion({
       projectId: this.configs.env.PREM_PROJECT_ID,
       stream: true,
       messages: [
@@ -451,16 +443,15 @@ ${params.context}
       error: null,
       improvedQuery,
       messageId: message.id,
-      hasMoreErrorData: !!completeError
+      hasMoreErrorData: false
     }
 
-    if (error) {
-      out.error = error.toString()
+    if (result?.error) {
+      out.error = result.error.toString()
     } else {
       let completion = ""
-
       let first = false
-      for await (const chunk of data!) {
+      for await (const chunk of result?.data ?? []) {
         if (!chunk.choices.length) {
           out.error = "Error: empty completion chunk"
           out.content = null
@@ -557,7 +548,6 @@ ${params.context}
     await this.threadMessagesService.update(message.id, {
       assistantResponse: out.content,
       assistantError: out.error?.toString(),
-      errorData: completeError,
       assistantTimestamp: new Date().toISOString(),
     })
 
