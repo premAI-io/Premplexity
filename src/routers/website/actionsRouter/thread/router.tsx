@@ -35,7 +35,7 @@ export const router = createRouter((server) => {
     thread: ThreadComplete
     searchEngine: WEB_SEARCH_ENGINE
     currentMessage?: ThreadMessageComplete,
-    client: "OPENAI" | "PREM"
+    client: "PREM"
   }) => {
     threadCoreService.search({
       client,

@@ -36,8 +36,7 @@ export default class Configs {
       CHAT_MESSAGE_TIMEOUT = "5000",
       DEFAULT_CHAT_MODEL = "gpt-4o-mini",
       FOLLOW_UP_MODEL,
-      GITHUB_REPO_URL = "https://github.com/premAI-io/Premplexity/",
-      OPENAI_KEY
+      GITHUB_REPO_URL = "https://github.com/premAI-io/Premplexity/"
     } = process.env
 
     for (const envKey of [
@@ -52,8 +51,7 @@ export default class Configs {
       "ENHANCE_USER_QUERY",
       "QUERY_ENHANCER_MODEL",
       "FOLLOW_UP_MODEL",
-      "DEFAULT_CHAT_MODEL",
-      "OPENAI_KEY"
+      "DEFAULT_CHAT_MODEL"
     ]) {
       checkEnv(envKey)
     }
@@ -81,8 +79,7 @@ export default class Configs {
       QUERY_ENHANCER_MODEL,
       DEFAULT_CHAT_MODEL,
       FOLLOW_UP_MODEL,
-      GITHUB_REPO_URL,
-      OPENAI_KEY
+      GITHUB_REPO_URL
     }
   }
 
