@@ -8,7 +8,7 @@ WORKDIR /home/node/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm --production=false install
 
 ARG SENTRY_AUTH_TOKEN
 ARG SENTRY_VERSION
