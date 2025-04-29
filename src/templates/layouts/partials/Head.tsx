@@ -37,12 +37,12 @@ const Head = ({
       <meta property="og:description" content="Open-source AI search assistant where you control your data, powered by Prem" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://premplexity.ai" />
-      <meta property="og:image" content="/android-chrome-192x192.png" />
+      <meta property="og:image" content="https://premplexity.ai/android-chrome-192x192.png" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Premplexity - Open Source AI Search" />
       <meta name="twitter:description" content="AI search where you own your data, powered by Prem" />
-      <meta name="twitter:image" content="/android-chrome-192x192.png" />
+      <meta name="twitter:image" content="https://premplexity.ai/android-chrome-192x192.png" />
 
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
