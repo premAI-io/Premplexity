@@ -91,6 +91,7 @@
     "json-schema": "^0.4.0",
     "markdown-it": "^14.1.0",
     "mathjs": "^12.4.1",
+    "openai": "^4.96.0",
     "postgres": "^3.4.3",
     "reflect-metadata": "^0.2.1",
     "serpapi": "^2.1.0",

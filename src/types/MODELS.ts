@@ -1,4 +1,6 @@
 export const DISABLED_MODELS = [
   "Autopilot",
-  "gpt-3.5-turbo-eu"
+  "gpt-4o",
+  "claude-3.7-sonnet",
+  "claude-3.5-sonnet"
 ]

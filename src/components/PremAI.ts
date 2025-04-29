@@ -1,112 +1,34 @@
 import Configs from "$components/Configs"
 import { SelectOption } from "$templates/components/SelectSearchable"
 import { DISABLED_MODELS } from "$types/MODELS"
-import Prem from "@premai/prem-sdk"
-import { AxiosError } from "axios"
+import OpenAI from "openai"
 import { container, inject, singleton } from "tsyringe"
+
 
 @singleton()
 export default class PremAI {
-  readonly client: Prem
-  readonly defaultChatModel: string
+  private openai: OpenAI
+  private defaultChatModel: string
 
   constructor(
     @inject(Configs.token)
-    configs: Configs
+    private configs: Configs
   ) {
-    this.client = new Prem({
-      apiKey: configs.env.PREM_API_KEY
+    const baseURL = this.configs.env.PREM_AI_BASE_URL
+    this.openai = new OpenAI({
+      baseURL,
+      apiKey: this.configs.env.PREM_API_KEY
     })
-
-    this.defaultChatModel = configs.env.DEFAULT_CHAT_MODEL
+    this.defaultChatModel = "gpt-4o-mini"
   }
 
-  completion = async<T extends boolean>({
-    client = "PREM",
-    ...options
-  }: {
-    client?: "PREM",
-    messages: {
-      role: "user" | "assistant"
-      content?: string
-    }[],
-    model?: string,
-    projectId: number,
-    systemPrompt?: string
-    stream?: T
-  }) => {
-    if (client === "PREM") {
-      return this.completionPrem<T>(options)
-    }
-  }
-
-  completionPrem = async <T extends boolean>({
-    messages,
-    model = "gpt-4o-mini",
-    projectId,
-    systemPrompt,
-    stream = false as T
-  }: {
-    messages: {
-      role: "user" | "assistant"
-      content?: string
-    }[],
-    model?: string,
-    projectId: number,
-    systemPrompt?: string
-    stream?: T
-  }) => {
-    try {
-      const data = await this.client.chat.completions.create({
-        project_id: projectId,
-        messages: messages,
-        stream: stream,
-        model,
-        system_prompt: systemPrompt
-      })
-
-      return {
-        data,
-        error: null,
-        completeError: null
-      }
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        return {
-          error: err.response?.status + " | " + err.response?.data,
-          data: null,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          completeError: err.toString()
-        }
-      } else {
-        let completeError: string | null = null
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if ((err as any)._outBuffer instanceof Buffer) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          completeError = (err as any)._outBuffer.toString("utf-8").replace(/\0/g, "")
-          if (completeError) {
-            const jsonIndex = completeError.indexOf("}") + 1
-            completeError = completeError.substring(0, jsonIndex)
-          }
-        }
-
-        return {
-          error: "Generic error occurred",
-          data: null,
-          completeError
-        }
-      }
-    }
-  }
+  completion = () => this.openai.chat.completions
 
   getAvailableModels = async (selected?: string) => {
-    return (
-      await this.client.models.list()
-    ).filter(({ deprecated, name, model_type }) => (
-      !deprecated && !DISABLED_MODELS.includes(name) &&
-      model_type === "text2text"
-    )).map(({ name, model_provider }) => ({
+    const r = await this.openai.models.list({ "path": `${this.configs.env.PREM_AI_BASE_URL}/chat/models` })
+    return r.data.filter(({ id: name }) => (
+      !DISABLED_MODELS.includes(name)
+    )).map(({ id: name, owned_by: model_provider }) => ({
       label: name,
       value: name,
       selected: selected ? name === selected : name === this.defaultChatModel,
@@ -115,14 +37,12 @@ export default class PremAI {
       if (!acc[provider]) {
         acc[provider] = []
       }
-
       acc[provider].push({ label, value, selected })
       return acc
     }, {} as Record<string, SelectOption[]>)
   }
 
-
-  static token = Symbol("PremAI")
+  static token = Symbol("PremClient")
 }
 
 container.registerSingleton(PremAI.token, PremAI)

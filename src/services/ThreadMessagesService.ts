@@ -36,7 +36,9 @@ export type WithSources<T> = T & {
   }
 }
 
-export type ThreadMessageComplete = WithSources<WithStatus<ThreadMessage>>
+export type ThreadMessageComplete = WithSources<ThreadMessage> & { status: THREAD_MESSAGE_STATUS }
+
+
 
 @injectable()
 export default class ThreadMessagesService extends BaseService<

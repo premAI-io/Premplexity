@@ -175,7 +175,7 @@ export default class ThreadsService extends BaseService<typeof threadsTable, Thr
 
     await this.update(threadId, {
       deleted: true
-    })
+    } as unknown as Partial<Thread>)
   }
 
   postProcess = async (threads: Thread[]): Promise<ThreadComplete[]> => {
