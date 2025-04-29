@@ -9,6 +9,7 @@ services:
       - ./certbot/conf/:/etc/letsencrypt/:rw
 
   proxy:
+    restart: always
     image: nginx:1.26-alpine
     ports:
       - 80:80
@@ -18,8 +19,11 @@ services:
       - ./certbot/conf/:/etc/letsencrypt/:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - app_network
 
   postgres:
+    restart: always
     image: postgres:14-alpine
     command: postgres -c stats_temp_directory=/tmp
     env_file:
@@ -32,6 +36,7 @@ services:
       - app_network
 
   app:
+    restart: always
     build:
       context: .
     command: >
