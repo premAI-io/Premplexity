@@ -30,13 +30,13 @@ export default class Configs {
       SENTRY_VERSION,
       SERPAPI_KEY,
       PREM_API_KEY,
-      PREM_AI_BASE_URL = "https://sid.premai.io/api",
+      PREM_AI_BASE_URL = "https://sid.premai.io/api/v1",
       ENHANCE_USER_QUERY,
       QUERY_ENHANCER_MODEL,
       CHAT_MESSAGE_TIMEOUT = "5000",
       DEFAULT_CHAT_MODEL = "gpt-4o-mini",
       FOLLOW_UP_MODEL,
-      GITHUB_REPO_URL = "https://github.com/premAI-io/Premplexity/"
+      GITHUB_REPO_URL = "https://github.com/premAI-io/Premplexity/",
     } = process.env
 
     for (const envKey of [
@@ -51,7 +51,7 @@ export default class Configs {
       "ENHANCE_USER_QUERY",
       "QUERY_ENHANCER_MODEL",
       "FOLLOW_UP_MODEL",
-      "DEFAULT_CHAT_MODEL"
+      "DEFAULT_CHAT_MODEL",
     ]) {
       checkEnv(envKey)
     }
@@ -67,22 +67,25 @@ export default class Configs {
       SESSION_SECRET,
       SENTRY_DSN,
       ENVIRONMENT,
-      POSTGRES_IDLE_TIMEOUT: POSTGRES_IDLE_TIMEOUT ? +POSTGRES_IDLE_TIMEOUT : undefined,
+      POSTGRES_IDLE_TIMEOUT: POSTGRES_IDLE_TIMEOUT
+        ? +POSTGRES_IDLE_TIMEOUT
+        : undefined,
       APP_BASE_URL,
       GRACEFUL_SHUTDOWN_TIMEOUT: +GRACEFUL_SHUTDOWN_TIMEOUT,
       SENTRY_VERSION,
       SERPAPI_KEY,
       PREM_API_KEY,
       PREM_AI_BASE_URL,
-      ENHANCE_USER_QUERY: ENHANCE_USER_QUERY ? ENHANCE_USER_QUERY === "true" : false,
+      ENHANCE_USER_QUERY: ENHANCE_USER_QUERY
+        ? ENHANCE_USER_QUERY === "true"
+        : false,
       CHAT_MESSAGE_TIMEOUT: +CHAT_MESSAGE_TIMEOUT,
       QUERY_ENHANCER_MODEL,
       DEFAULT_CHAT_MODEL,
       FOLLOW_UP_MODEL,
-      GITHUB_REPO_URL
+      GITHUB_REPO_URL,
     }
   }
-
 
   static token = Symbol("Configs")
 }
